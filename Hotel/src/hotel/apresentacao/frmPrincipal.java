@@ -13,7 +13,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void abrirTela(JInternalFrame pInternalFrame) {
         dkpSistema.add(pInternalFrame);
         Unit.setPosition(pInternalFrame);
-        pInternalFrame.setVisible(true);
+        pInternalFrame.setVisible(true);     
     }
 
     @SuppressWarnings("unchecked")
