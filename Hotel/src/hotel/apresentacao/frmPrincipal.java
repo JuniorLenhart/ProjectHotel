@@ -1,7 +1,9 @@
 package hotel.apresentacao;
 
 import hotel.apoio.Unit;
+import java.awt.Dimension;
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 public class frmPrincipal extends javax.swing.JFrame {
 
@@ -23,23 +25,28 @@ public class frmPrincipal extends javax.swing.JFrame {
         dkpSistema = new javax.swing.JDesktopPane(){
         };
         mnbPrincipal = new javax.swing.JMenuBar();
-        mnuLocacao = new javax.swing.JMenu();
-        mnuReserva = new javax.swing.JMenu();
         mnuCadastro = new javax.swing.JMenu();
         mniFilme = new javax.swing.JMenuItem();
         mniFormaPgto = new javax.swing.JMenuItem();
         mniGenero = new javax.swing.JMenuItem();
         mniPessoa = new javax.swing.JMenuItem();
         mniTipoMidia = new javax.swing.JMenuItem();
-        mniUsuario = new javax.swing.JMenuItem();
+        mnuLocacao = new javax.swing.JMenu();
+        mnuReserva = new javax.swing.JMenu();
+        mnuFinanceiro = new javax.swing.JMenu();
         mnuRelatorio = new javax.swing.JMenu();
         mniReserva = new javax.swing.JMenuItem();
         mniLocacao = new javax.swing.JMenuItem();
+        mnuUsuario = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
         mnuAjuda = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         mniSair = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Video Store - Locadora");
+        setTitle("Hotel Integrador");
 
         dkpSistema.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -54,35 +61,35 @@ public class frmPrincipal extends javax.swing.JFrame {
             .addGap(0, 426, Short.MAX_VALUE)
         );
 
+        mnuCadastro.setText("Cadastros");
+
+        mniFilme.setText("Pessoa");
+        mnuCadastro.add(mniFilme);
+
+        mniFormaPgto.setText("Tipo de Quarto");
+        mnuCadastro.add(mniFormaPgto);
+
+        mniGenero.setText("Quarto");
+        mnuCadastro.add(mniGenero);
+
+        mniPessoa.setText("Consumível");
+        mniPessoa.setToolTipText("");
+        mnuCadastro.add(mniPessoa);
+
+        mniTipoMidia.setText("Forma de Pagamento");
+        mniTipoMidia.setActionCommand("Tipo Mídia");
+        mnuCadastro.add(mniTipoMidia);
+
+        mnbPrincipal.add(mnuCadastro);
+
         mnuLocacao.setLabel("Locação");
         mnbPrincipal.add(mnuLocacao);
 
         mnuReserva.setLabel("Reserva");
         mnbPrincipal.add(mnuReserva);
 
-        mnuCadastro.setText("Cadastros");
-
-        mniFilme.setText("Filme");
-        mnuCadastro.add(mniFilme);
-
-        mniFormaPgto.setText("Forma de Pagamento");
-        mnuCadastro.add(mniFormaPgto);
-
-        mniGenero.setText("Gênero");
-        mnuCadastro.add(mniGenero);
-
-        mniPessoa.setText("Pessoa");
-        mniPessoa.setToolTipText("");
-        mnuCadastro.add(mniPessoa);
-
-        mniTipoMidia.setText("Tipo de Mídia");
-        mniTipoMidia.setActionCommand("Tipo Mídia");
-        mnuCadastro.add(mniTipoMidia);
-
-        mniUsuario.setText("Usuário");
-        mnuCadastro.add(mniUsuario);
-
-        mnbPrincipal.add(mnuCadastro);
+        mnuFinanceiro.setText("Financeiro");
+        mnbPrincipal.add(mnuFinanceiro);
 
         mnuRelatorio.setText("Relatórios");
 
@@ -94,7 +101,23 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         mnbPrincipal.add(mnuRelatorio);
 
+        mnuUsuario.setText("Usuário");
+
+        jMenuItem2.setText("Cadastro");
+        mnuUsuario.add(jMenuItem2);
+
+        jMenuItem3.setText("Permissão");
+        mnuUsuario.add(jMenuItem3);
+
+        jMenuItem4.setText("Auditoria");
+        mnuUsuario.add(jMenuItem4);
+
+        mnbPrincipal.add(mnuUsuario);
+
         mnuAjuda.setText("Ajuda");
+
+        jMenuItem1.setText("Cadastro de Aplicação");
+        mnuAjuda.add(jMenuItem1);
 
         mniSair.setText("Sair");
         mniSair.addActionListener(new java.awt.event.ActionListener() {
@@ -134,9 +157,25 @@ public class frmPrincipal extends javax.swing.JFrame {
             }
         });
     }
+    
+    public void retornaTelaRedimensionada(JInternalFrame frame)
+    {
+        Dimension desktopSize = dkpSistema.getSize();
+        Dimension jInternalFrameSize = frame.getSize();
+        frame.setLocation((desktopSize.width - jInternalFrameSize.width)/2,
+                                         (desktopSize.height- jInternalFrameSize.height)/2);
+        dkpSistema.add(frame);
+        BasicInternalFrameUI bi = (BasicInternalFrameUI)frame.getUI();
+        bi.setNorthPane(null);
+        frame.setVisible(true);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane dkpSistema;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuBar mnbPrincipal;
     private javax.swing.JMenuItem mniFilme;
     private javax.swing.JMenuItem mniFormaPgto;
@@ -146,11 +185,12 @@ public class frmPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem mniReserva;
     private javax.swing.JMenuItem mniSair;
     private javax.swing.JMenuItem mniTipoMidia;
-    private javax.swing.JMenuItem mniUsuario;
     private javax.swing.JMenu mnuAjuda;
     private javax.swing.JMenu mnuCadastro;
+    private javax.swing.JMenu mnuFinanceiro;
     private javax.swing.JMenu mnuLocacao;
     private javax.swing.JMenu mnuRelatorio;
     private javax.swing.JMenu mnuReserva;
+    private javax.swing.JMenu mnuUsuario;
     // End of variables declaration//GEN-END:variables
 }
