@@ -11,7 +11,7 @@ import java.awt.event.KeyEvent;
  *
  * @author george.mueller
  */
-public class frmConsumivel extends javax.swing.JFrame {
+public class frmConsumivel extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form frmConsumivel
@@ -32,15 +32,15 @@ public class frmConsumivel extends javax.swing.JFrame {
         tbConsumivel = new javax.swing.JTabbedPane();
         tbAdicionar = new javax.swing.JPanel();
         lbNome = new javax.swing.JLabel();
-        tfdNomeConsumivel = new javax.swing.JTextField();
+        tfdNome = new javax.swing.JTextField();
         lbCodigo = new javax.swing.JLabel();
-        edCodigo = new javax.swing.JTextField();
-        cbxTipoConsumivel = new javax.swing.JComboBox<>();
+        tfdCodigo = new javax.swing.JTextField();
+        cbxTipo = new javax.swing.JComboBox<>();
         lbNome1 = new javax.swing.JLabel();
-        tfdPrecoConsumivel = new hotel.apoio.JNumberFormatField();
+        tfdPreco = new hotel.apoio.JNumberFormatField();
         lbNome2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tfaDescricaoConsumivel = new javax.swing.JTextArea();
+        tfaDescricao = new javax.swing.JTextArea();
         lbNome3 = new javax.swing.JLabel();
         tbListagem = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
@@ -53,10 +53,10 @@ public class frmConsumivel extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableListagem = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnSalvar = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
+        btnFechar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,45 +70,45 @@ public class frmConsumivel extends javax.swing.JFrame {
         lbNome.setForeground(new java.awt.Color(102, 102, 102));
         lbNome.setText("<html>Nome<font color='red'><b>*</b></font>:</html>");
 
-        tfdNomeConsumivel.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        tfdNomeConsumivel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
-        tfdNomeConsumivel.addActionListener(new java.awt.event.ActionListener() {
+        tfdNome.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        tfdNome.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
+        tfdNome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfdNomeConsumivelActionPerformed(evt);
+                tfdNomeActionPerformed(evt);
             }
         });
-        tfdNomeConsumivel.addKeyListener(new java.awt.event.KeyAdapter() {
+        tfdNome.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                tfdNomeConsumivelTyped(evt);
+                tfdNomeTyped(evt);
             }
         });
 
         lbCodigo.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lbCodigo.setForeground(new java.awt.Color(102, 102, 102));
-        lbCodigo.setText("<html>ID<font color='red'><b>*</b></font>:</html>");
+        lbCodigo.setText("<html>Código<font color='red'><b>*</b></font>:</html>");
 
-        edCodigo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        edCodigo.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
+        tfdCodigo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        tfdCodigo.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
 
-        cbxTipoConsumivel.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        cbxTipoConsumivel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxTipo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        cbxTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         lbNome1.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lbNome1.setForeground(new java.awt.Color(102, 102, 102));
         lbNome1.setText("<html>Preço<font color='red'><b>*</b></font>:</html>");
 
-        tfdPrecoConsumivel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
-        tfdPrecoConsumivel.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        tfdPreco.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
+        tfdPreco.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
 
         lbNome2.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lbNome2.setForeground(new java.awt.Color(102, 102, 102));
         lbNome2.setText("<html>Tipo<font color='red'><b>*</b></font>:</html>");
 
-        tfaDescricaoConsumivel.setColumns(20);
-        tfaDescricaoConsumivel.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        tfaDescricaoConsumivel.setRows(5);
-        tfaDescricaoConsumivel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
-        jScrollPane2.setViewportView(tfaDescricaoConsumivel);
+        tfaDescricao.setColumns(20);
+        tfaDescricao.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        tfaDescricao.setRows(5);
+        tfaDescricao.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
+        jScrollPane2.setViewportView(tfaDescricao);
 
         lbNome3.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lbNome3.setForeground(new java.awt.Color(102, 102, 102));
@@ -119,47 +119,46 @@ public class frmConsumivel extends javax.swing.JFrame {
         tbAdicionarLayout.setHorizontalGroup(
             tbAdicionarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tbAdicionarLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lbCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(edCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
-                .addGroup(tbAdicionarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(lbNome1, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbNome2)
-                    .addComponent(lbNome3)
-                    .addComponent(lbNome))
+                .addGap(176, 176, 176)
+                .addGroup(tbAdicionarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lbCodigo)
+                    .addComponent(lbNome1)
+                    .addComponent(lbNome2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lbNome3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lbNome, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
                 .addGroup(tbAdicionarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                    .addComponent(cbxTipoConsumivel, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tfdPrecoConsumivel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tfdNomeConsumivel))
-                .addContainerGap(162, Short.MAX_VALUE))
+                    .addComponent(cbxTipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tfdPreco, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tfdNome)
+                    .addComponent(tfdCodigo))
+                .addContainerGap(124, Short.MAX_VALUE))
         );
         tbAdicionarLayout.setVerticalGroup(
             tbAdicionarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tbAdicionarLayout.createSequentialGroup()
-                .addGap(54, 54, 54)
+                .addGap(21, 21, 21)
+                .addGroup(tbAdicionarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfdCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tbAdicionarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tfdNomeConsumivel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(tbAdicionarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lbNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lbCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(edCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(tfdNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tbAdicionarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbNome1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfdPrecoConsumivel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfdPreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tbAdicionarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbNome2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbxTipoConsumivel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tbAdicionarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lbNome3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(218, Short.MAX_VALUE))
+                .addContainerGap(134, Short.MAX_VALUE))
         );
 
         tbConsumivel.addTab("Adicionar", tbAdicionar);
@@ -289,19 +288,35 @@ public class frmConsumivel extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         tbConsumivel.addTab("Listagem", tbListagem);
 
-        jButton1.setText("Salvar");
+        btnSalvar.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/imagens/save.png"))); // NOI18N
+        btnSalvar.setText("Salvar");
+        btnSalvar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnSalvar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
-        jButton2.setText("Editar");
+        btnEditar.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/imagens/edit.png"))); // NOI18N
+        btnEditar.setText("Editar");
+        btnEditar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnEditar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
-        jButton3.setText("Excluir");
+        btnExcluir.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/imagens/trash.png"))); // NOI18N
+        btnExcluir.setText("Excluir");
+        btnExcluir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnExcluir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
-        jButton4.setText("Fechar");
+        btnFechar.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        btnFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/imagens/close.png"))); // NOI18N
+        btnFechar.setText("Fechar");
+        btnFechar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnFechar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -309,25 +324,26 @@ public class frmConsumivel extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1)
+                .addComponent(btnSalvar)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2)
+                .addComponent(btnEditar)
                 .addGap(18, 18, 18)
-                .addComponent(jButton3)
+                .addComponent(btnExcluir)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton4)
+                .addComponent(btnFechar)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
-                .addContainerGap(47, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnFechar)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(btnEditar)
+                        .addComponent(btnSalvar)
+                        .addComponent(btnExcluir)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -337,10 +353,10 @@ public class frmConsumivel extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(tbConsumivel, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(tbConsumivel, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -348,18 +364,19 @@ public class frmConsumivel extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(tbConsumivel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tbConsumivel)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tfdNomeConsumivelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfdNomeConsumivelActionPerformed
+    private void tfdNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfdNomeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_tfdNomeConsumivelActionPerformed
+    }//GEN-LAST:event_tfdNomeActionPerformed
 
-    private void tfdNomeConsumivelTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfdNomeConsumivelTyped
+    private void tfdNomeTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfdNomeTyped
         char vChar = evt.getKeyChar();
         if (!(Character.isLetter(vChar)
             || (vChar == KeyEvent.VK_BACK_SPACE)
@@ -368,7 +385,7 @@ public class frmConsumivel extends javax.swing.JFrame {
     {
         evt.consume();
         }
-    }//GEN-LAST:event_tfdNomeConsumivelTyped
+    }//GEN-LAST:event_tfdNomeTyped
 
     private void edPesquisaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edPesquisaKeyTyped
         char vChar = evt.getKeyChar();
@@ -430,13 +447,12 @@ public class frmConsumivel extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btPesquisar;
-    private javax.swing.JComboBox<String> cbxTipoConsumivel;
-    private javax.swing.JTextField edCodigo;
+    private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnExcluir;
+    private javax.swing.JButton btnFechar;
+    private javax.swing.JButton btnSalvar;
+    private javax.swing.JComboBox<String> cbxTipo;
     private javax.swing.JTextField edPesquisa;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -454,8 +470,9 @@ public class frmConsumivel extends javax.swing.JFrame {
     private javax.swing.JPanel tbAdicionar;
     private javax.swing.JTabbedPane tbConsumivel;
     private javax.swing.JPanel tbListagem;
-    private javax.swing.JTextArea tfaDescricaoConsumivel;
-    private javax.swing.JTextField tfdNomeConsumivel;
-    private hotel.apoio.JNumberFormatField tfdPrecoConsumivel;
+    private javax.swing.JTextArea tfaDescricao;
+    private javax.swing.JTextField tfdCodigo;
+    private javax.swing.JTextField tfdNome;
+    private hotel.apoio.JNumberFormatField tfdPreco;
     // End of variables declaration//GEN-END:variables
 }

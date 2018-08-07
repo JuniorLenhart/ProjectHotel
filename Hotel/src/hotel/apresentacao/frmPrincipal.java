@@ -74,6 +74,11 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         mniPessoa.setText("Consumível");
         mniPessoa.setToolTipText("");
+        mniPessoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniPessoaActionPerformed(evt);
+            }
+        });
         mnuCadastro.add(mniPessoa);
 
         mniTipoMidia.setText("Forma de Pagamento");
@@ -149,6 +154,11 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void mniSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniSairActionPerformed
         System.exit(0);
     }//GEN-LAST:event_mniSairActionPerformed
+
+    private void mniPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniPessoaActionPerformed
+        frmConsumivel consumivel = new frmConsumivel();
+        retornaTelaRedimensionada(consumivel);
+    }//GEN-LAST:event_mniPessoaActionPerformed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
