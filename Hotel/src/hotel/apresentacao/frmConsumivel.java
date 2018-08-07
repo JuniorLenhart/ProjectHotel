@@ -58,7 +58,7 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
         btnExcluir = new javax.swing.JButton();
         btnFechar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         tbConsumivel.setBackground(new java.awt.Color(255, 255, 255));
         tbConsumivel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -68,7 +68,9 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
 
         lbNome.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lbNome.setForeground(new java.awt.Color(102, 102, 102));
+        lbNome.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lbNome.setText("<html>Nome<font color='red'><b>*</b></font>:</html>");
+        lbNome.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
         tfdNome.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         tfdNome.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
@@ -85,7 +87,9 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
 
         lbCodigo.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lbCodigo.setForeground(new java.awt.Color(102, 102, 102));
+        lbCodigo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lbCodigo.setText("<html>Código<font color='red'><b>*</b></font>:</html>");
+        lbCodigo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         tfdCodigo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         tfdCodigo.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
@@ -95,6 +99,7 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
 
         lbNome1.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lbNome1.setForeground(new java.awt.Color(102, 102, 102));
+        lbNome1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lbNome1.setText("<html>Preço<font color='red'><b>*</b></font>:</html>");
 
         tfdPreco.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
@@ -102,6 +107,7 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
 
         lbNome2.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lbNome2.setForeground(new java.awt.Color(102, 102, 102));
+        lbNome2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lbNome2.setText("<html>Tipo<font color='red'><b>*</b></font>:</html>");
 
         tfaDescricao.setColumns(20);
@@ -112,6 +118,7 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
 
         lbNome3.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lbNome3.setForeground(new java.awt.Color(102, 102, 102));
+        lbNome3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lbNome3.setText("<html>Descrição<font color='red'><b>*</b></font>:</html>");
 
         javax.swing.GroupLayout tbAdicionarLayout = new javax.swing.GroupLayout(tbAdicionar);
@@ -119,7 +126,7 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
         tbAdicionarLayout.setHorizontalGroup(
             tbAdicionarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tbAdicionarLayout.createSequentialGroup()
-                .addGap(176, 176, 176)
+                .addGap(150, 150, 150)
                 .addGroup(tbAdicionarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lbCodigo)
                     .addComponent(lbNome1)
@@ -133,7 +140,7 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
                     .addComponent(tfdPreco, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tfdNome)
                     .addComponent(tfdCodigo))
-                .addContainerGap(124, Short.MAX_VALUE))
+                .addContainerGap(150, Short.MAX_VALUE))
         );
         tbAdicionarLayout.setVerticalGroup(
             tbAdicionarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -158,7 +165,7 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
                 .addGroup(tbAdicionarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lbNome3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(134, Short.MAX_VALUE))
+                .addContainerGap(162, Short.MAX_VALUE))
         );
 
         tbConsumivel.addTab("Adicionar", tbAdicionar);
@@ -288,31 +295,35 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         tbConsumivel.addTab("Listagem", tbListagem);
 
-        btnSalvar.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        btnSalvar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnSalvar.setForeground(new java.awt.Color(12, 91, 160));
         btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/imagens/save.png"))); // NOI18N
         btnSalvar.setText("Salvar");
         btnSalvar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnSalvar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
-        btnEditar.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        btnEditar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnEditar.setForeground(new java.awt.Color(12, 91, 160));
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/imagens/edit.png"))); // NOI18N
         btnEditar.setText("Editar");
         btnEditar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnEditar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
-        btnExcluir.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        btnExcluir.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnExcluir.setForeground(new java.awt.Color(12, 91, 160));
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/imagens/trash.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnExcluir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
-        btnFechar.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        btnFechar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnFechar.setForeground(new java.awt.Color(12, 91, 160));
         btnFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/imagens/close.png"))); // NOI18N
         btnFechar.setText("Fechar");
         btnFechar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -325,9 +336,9 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnSalvar)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnEditar)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnExcluir)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnFechar)
@@ -335,15 +346,10 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnFechar)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(btnEditar)
-                        .addComponent(btnSalvar)
-                        .addComponent(btnExcluir)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(btnSalvar)
+            .addComponent(btnEditar)
+            .addComponent(btnExcluir)
+            .addComponent(btnFechar)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
