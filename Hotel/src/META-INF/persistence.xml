@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+    <persistence-unit name="persistence" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <class>hotel.model.Quarto</class>
+        <class>hotel.model.Locacao</class>
+        <class>hotel.model.Reserva</class>
+        <class>hotel.model.Auditoria</class>
+        <class>hotel.model.Pessoa</class>
+        <class>hotel.model.Financeiro</class>
+        <class>hotel.model.Consumivel</class>
+        <class>hotel.model.Permissao</class>
+        <class>hotel.model.LocacaoConsumivel</class>
+        <class>hotel.model.TipoCama</class>
+        <class>hotel.model.Aplicacao</class>
+        <class>hotel.model.Usuario</class>
+        <class>hotel.model.LocacaoHospede</class>
+        <class>hotel.model.FormaPagamento</class>
+        <properties>
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/hotel"/>
+            <property name="javax.persistence.jdbc.user" value="postgres"/>
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="javax.persistence.jdbc.password" value="postgres"/>
+            <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
+            <property name="javax.persistence.schema-generation.database.action" value="create"/>
+        </properties>
+    </persistence-unit>
+</persistence>
