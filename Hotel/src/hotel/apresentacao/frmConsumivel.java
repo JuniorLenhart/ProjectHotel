@@ -5,7 +5,26 @@
  */
 package hotel.apresentacao;
 
+import hotel.apoio.Validacao;
+import hotel.config.HibernateUtil;
+import hotel.model.Consumivel;
+import hotel.model.TipoConsumivel;
+import static hotel.model.TipoConsumivel.values;
+import hotel.persistencia.ConsumivelDAO;
 import java.awt.event.KeyEvent;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.QueryHint;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import org.hibernate.Hibernate;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 /**
  *
@@ -16,6 +35,7 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
     /**
      * Creates new form frmConsumivel
      */
+    ConsumivelDAO consumivelDAO;
     public frmConsumivel() {
         initComponents();
     }
@@ -59,6 +79,23 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
         btnFechar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameOpened(evt);
+            }
+        });
 
         tbConsumivel.setBackground(new java.awt.Color(255, 255, 255));
         tbConsumivel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -307,6 +344,11 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
         btnSalvar.setText("Salvar");
         btnSalvar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnSalvar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
 
         btnEditar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnEditar.setForeground(new java.awt.Color(12, 91, 160));
@@ -388,8 +430,8 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
             || (vChar == KeyEvent.VK_BACK_SPACE)
             || (vChar == KeyEvent.VK_DELETE)
             || (vChar == KeyEvent.VK_SPACE)))
-    {
-        evt.consume();
+        {
+            evt.consume();
         }
     }//GEN-LAST:event_tfdNomeTyped
 
@@ -416,6 +458,40 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_btPesquisarActionPerformed
 
+    private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
+        adicionaVariaveisComboBox(cbxTipo);
+        consumivelDAO = new ConsumivelDAO();
+    }//GEN-LAST:event_formInternalFrameOpened
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        if(Validacao.validarCampos(tbAdicionar)==0) {
+            Consumivel consumivel = new Consumivel();
+            consumivel.setNomConsumivel(tfdNome.getText());
+            consumivel.setDesConsumivel(tfaDescricao.getText());
+            consumivel.setVlrConsumivel(tfdPreco.getValue());
+            consumivel.setIndSituacao("A");
+            for(TipoConsumivel tc : TipoConsumivel.values()) {
+                if(cbxTipo.getSelectedItem().equals(tc.getValor())) {
+                    consumivel.setTipConsumivel(tc.name());
+                }
+            }
+            consumivelDAO.insert(consumivel);
+            JOptionPane.showMessageDialog(this, "Consumível cadastrado com sucesso!");
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "Há campos incompletos!");
+        }
+    }//GEN-LAST:event_btnSalvarActionPerformed
+    
+    public void adicionaVariaveisComboBox(javax.swing.JComboBox comboBox) {
+        List<String> lc;
+        lc = new ArrayList<>();
+        for(TipoConsumivel tc : TipoConsumivel.values()) {
+            lc.add(tc.getValor());
+        }
+        comboBox.setModel(new DefaultComboBoxModel(lc.toArray()));
+    }
+    
     /**
      * @param args the command line arguments
      */

@@ -9,5 +9,19 @@
         <property name="hibernate.connection.username">postgres</property>
         <property name="hibernate.connection.password">postgres</property>
         <property name="show_sql">true</property>
+        <mapping class="hotel.model.Aplicacao"/>
+        <mapping class="hotel.model.Auditoria"/>
+        <mapping class="hotel.model.Consumivel"/>
+        <mapping class="hotel.model.Financeiro"/>
+        <mapping class="hotel.model.FormaPagamento"/>
+        <mapping class="hotel.model.Locacao"/>
+        <mapping class="hotel.model.LocacaoConsumivel"/>
+        <mapping class="hotel.model.LocacaoHospede"/>
+        <mapping class="hotel.model.Permissao"/>
+        <mapping class="hotel.model.Pessoa"/>
+        <mapping class="hotel.model.Quarto"/>
+        <mapping class="hotel.model.Reserva"/>
+        <mapping class="hotel.model.TipoCama"/>
+        <mapping class="hotel.model.Usuario"/>
     </session-factory>
 </hibernate-configuration>
