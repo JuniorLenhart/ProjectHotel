@@ -63,11 +63,11 @@ public class frmTipoCama extends javax.swing.JInternalFrame {
         } else {
             String lSituacao = "";
             if (tblLista.getSelectedRow() != -1) {
-                lSituacao = String.valueOf(tblLista.getValueAt(tblLista.getSelectedRow(), 2));
+                lSituacao = String.valueOf(tblLista.getValueAt(tblLista.getSelectedRow(), 3));
             }
 
             btnSalvar.setEnabled(false);
-            btnEditar.setEnabled(!lSituacao.isEmpty());
+            btnEditar.setEnabled(lSituacao.equals("Ativo"));
             btnExcluir.setEnabled(lSituacao.equals("Ativo"));
         }
     }
@@ -83,6 +83,7 @@ public class frmTipoCama extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        rbGroup = new javax.swing.ButtonGroup();
         tbpTipoCama = new javax.swing.JTabbedPane();
         pnlCadastro = new javax.swing.JPanel();
         lblDescricao = new javax.swing.JLabel();
@@ -128,11 +129,6 @@ public class frmTipoCama extends javax.swing.JInternalFrame {
 
         tfdDescricao.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         tfdDescricao.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
-        tfdDescricao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfdDescricaoActionPerformed(evt);
-            }
-        });
         tfdDescricao.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 tfdDescricaoTyped(evt);
@@ -213,15 +209,18 @@ public class frmTipoCama extends javax.swing.JInternalFrame {
         pnlOpcao.setBorder(javax.swing.BorderFactory.createTitledBorder(null, " Pesquisa Detalhada ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
 
         rbNome.setBackground(new java.awt.Color(255, 255, 255));
+        rbGroup.add(rbNome);
         rbNome.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        rbNome.setSelected(true);
         rbNome.setText("Por nome");
         rbNome.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                rbNomerbPesquisaCodigoItemStateChanged(evt);
+                rbNomeItemStateChanged(evt);
             }
         });
 
         rbCodigo.setBackground(new java.awt.Color(255, 255, 255));
+        rbGroup.add(rbCodigo);
         rbCodigo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         rbCodigo.setText("Por código");
         rbCodigo.addItemListener(new java.awt.event.ItemListener() {
@@ -355,6 +354,11 @@ public class frmTipoCama extends javax.swing.JInternalFrame {
         btnExcluir.setText("Excluir");
         btnExcluir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnExcluir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnFechar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnFechar.setForeground(new java.awt.Color(12, 91, 160));
@@ -417,10 +421,6 @@ public class frmTipoCama extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tfdDescricaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfdDescricaoActionPerformed
-
-    }//GEN-LAST:event_tfdDescricaoActionPerformed
-
     private void tfdDescricaoTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfdDescricaoTyped
         char vChar = evt.getKeyChar();
         if (!(Character.isLetter(vChar) || (vChar == KeyEvent.VK_BACK_SPACE) || (vChar == KeyEvent.VK_DELETE) || (vChar == KeyEvent.VK_SPACE))) {
@@ -444,8 +444,6 @@ public class frmTipoCama extends javax.swing.JInternalFrame {
             new TipoCamaDAO().popularTabela(tblLista, 1, tfdPesquisa.getText());
         } else if (rbCodigo.isSelected()) {
             new TipoCamaDAO().popularTabela(tblLista, 2, tfdPesquisa.getText());
-        } else {
-            new TipoCamaDAO().popularTabela(tblLista, 0, "");
         }
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
@@ -473,12 +471,8 @@ public class frmTipoCama extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void rbCodigoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbCodigoItemStateChanged
-        tfdPesquisa.setText("Código:");
+        lblPesquisa.setText("Código:");
     }//GEN-LAST:event_rbCodigoItemStateChanged
-
-    private void rbNomerbPesquisaCodigoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbNomerbPesquisaCodigoItemStateChanged
-        tfdPesquisa.setText("Nome:");
-    }//GEN-LAST:event_rbNomerbPesquisaCodigoItemStateChanged
 
     private void tbpTipoCamaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tbpTipoCamaStateChanged
         habilitar();
@@ -494,6 +488,20 @@ public class frmTipoCama extends javax.swing.JInternalFrame {
         setAba(0);
         tfdDescricao.requestFocus();
     }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void rbNomeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbNomeItemStateChanged
+        lblPesquisa.setText("Nome:");
+    }//GEN-LAST:event_rbNomeItemStateChanged
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        Object[] options = {"Sim", "Não"};
+        int option = JOptionPane.showOptionDialog(null, "Você tem certeza que gostaria de excluir o registro " + tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString() + "?", "Escolha", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        if (option == 0) {
+            new TipoCamaDAO().delete(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString()));
+            JOptionPane.showMessageDialog(this, "Excluído com sucesso!");
+            new TipoCamaDAO().popularTabela(tblLista, 0, "");
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -519,6 +527,7 @@ public class frmTipoCama extends javax.swing.JInternalFrame {
     private javax.swing.JPanel pnlListagem;
     private javax.swing.JPanel pnlOpcao;
     private javax.swing.JRadioButton rbCodigo;
+    private javax.swing.ButtonGroup rbGroup;
     private javax.swing.JRadioButton rbNome;
     private javax.swing.JScrollPane scpLista;
     private javax.swing.JTable tblLista;

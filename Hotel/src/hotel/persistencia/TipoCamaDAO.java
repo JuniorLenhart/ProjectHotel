@@ -37,7 +37,10 @@ public class TipoCamaDAO implements DAO<TipoCama> {
 
     @Override
     public String delete(int pCodigo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        TipoCama tipoCama = (TipoCama) readId(pCodigo);
+        tipoCama.setIndSituacao("E");
+        insert(tipoCama);
+        return null;
     }
 
     @Override
@@ -46,17 +49,9 @@ public class TipoCamaDAO implements DAO<TipoCama> {
         Session sessao = HibernateUtil.getSessionFactory().openSession();
         sessao.beginTransaction();
 
-        // busca por código
-//            int id = 3;
-//            org.hibernate.Query q = sessao.createQuery("from Classe where id = " + id);
-        // busca todos os registros
-        // observar: a classe Classe no from -> C maiúsculo
-        org.hibernate.Query q = sessao.createQuery("from TipoCama");
+        org.hibernate.Query q = sessao.createQuery("FROM TipoCama");
         resultado = q.list();
 
-        for (Object o : resultado) {
-            TipoCama s = (TipoCama) o;
-        }
         return (ArrayList<TipoCama>) resultado;
     }
 
@@ -66,18 +61,10 @@ public class TipoCamaDAO implements DAO<TipoCama> {
         Session sessao = HibernateUtil.getSessionFactory().openSession();
         sessao.beginTransaction();
 
-        // busca por código
-//            int id = 3;
-//            org.hibernate.Query q = sessao.createQuery("from Classe where id = " + id);
-        // busca todos os registros
-        // observar: a classe Classe no from -> C maiúsculo
-        org.hibernate.Query q = sessao.createQuery("from TipoCama where lower(desTipoCama) LIKE :nome ");
-        q.setParameter("nome", "%" + pParam.toLowerCase() + "%");
+        org.hibernate.Query q = sessao.createQuery("FROM TipoCama WHERE desTipoCama LIKE :desTipoCama");
+        q.setParameter("desTipoCama", "%" + pParam.toLowerCase() + "%");
         resultado = q.list();
 
-        for (Object o : resultado) {
-            TipoCama s = (TipoCama) o;
-        }
         return (ArrayList<TipoCama>) resultado;
     }
 
@@ -86,10 +73,10 @@ public class TipoCamaDAO implements DAO<TipoCama> {
         Session sessao = HibernateUtil.getSessionFactory().openSession();
         sessao.beginTransaction();
 
-        org.hibernate.Query q = sessao.createQuery("from TipoCama where id = " + pCodigo);
-        TipoCama c = (TipoCama) q.uniqueResult();
+        org.hibernate.Query q = sessao.createQuery("FROM TipoCama WHERE codTipoCama = " + pCodigo);
+        TipoCama tc = (TipoCama) q.uniqueResult();
 
-        return c;
+        return tc;
     }
 
     public void popularTabela(JTable pTabela, int pOption, String pParam) {
@@ -107,10 +94,12 @@ public class TipoCamaDAO implements DAO<TipoCama> {
 
             lTabela = new Object[listTipoCama.size()][6];
             for (TipoCama tipoCama : listTipoCama) {
+                String situacao = (tipoCama.getIndSituacao().equals("A") ? "Ativo" : "Excluído");
+
                 lTabela[lLinha][0] = tipoCama.getCodTipoCama();
                 lTabela[lLinha][1] = tipoCama.getDesTipoCama();
                 lTabela[lLinha][2] = tipoCama.getQtdLugarTipoCama();
-                lTabela[lLinha][3] = tipoCama.getIndSituacao();
+                lTabela[lLinha][3] = situacao;
                 lLinha++;
             }
         } else if (pOption == 1) {
@@ -118,10 +107,12 @@ public class TipoCamaDAO implements DAO<TipoCama> {
 
             lTabela = new Object[listTipoCama.size()][6];
             for (TipoCama tipoCama : listTipoCama) {
+                String situacao = (tipoCama.getIndSituacao().equals("A") ? "Ativo" : "Excluído");
+
                 lTabela[lLinha][0] = tipoCama.getCodTipoCama();
                 lTabela[lLinha][1] = tipoCama.getDesTipoCama();
                 lTabela[lLinha][2] = tipoCama.getQtdLugarTipoCama();
-                lTabela[lLinha][3] = tipoCama.getIndSituacao();
+                lTabela[lLinha][3] = situacao;
                 lLinha++;
             }
         } else {
@@ -129,12 +120,14 @@ public class TipoCamaDAO implements DAO<TipoCama> {
             if (tipoCama == null) {
                 JOptionPane.showMessageDialog(null, "Tipo de Cama não encontrado pelo código " + pParam);
             } else {
+                String situacao = (tipoCama.getIndSituacao().equals("A") ? "Ativo" : "Excluído");
+
                 lTabela = new Object[1][4];
 
                 lTabela[lLinha][0] = tipoCama.getCodTipoCama();
                 lTabela[lLinha][1] = tipoCama.getDesTipoCama();
                 lTabela[lLinha][2] = tipoCama.getQtdLugarTipoCama();
-                lTabela[lLinha][3] = tipoCama.getIndSituacao();
+                lTabela[lLinha][3] = situacao;
                 lLinha++;
             }
         }
