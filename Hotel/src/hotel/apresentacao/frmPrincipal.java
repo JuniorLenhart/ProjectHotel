@@ -86,6 +86,11 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         mniFormaPgto.setText("Forma de Pagamento");
         mniFormaPgto.setActionCommand("Tipo Mídia");
+        mniFormaPgto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniFormaPgtoActionPerformed(evt);
+            }
+        });
         mnuCadastro.add(mniFormaPgto);
 
         mnbPrincipal.add(mnuCadastro);
@@ -165,6 +170,10 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void mniTipoCamaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniTipoCamaActionPerformed
         abrirTela(new frmTipoCama());
     }//GEN-LAST:event_mniTipoCamaActionPerformed
+
+    private void mniFormaPgtoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniFormaPgtoActionPerformed
+        abrirTela(new frmFormaPagamento());
+    }//GEN-LAST:event_mniFormaPgtoActionPerformed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {

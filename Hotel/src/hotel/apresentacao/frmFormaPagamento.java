@@ -7,40 +7,25 @@ package hotel.apresentacao;
 
 import hotel.apoio.LimpaCampos;
 import hotel.apoio.Validacao;
-import hotel.config.HibernateUtil;
-import hotel.model.Consumivel;
-import hotel.model.TipoConsumivel;
-import static hotel.model.TipoConsumivel.values;
-import hotel.persistencia.ConsumivelDAO;
+import hotel.model.FormaPagamento;
+import hotel.persistencia.FormaPagamentoDAO;
 import java.awt.event.KeyEvent;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.QueryHint;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import org.hibernate.Hibernate;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 /**
  *
- * @author george.mueller
+ * @author George
  */
-public class frmConsumivel extends javax.swing.JInternalFrame {
+public class frmFormaPagamento extends javax.swing.JInternalFrame {
 
     /**
-     * Creates new form frmConsumivel
+     * Creates new form frmFormaPagamento
      */
-    ConsumivelDAO consumivelDAO;
+    FormaPagamentoDAO formaPagamentoDAO;
     boolean modoEdicao;
-    public frmConsumivel() {
+    public frmFormaPagamento() {
         initComponents();
         modoEdicao = false;
     }
@@ -55,19 +40,17 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
+        jPanel1 = new javax.swing.JPanel();
+        btnSalvar = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
+        btnFechar = new javax.swing.JButton();
         tbConsumivel = new javax.swing.JTabbedPane();
         tbAdicionar = new javax.swing.JPanel();
         lbNome = new javax.swing.JLabel();
         tfdNome = new javax.swing.JTextField();
         lbCodigo = new javax.swing.JLabel();
         tfdCodigo = new javax.swing.JTextField();
-        cbxTipo = new javax.swing.JComboBox<>();
-        lbNome1 = new javax.swing.JLabel();
-        tfdPreco = new hotel.apoio.JNumberFormatField();
-        lbNome2 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tfaDescricao = new javax.swing.JTextArea();
-        lbNome3 = new javax.swing.JLabel();
         tbListagem = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         tfdPesquisa = new javax.swing.JTextField();
@@ -78,13 +61,7 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
         btnPesquisa = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableListagem = new javax.swing.JTable();
-        jPanel1 = new javax.swing.JPanel();
-        btnSalvar = new javax.swing.JButton();
-        btnEditar = new javax.swing.JButton();
-        btnExcluir = new javax.swing.JButton();
-        btnFechar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -103,6 +80,77 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
             }
         });
 
+        btnSalvar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnSalvar.setForeground(new java.awt.Color(12, 91, 160));
+        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/imagens/save.png"))); // NOI18N
+        btnSalvar.setText("Salvar");
+        btnSalvar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnSalvar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
+
+        btnEditar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnEditar.setForeground(new java.awt.Color(12, 91, 160));
+        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/imagens/edit.png"))); // NOI18N
+        btnEditar.setText("Editar");
+        btnEditar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnEditar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
+
+        btnExcluir.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnExcluir.setForeground(new java.awt.Color(12, 91, 160));
+        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/imagens/trash.png"))); // NOI18N
+        btnExcluir.setText("Excluir");
+        btnExcluir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnExcluir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
+
+        btnFechar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnFechar.setForeground(new java.awt.Color(12, 91, 160));
+        btnFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/imagens/close.png"))); // NOI18N
+        btnFechar.setText("Fechar");
+        btnFechar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnFechar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnFechar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFecharActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnSalvar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEditar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnExcluir)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnFechar)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(btnSalvar)
+            .addComponent(btnEditar)
+            .addComponent(btnExcluir)
+            .addComponent(btnFechar)
+        );
+
         tbConsumivel.setBackground(new java.awt.Color(255, 255, 255));
         tbConsumivel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tbConsumivel.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -112,7 +160,7 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
         });
 
         tbAdicionar.setBackground(new java.awt.Color(255, 255, 255));
-        tbAdicionar.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Cadastro de Consumível", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("SansSerif", 1, 14))); // NOI18N
+        tbAdicionar.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Cadastro de Forma de Pagamento", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("SansSerif", 1, 14))); // NOI18N
 
         lbNome.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lbNome.setForeground(new java.awt.Color(102, 102, 102));
@@ -142,35 +190,6 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
         tfdCodigo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         tfdCodigo.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
 
-        cbxTipo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        cbxTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        lbNome1.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        lbNome1.setForeground(new java.awt.Color(102, 102, 102));
-        lbNome1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lbNome1.setText("<html>Preço<font color='red'><b>*</b></font>:</html>");
-
-        tfdPreco.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
-        tfdPreco.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        tfdPreco.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-
-        lbNome2.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        lbNome2.setForeground(new java.awt.Color(102, 102, 102));
-        lbNome2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lbNome2.setText("<html>Tipo<font color='red'><b>*</b></font>:</html>");
-
-        tfaDescricao.setColumns(20);
-        tfaDescricao.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        tfaDescricao.setLineWrap(true);
-        tfaDescricao.setRows(5);
-        tfaDescricao.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
-        jScrollPane2.setViewportView(tfaDescricao);
-
-        lbNome3.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        lbNome3.setForeground(new java.awt.Color(102, 102, 102));
-        lbNome3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lbNome3.setText("<html>Descrição<font color='red'><b>*</b></font>:</html>");
-
         javax.swing.GroupLayout tbAdicionarLayout = new javax.swing.GroupLayout(tbAdicionar);
         tbAdicionar.setLayout(tbAdicionarLayout);
         tbAdicionarLayout.setHorizontalGroup(
@@ -178,17 +197,11 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
             .addGroup(tbAdicionarLayout.createSequentialGroup()
                 .addGap(150, 150, 150)
                 .addGroup(tbAdicionarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lbCodigo)
-                    .addComponent(lbNome1)
-                    .addComponent(lbNome2, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lbNome3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lbCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
                     .addComponent(lbNome, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
                 .addGroup(tbAdicionarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                    .addComponent(cbxTipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tfdPreco, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tfdNome)
+                    .addComponent(tfdNome, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
                     .addComponent(tfdCodigo))
                 .addContainerGap(150, Short.MAX_VALUE))
         );
@@ -203,19 +216,7 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
                 .addGroup(tbAdicionarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tfdNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(tbAdicionarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbNome1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfdPreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(tbAdicionarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbNome2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(tbAdicionarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbNome3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(162, Short.MAX_VALUE))
+                .addContainerGap(384, Short.MAX_VALUE))
         );
 
         tbConsumivel.addTab("Adicionar", tbAdicionar);
@@ -347,82 +348,11 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         tbConsumivel.addTab("Listagem", tbListagem);
-
-        btnSalvar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnSalvar.setForeground(new java.awt.Color(12, 91, 160));
-        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/imagens/save.png"))); // NOI18N
-        btnSalvar.setText("Salvar");
-        btnSalvar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnSalvar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalvarActionPerformed(evt);
-            }
-        });
-
-        btnEditar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnEditar.setForeground(new java.awt.Color(12, 91, 160));
-        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/imagens/edit.png"))); // NOI18N
-        btnEditar.setText("Editar");
-        btnEditar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnEditar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
-            }
-        });
-
-        btnExcluir.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnExcluir.setForeground(new java.awt.Color(12, 91, 160));
-        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/imagens/trash.png"))); // NOI18N
-        btnExcluir.setText("Excluir");
-        btnExcluir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnExcluir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExcluirActionPerformed(evt);
-            }
-        });
-
-        btnFechar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnFechar.setForeground(new java.awt.Color(12, 91, 160));
-        btnFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/imagens/close.png"))); // NOI18N
-        btnFechar.setText("Fechar");
-        btnFechar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnFechar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnFechar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnFecharActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnSalvar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnEditar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnExcluir)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnFechar)
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnSalvar)
-            .addComponent(btnEditar)
-            .addComponent(btnExcluir)
-            .addComponent(btnFechar)
-        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -450,6 +380,52 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        if(Validacao.validarCampos(tbAdicionar)==0) {
+            if(modoEdicao) {
+                FormaPagamento formaPagamento = new FormaPagamento();
+                formaPagamento.setCodFormaPgto(Integer.parseInt(tfdCodigo.getText()));
+                formaPagamento.setDesFormaPgto(tfdNome.getText());
+                formaPagamento.setIndSituacao("A");
+                formaPagamentoDAO.update(formaPagamento);
+                JOptionPane.showMessageDialog(this, "Forma de Pagamento atualizada com sucesso!");
+                modoEdicao = false;
+            }
+            else {
+                FormaPagamento formaPagamento = new FormaPagamento();
+                formaPagamento.setDesFormaPgto(tfdNome.getText());
+                formaPagamento.setIndSituacao("A");
+                formaPagamentoDAO.insert(formaPagamento);
+                JOptionPane.showMessageDialog(this, "Forma de Pagamento cadastrada com sucesso!");
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "Há campos incompletos!");
+        }
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        //System.out.println(tableListagem.getModel().getValueAt(tableListagem.getSelectedRow(), 0));
+        FormaPagamento c = formaPagamentoDAO.readId(Integer.parseInt(tableListagem.getModel().getValueAt(tableListagem.getSelectedRow(), 0).toString()));
+        populaTelaAdicionar(c);
+        modoEdicao = true;
+        tbConsumivel.setSelectedIndex(0);
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        Object[] options = {"Sim", "Não"};
+        int escolha = JOptionPane.showOptionDialog(null, "Você tem certeza que gostaria de excluir a Forma de Pagamento: "+tableListagem.getModel().getValueAt(tableListagem.getSelectedRow(), 0).toString(), "Escolha sua ação" ,JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        if(escolha==0)
+        {
+            formaPagamentoDAO.delete(Integer.parseInt(tableListagem.getModel().getValueAt(tableListagem.getSelectedRow(), 0).toString()));
+            JOptionPane.showMessageDialog(this, "Forma de Pagamento excluida com sucesso!");
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnFecharActionPerformed
+
     private void tfdNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfdNomeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tfdNomeActionPerformed
@@ -460,8 +436,8 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
             || (vChar == KeyEvent.VK_BACK_SPACE)
             || (vChar == KeyEvent.VK_DELETE)
             || (vChar == KeyEvent.VK_SPACE)))
-        {
-            evt.consume();
+    {
+        evt.consume();
         }
     }//GEN-LAST:event_tfdNomeTyped
 
@@ -494,103 +470,46 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
 
     private void btnPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaActionPerformed
         if(jrbNome.isSelected()) {
-            new ConsumivelDAO().popularTabela(tableListagem,1,tfdPesquisa.getText());
+            new FormaPagamentoDAO().popularTabela(tableListagem,1,tfdPesquisa.getText());
+        }
+        else if(jrbCodigo.isSelected()) {
+            new FormaPagamentoDAO().popularTabela(tableListagem,2,tfdPesquisa.getText());
         }
         else {
-            new ConsumivelDAO().popularTabela(tableListagem,2,tfdPesquisa.getText());
+            JOptionPane.showMessageDialog(this, "Por favor selecione uma das opções!");
         }
     }//GEN-LAST:event_btnPesquisaActionPerformed
 
-    private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
-        adicionaVariaveisComboBox(cbxTipo);
-        consumivelDAO = new ConsumivelDAO();
-        setVisibleCodigo(false);
-        btnEditar.setEnabled(false);
-        btnExcluir.setEnabled(false);
-        criaEventoTable();
-    }//GEN-LAST:event_formInternalFrameOpened
-
-    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        if(Validacao.validarCampos(tbAdicionar)==0) {
-            if(modoEdicao) {
-                Consumivel consumivel = new Consumivel();
-                consumivel.setCodConsumivel(Integer.parseInt(tfdCodigo.getText()));
-                consumivel.setNomConsumivel(tfdNome.getText());
-                consumivel.setDesConsumivel(tfaDescricao.getText());
-                consumivel.setVlrConsumivel(tfdPreco.getValue());
-                consumivel.setIndSituacao("A");
-                for(TipoConsumivel tc : TipoConsumivel.values()) {
-                    if(cbxTipo.getSelectedItem().equals(tc.getValor())) {
-                        consumivel.setTipConsumivel(tc.name());
-                    }
-                }
-                consumivelDAO.update(consumivel);
-                JOptionPane.showMessageDialog(this, "Consumível atualizado com sucesso!");
-                modoEdicao = false;
-            }
-            else {
-                Consumivel consumivel = new Consumivel();
-                consumivel.setNomConsumivel(tfdNome.getText());
-                consumivel.setDesConsumivel(tfaDescricao.getText());
-                consumivel.setVlrConsumivel(tfdPreco.getValue());
-                consumivel.setIndSituacao("A");
-                for(TipoConsumivel tc : TipoConsumivel.values()) {
-                    if(cbxTipo.getSelectedItem().equals(tc.getValor())) {
-                        consumivel.setTipConsumivel(tc.name());
-                    }
-                }
-                consumivelDAO.insert(consumivel);
-                JOptionPane.showMessageDialog(this, "Consumível cadastrado com sucesso!");
-            }
-        }
-        else {
-            JOptionPane.showMessageDialog(this, "Há campos incompletos!");
-        }
-    }//GEN-LAST:event_btnSalvarActionPerformed
-
     private void tbConsumivelStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tbConsumivelStateChanged
-        if(evt.getSource().equals(tableListagem))
-        {
-            new ConsumivelDAO().popularTabela(tableListagem,0,"");
-        }
-        if(tbConsumivel.getSelectedComponent()==tbListagem)
-        {
+        if(evt.getSource().equals(tableListagem)) {
+            new FormaPagamentoDAO().popularTabela(tableListagem,0,"");
+        } 
+        if(tbConsumivel.getSelectedComponent()==tbListagem) {
             btnSalvar.setEnabled(false);
             LimpaCampos.LimparCampos(tbAdicionar);
-            new ConsumivelDAO().popularTabela(tableListagem,0,"");
+            new FormaPagamentoDAO().popularTabela(tableListagem,0,"");
             setEnableButtons(false);
             modoEdicao = false;
-            //atualizaCampos();
-        }
-        if(tbConsumivel.getSelectedComponent()==tbAdicionar)
-        {
+        } 
+        if(tbConsumivel.getSelectedComponent()==tbAdicionar) {
             setEnableButtons(false);
             btnSalvar.setEnabled(true);
         }
     }//GEN-LAST:event_tbConsumivelStateChanged
 
-    private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_btnFecharActionPerformed
-
-    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        //System.out.println(tableListagem.getModel().getValueAt(tableListagem.getSelectedRow(), 0));
-        Consumivel c = consumivelDAO.readId(Integer.parseInt(tableListagem.getModel().getValueAt(tableListagem.getSelectedRow(), 0).toString()));
-        populaTelaAdicionar(c);
-        modoEdicao = true;
-        tbConsumivel.setSelectedIndex(0);
-    }//GEN-LAST:event_btnEditarActionPerformed
-
-    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        Object[] options = {"Sim", "Não"};
-        int escolha = JOptionPane.showOptionDialog(null, "Você tem certeza que gostaria de excluir o Consumível: "+tableListagem.getModel().getValueAt(tableListagem.getSelectedRow(), 0).toString(), "Escolha sua ação" ,JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-        if(escolha==0)
-        {
-            consumivelDAO.delete(Integer.parseInt(tableListagem.getModel().getValueAt(tableListagem.getSelectedRow(), 0).toString()));
-            JOptionPane.showMessageDialog(this, "Consumível excluido com sucesso!");
-        }
-    }//GEN-LAST:event_btnExcluirActionPerformed
-   
+    private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
+        formaPagamentoDAO = new FormaPagamentoDAO();
+        setVisibleCodigo(false);
+        btnEditar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        criaEventoTable();
+    }//GEN-LAST:event_formInternalFrameOpened
+    
+    public void populaTelaAdicionar(FormaPagamento formaPagamento) {
+        tfdCodigo.setText(formaPagamento.getCodFormaPgto().toString());
+        tfdNome.setText(formaPagamento.getDesFormaPgto());
+    }
+    
     public void setVisibleCodigo(boolean estado) {
         lbCodigo.setVisible(estado);
         tfdCodigo.setVisible(estado);
@@ -601,15 +520,6 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
         btnExcluir.setEnabled(estado);
     }
     
-    public void adicionaVariaveisComboBox(javax.swing.JComboBox comboBox) {
-        List<String> lc;
-        lc = new ArrayList<>();
-        for(TipoConsumivel tc : TipoConsumivel.values()) {
-            lc.add(tc.getValor());
-        }
-        comboBox.setModel(new DefaultComboBoxModel(lc.toArray()));
-    }
-    
     public void criaEventoTable() {
         tableListagem.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
         public void valueChanged(ListSelectionEvent event) {
@@ -618,25 +528,11 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
         });
     }
     
-    public void populaTelaAdicionar(Consumivel c) {
-        tfdCodigo.setText(c.getCodConsumivel().toString());
-        tfdNome.setText(c.getNomConsumivel());
-        tfdPreco.setValue(c.getVlrConsumivel());
-        tfaDescricao.setText(c.getDesConsumivel());
-        for(TipoConsumivel tc : TipoConsumivel.values()) {
-            if(c.getTipConsumivel().equals(tc.name())) {
-                cbxTipo.setSelectedItem(tc.getValor());
-            }
-        }
-    }
-    
     public void mudaTextLabel(String text)
     {
         lblPesquisa.setText(text);
     }
-    /**
-     * @param args the command line arguments
-     */
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -664,7 +560,7 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new frmConsumivel().setVisible(true);
+                new frmFormaPagamento().setVisible(true);
             }
         });
     }
@@ -676,28 +572,21 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnPesquisa;
     private javax.swing.JButton btnSalvar;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JComboBox<String> cbxTipo;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JRadioButton jrbCodigo;
     private javax.swing.JRadioButton jrbNome;
     private javax.swing.JLabel lbCodigo;
     private javax.swing.JLabel lbNome;
-    private javax.swing.JLabel lbNome1;
-    private javax.swing.JLabel lbNome2;
-    private javax.swing.JLabel lbNome3;
     private javax.swing.JLabel lblPesquisa;
     private javax.swing.JTable tableListagem;
     private javax.swing.JPanel tbAdicionar;
     private javax.swing.JTabbedPane tbConsumivel;
     private javax.swing.JPanel tbListagem;
-    private javax.swing.JTextArea tfaDescricao;
     private javax.swing.JTextField tfdCodigo;
     private javax.swing.JTextField tfdNome;
     private javax.swing.JTextField tfdPesquisa;
-    private hotel.apoio.JNumberFormatField tfdPreco;
     // End of variables declaration//GEN-END:variables
 }
