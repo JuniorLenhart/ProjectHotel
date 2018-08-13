@@ -15,8 +15,8 @@ public class LimpaCampos {
             } else if (lComponent[i] instanceof JTextField) {
                 JTextField lField = (JTextField) lComponent[i];
                 lField.setText("");
-//            } else if (lComponent[i] instanceof JScrollPane) {
-//                ((JTextArea) ((JScrollPane) lComponent[i]).getViewport().getComponent(0)).setText("");
+            } else if (lComponent[i] instanceof JScrollPane) {
+                ((JTextArea) ((JScrollPane) lComponent[i]).getViewport().getComponent(0)).setText("");
             } else if (lComponent[i] instanceof JComboBox) {
                 JComboBox lField = (JComboBox) lComponent[i];
                 lField.setSelectedIndex(0);

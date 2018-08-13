@@ -5,6 +5,7 @@
  */
 package hotel.apresentacao;
 
+import hotel.apoio.LimpaCampos;
 import hotel.apoio.Validacao;
 import hotel.config.HibernateUtil;
 import hotel.model.Consumivel;
@@ -21,6 +22,8 @@ import javax.persistence.Persistence;
 import javax.persistence.QueryHint;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -36,8 +39,10 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
      * Creates new form frmConsumivel
      */
     ConsumivelDAO consumivelDAO;
+    boolean modoEdicao;
     public frmConsumivel() {
         initComponents();
+        modoEdicao = false;
     }
 
     /**
@@ -49,6 +54,7 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         tbConsumivel = new javax.swing.JTabbedPane();
         tbAdicionar = new javax.swing.JPanel();
         lbNome = new javax.swing.JLabel();
@@ -64,12 +70,12 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
         lbNome3 = new javax.swing.JLabel();
         tbListagem = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
-        edPesquisa = new javax.swing.JTextField();
+        tfdPesquisa = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        rbPesquisaNOme = new javax.swing.JRadioButton();
-        rbPesquisaCodigo = new javax.swing.JRadioButton();
-        btPesquisar = new javax.swing.JButton();
+        jrbNome = new javax.swing.JRadioButton();
+        jrbCodigo = new javax.swing.JRadioButton();
+        btnPesquisa = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableListagem = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
@@ -99,6 +105,11 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
 
         tbConsumivel.setBackground(new java.awt.Color(255, 255, 255));
         tbConsumivel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tbConsumivel.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                tbConsumivelStateChanged(evt);
+            }
+        });
 
         tbAdicionar.setBackground(new java.awt.Color(255, 255, 255));
         tbAdicionar.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Cadastro de Consumível", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("SansSerif", 1, 14))); // NOI18N
@@ -140,6 +151,7 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
         lbNome1.setText("<html>Preço<font color='red'><b>*</b></font>:</html>");
 
         tfdPreco.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
+        tfdPreco.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         tfdPreco.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
 
         lbNome2.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
@@ -149,6 +161,7 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
 
         tfaDescricao.setColumns(20);
         tfaDescricao.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        tfaDescricao.setLineWrap(true);
         tfaDescricao.setRows(5);
         tfaDescricao.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
         jScrollPane2.setViewportView(tfaDescricao);
@@ -211,11 +224,11 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
-        edPesquisa.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        edPesquisa.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
-        edPesquisa.addKeyListener(new java.awt.event.KeyAdapter() {
+        tfdPesquisa.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        tfdPesquisa.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
+        tfdPesquisa.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                edPesquisaKeyTyped(evt);
+                tfdPesquisaKeyTyped(evt);
             }
         });
 
@@ -225,21 +238,23 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Pesquisa detalhada", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
 
-        rbPesquisaNOme.setBackground(new java.awt.Color(255, 255, 255));
-        rbPesquisaNOme.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        rbPesquisaNOme.setText("Pesquisar por nome");
-        rbPesquisaNOme.addItemListener(new java.awt.event.ItemListener() {
+        jrbNome.setBackground(new java.awt.Color(255, 255, 255));
+        buttonGroup1.add(jrbNome);
+        jrbNome.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jrbNome.setText("Pesquisar por nome");
+        jrbNome.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                rbPesquisaNOmerbPesquisaCodigoItemStateChanged(evt);
+                jrbNomerbPesquisaCodigoItemStateChanged(evt);
             }
         });
 
-        rbPesquisaCodigo.setBackground(new java.awt.Color(255, 255, 255));
-        rbPesquisaCodigo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        rbPesquisaCodigo.setText("Pesquisar por código");
-        rbPesquisaCodigo.addItemListener(new java.awt.event.ItemListener() {
+        jrbCodigo.setBackground(new java.awt.Color(255, 255, 255));
+        buttonGroup1.add(jrbCodigo);
+        jrbCodigo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jrbCodigo.setText("Pesquisar por código");
+        jrbCodigo.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                rbPesquisaCodigoItemStateChanged(evt);
+                jrbCodigoItemStateChanged(evt);
             }
         });
 
@@ -249,27 +264,27 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(rbPesquisaNOme)
+                .addComponent(jrbNome)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rbPesquisaCodigo))
+                .addComponent(jrbCodigo))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rbPesquisaNOme)
-                    .addComponent(rbPesquisaCodigo))
+                    .addComponent(jrbNome)
+                    .addComponent(jrbCodigo))
                 .addContainerGap())
         );
 
-        btPesquisar.setBackground(new java.awt.Color(12, 91, 160));
-        btPesquisar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btPesquisar.setForeground(new java.awt.Color(255, 255, 255));
-        btPesquisar.setText("Pesquisar");
-        btPesquisar.addActionListener(new java.awt.event.ActionListener() {
+        btnPesquisa.setBackground(new java.awt.Color(12, 91, 160));
+        btnPesquisa.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnPesquisa.setForeground(new java.awt.Color(255, 255, 255));
+        btnPesquisa.setText("Pesquisar");
+        btnPesquisa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btPesquisarActionPerformed(evt);
+                btnPesquisaActionPerformed(evt);
             }
         });
 
@@ -282,9 +297,9 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1)
-                    .addComponent(edPesquisa))
+                    .addComponent(tfdPesquisa))
                 .addGap(18, 18, 18)
-                .addComponent(btPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 157, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -296,8 +311,8 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(edPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btPesquisar))
+                    .addComponent(tfdPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPesquisa))
                 .addContainerGap(27, Short.MAX_VALUE))
         );
 
@@ -356,6 +371,11 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
         btnEditar.setText("Editar");
         btnEditar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnEditar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnExcluir.setForeground(new java.awt.Color(12, 91, 160));
@@ -363,6 +383,11 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
         btnExcluir.setText("Excluir");
         btnExcluir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnExcluir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnFechar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnFechar.setForeground(new java.awt.Color(12, 91, 160));
@@ -370,6 +395,11 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
         btnFechar.setText("Fechar");
         btnFechar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnFechar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnFechar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFecharActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -435,53 +465,133 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_tfdNomeTyped
 
-    private void edPesquisaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edPesquisaKeyTyped
+    private void tfdPesquisaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfdPesquisaKeyTyped
         char vChar = evt.getKeyChar();
         if (!(Character.isDigit(vChar) || (vChar == KeyEvent.VK_BACK_SPACE) || (vChar == KeyEvent.VK_DELETE)))
         {
-            if(rbPesquisaCodigo.isSelected())
+            if(jrbCodigo.isSelected())
             {
                 evt.consume();
             }
         }
-    }//GEN-LAST:event_edPesquisaKeyTyped
+    }//GEN-LAST:event_tfdPesquisaKeyTyped
 
-    private void rbPesquisaNOmerbPesquisaCodigoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbPesquisaNOmerbPesquisaCodigoItemStateChanged
-        edPesquisa.setText("");
-    }//GEN-LAST:event_rbPesquisaNOmerbPesquisaCodigoItemStateChanged
+    private void jrbNomerbPesquisaCodigoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jrbNomerbPesquisaCodigoItemStateChanged
+        tfdPesquisa.setText("");
+    }//GEN-LAST:event_jrbNomerbPesquisaCodigoItemStateChanged
 
-    private void rbPesquisaCodigoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbPesquisaCodigoItemStateChanged
-        edPesquisa.setText("");
-    }//GEN-LAST:event_rbPesquisaCodigoItemStateChanged
+    private void jrbCodigoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jrbCodigoItemStateChanged
+        tfdPesquisa.setText("");
+    }//GEN-LAST:event_jrbCodigoItemStateChanged
 
-    private void btPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPesquisarActionPerformed
-        
-    }//GEN-LAST:event_btPesquisarActionPerformed
+    private void btnPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaActionPerformed
+        if(jrbNome.isSelected()) {
+            new ConsumivelDAO().popularTabela(tableListagem,1,tfdPesquisa.getText());
+        }
+        else {
+            new ConsumivelDAO().popularTabela(tableListagem,2,tfdPesquisa.getText());
+        }
+    }//GEN-LAST:event_btnPesquisaActionPerformed
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
         adicionaVariaveisComboBox(cbxTipo);
         consumivelDAO = new ConsumivelDAO();
+        setVisibleCodigo(false);
+        btnEditar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        criaEventoTable();
     }//GEN-LAST:event_formInternalFrameOpened
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         if(Validacao.validarCampos(tbAdicionar)==0) {
-            Consumivel consumivel = new Consumivel();
-            consumivel.setNomConsumivel(tfdNome.getText());
-            consumivel.setDesConsumivel(tfaDescricao.getText());
-            consumivel.setVlrConsumivel(tfdPreco.getValue());
-            consumivel.setIndSituacao("A");
-            for(TipoConsumivel tc : TipoConsumivel.values()) {
-                if(cbxTipo.getSelectedItem().equals(tc.getValor())) {
-                    consumivel.setTipConsumivel(tc.name());
+            if(modoEdicao) {
+                Consumivel consumivel = new Consumivel();
+                consumivel.setCodConsumivel(Integer.parseInt(tfdCodigo.getText()));
+                consumivel.setNomConsumivel(tfdNome.getText());
+                consumivel.setDesConsumivel(tfaDescricao.getText());
+                consumivel.setVlrConsumivel(tfdPreco.getValue());
+                consumivel.setIndSituacao("A");
+                for(TipoConsumivel tc : TipoConsumivel.values()) {
+                    if(cbxTipo.getSelectedItem().equals(tc.getValor())) {
+                        consumivel.setTipConsumivel(tc.name());
+                    }
                 }
+                consumivelDAO.update(consumivel);
+                JOptionPane.showMessageDialog(this, "Consumível atualizado com sucesso!");
+                modoEdicao = false;
             }
-            consumivelDAO.insert(consumivel);
-            JOptionPane.showMessageDialog(this, "Consumível cadastrado com sucesso!");
+            else {
+                Consumivel consumivel = new Consumivel();
+                consumivel.setNomConsumivel(tfdNome.getText());
+                consumivel.setDesConsumivel(tfaDescricao.getText());
+                consumivel.setVlrConsumivel(tfdPreco.getValue());
+                consumivel.setIndSituacao("A");
+                for(TipoConsumivel tc : TipoConsumivel.values()) {
+                    if(cbxTipo.getSelectedItem().equals(tc.getValor())) {
+                        consumivel.setTipConsumivel(tc.name());
+                    }
+                }
+                consumivelDAO.insert(consumivel);
+                JOptionPane.showMessageDialog(this, "Consumível cadastrado com sucesso!");
+            }
         }
         else {
             JOptionPane.showMessageDialog(this, "Há campos incompletos!");
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void tbConsumivelStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tbConsumivelStateChanged
+        if(evt.getSource().equals(tableListagem))
+        {
+            new ConsumivelDAO().popularTabela(tableListagem,0,"");
+        }
+        if(tbConsumivel.getSelectedComponent()==tbListagem)
+        {
+            btnSalvar.setEnabled(false);
+            LimpaCampos.LimparCampos(tbAdicionar);
+            new ConsumivelDAO().popularTabela(tableListagem,0,"");
+            setEnableButtons(false);
+            modoEdicao = false;
+            //atualizaCampos();
+        }
+        if(tbConsumivel.getSelectedComponent()==tbAdicionar)
+        {
+            setEnableButtons(false);
+            btnSalvar.setEnabled(true);
+        }
+    }//GEN-LAST:event_tbConsumivelStateChanged
+
+    private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnFecharActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        //System.out.println(tableListagem.getModel().getValueAt(tableListagem.getSelectedRow(), 0));
+        Consumivel c = consumivelDAO.readId(Integer.parseInt(tableListagem.getModel().getValueAt(tableListagem.getSelectedRow(), 0).toString()));
+        populaTelaAdicionar(c);
+        modoEdicao = true;
+        tbConsumivel.setSelectedIndex(0);
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        Object[] options = {"Sim", "Não"};
+        int escolha = JOptionPane.showOptionDialog(null, "Você tem certeza que gostaria de excluir o Consumível: "+tableListagem.getModel().getValueAt(tableListagem.getSelectedRow(), 0).toString(), "Escolha sua ação" ,JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        if(escolha==0)
+        {
+            consumivelDAO.delete(Integer.parseInt(tableListagem.getModel().getValueAt(tableListagem.getSelectedRow(), 0).toString()));
+            JOptionPane.showMessageDialog(this, "Consumível excluido com sucesso!");
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+   
+    public void setVisibleCodigo(boolean estado) {
+        lbCodigo.setVisible(estado);
+        tfdCodigo.setVisible(estado);
+    }
+    
+    public void setEnableButtons(boolean estado) {
+        btnEditar.setEnabled(estado);
+        btnExcluir.setEnabled(estado);
+    }
     
     public void adicionaVariaveisComboBox(javax.swing.JComboBox comboBox) {
         List<String> lc;
@@ -492,6 +602,25 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
         comboBox.setModel(new DefaultComboBoxModel(lc.toArray()));
     }
     
+    public void criaEventoTable() {
+        tableListagem.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+        public void valueChanged(ListSelectionEvent event) {
+            setEnableButtons(true);
+        }
+    });
+    }
+    
+    public void populaTelaAdicionar(Consumivel c) {
+        tfdCodigo.setText(c.getCodConsumivel().toString());
+        tfdNome.setText(c.getNomConsumivel());
+        tfdPreco.setValue(c.getVlrConsumivel());
+        tfaDescricao.setText(c.getDesConsumivel());
+        for(TipoConsumivel tc : TipoConsumivel.values()) {
+            if(c.getTipConsumivel().equals(tc.name())) {
+                cbxTipo.setSelectedItem(tc.getValor());
+            }
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -528,26 +657,26 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btPesquisar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnFechar;
+    private javax.swing.JButton btnPesquisa;
     private javax.swing.JButton btnSalvar;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cbxTipo;
-    private javax.swing.JTextField edPesquisa;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JRadioButton jrbCodigo;
+    private javax.swing.JRadioButton jrbNome;
     private javax.swing.JLabel lbCodigo;
     private javax.swing.JLabel lbNome;
     private javax.swing.JLabel lbNome1;
     private javax.swing.JLabel lbNome2;
     private javax.swing.JLabel lbNome3;
-    private javax.swing.JRadioButton rbPesquisaCodigo;
-    private javax.swing.JRadioButton rbPesquisaNOme;
     private javax.swing.JTable tableListagem;
     private javax.swing.JPanel tbAdicionar;
     private javax.swing.JTabbedPane tbConsumivel;
@@ -555,6 +684,7 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
     private javax.swing.JTextArea tfaDescricao;
     private javax.swing.JTextField tfdCodigo;
     private javax.swing.JTextField tfdNome;
+    private javax.swing.JTextField tfdPesquisa;
     private hotel.apoio.JNumberFormatField tfdPreco;
     // End of variables declaration//GEN-END:variables
 }
