@@ -23,7 +23,7 @@ public class TipoCamaDAO implements DAO<TipoCama> {
         Session sessao = HibernateUtil.getSessionFactory().openSession();
         Transaction t = sessao.beginTransaction();
 
-        sessao.save(pT);
+        sessao.saveOrUpdate(pT);
 
         t.commit();
         sessao.close();
@@ -51,7 +51,7 @@ public class TipoCamaDAO implements DAO<TipoCama> {
 //            org.hibernate.Query q = sessao.createQuery("from Classe where id = " + id);
         // busca todos os registros
         // observar: a classe Classe no from -> C maiúsculo
-        org.hibernate.Query q = sessao.createQuery("from Pessoa");
+        org.hibernate.Query q = sessao.createQuery("from TipoCama");
         resultado = q.list();
 
         for (Object o : resultado) {
@@ -62,12 +62,34 @@ public class TipoCamaDAO implements DAO<TipoCama> {
 
     @Override
     public ArrayList<TipoCama> read(String pParam) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List resultado = null;
+        Session sessao = HibernateUtil.getSessionFactory().openSession();
+        sessao.beginTransaction();
+
+        // busca por código
+//            int id = 3;
+//            org.hibernate.Query q = sessao.createQuery("from Classe where id = " + id);
+        // busca todos os registros
+        // observar: a classe Classe no from -> C maiúsculo
+        org.hibernate.Query q = sessao.createQuery("from TipoCama where lower(desTipoCama) LIKE :nome ");
+        q.setParameter("nome", "%" + pParam.toLowerCase() + "%");
+        resultado = q.list();
+
+        for (Object o : resultado) {
+            TipoCama s = (TipoCama) o;
+        }
+        return (ArrayList<TipoCama>) resultado;
     }
 
     @Override
     public TipoCama readId(int pCodigo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Session sessao = HibernateUtil.getSessionFactory().openSession();
+        sessao.beginTransaction();
+
+        org.hibernate.Query q = sessao.createQuery("from TipoCama where id = " + pCodigo);
+        TipoCama c = (TipoCama) q.uniqueResult();
+
+        return c;
     }
 
     public void popularTabela(JTable pTabela, int pOption, String pParam) {

@@ -15,8 +15,8 @@ public class LimpaCampos {
             } else if (lComponent[i] instanceof JTextField) {
                 JTextField lField = (JTextField) lComponent[i];
                 lField.setText("");
-            } else if (lComponent[i] instanceof JScrollPane) {
-                ((JTextArea) ((JScrollPane) lComponent[i]).getViewport().getComponent(0)).setText("");
+//            } else if (lComponent[i] instanceof JScrollPane) {
+//                ((JTextArea) ((JScrollPane) lComponent[i]).getViewport().getComponent(0)).setText("");
             } else if (lComponent[i] instanceof JComboBox) {
                 JComboBox lField = (JComboBox) lComponent[i];
                 lField.setSelectedIndex(0);
@@ -26,6 +26,9 @@ public class LimpaCampos {
             } else if (lComponent[i] instanceof JNumberFormatField) {
                 JNumberFormatField lField = (JNumberFormatField) lComponent[i];
                 lField.setValue(BigDecimal.ZERO);
+            } else if (lComponent[i] instanceof JSpinner) {
+                JSpinner lField = (JSpinner) lComponent[i];
+                lField.setValue(0);
             }
         }
     }

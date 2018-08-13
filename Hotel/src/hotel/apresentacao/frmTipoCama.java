@@ -50,8 +50,9 @@ public class frmTipoCama extends javax.swing.JInternalFrame {
     }
 
     private void limparCampos() {
-        new LimpaCampos().LimparCampos(pnlCadastro);
-        new LimpaCampos().LimparCampos(pnlListagem);
+        tipoCama = new TipoCama();
+        LimpaCampos.LimparCampos(pnlCadastro);
+        LimpaCampos.LimparCampos(pnlListagem);
     }
 
     private void habilitar() {
@@ -95,8 +96,8 @@ public class frmTipoCama extends javax.swing.JInternalFrame {
         tfdPesquisa = new javax.swing.JTextField();
         lblPesquisa = new javax.swing.JLabel();
         pnlOpcao = new javax.swing.JPanel();
-        rbPesquisaNome = new javax.swing.JRadioButton();
-        rbPesquisaCodigo = new javax.swing.JRadioButton();
+        rbNome = new javax.swing.JRadioButton();
+        rbCodigo = new javax.swing.JRadioButton();
         btnPesquisar = new javax.swing.JButton();
         scpLista = new javax.swing.JScrollPane();
         tblLista = new javax.swing.JTable();
@@ -107,23 +108,6 @@ public class frmTipoCama extends javax.swing.JInternalFrame {
         btnFechar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
-            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
-                formInternalFrameOpened(evt);
-            }
-        });
 
         tbpTipoCama.setBackground(new java.awt.Color(255, 255, 255));
         tbpTipoCama.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -223,26 +207,26 @@ public class frmTipoCama extends javax.swing.JInternalFrame {
         });
 
         lblPesquisa.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblPesquisa.setText("Pesquisa por nome:");
+        lblPesquisa.setText("Nome:");
 
         pnlOpcao.setBackground(new java.awt.Color(255, 255, 255));
-        pnlOpcao.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Pesquisa detalhada", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
+        pnlOpcao.setBorder(javax.swing.BorderFactory.createTitledBorder(null, " Pesquisa Detalhada ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
 
-        rbPesquisaNome.setBackground(new java.awt.Color(255, 255, 255));
-        rbPesquisaNome.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        rbPesquisaNome.setText("Pesquisar por nome");
-        rbPesquisaNome.addItemListener(new java.awt.event.ItemListener() {
+        rbNome.setBackground(new java.awt.Color(255, 255, 255));
+        rbNome.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        rbNome.setText("Por nome");
+        rbNome.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                rbPesquisaNomerbPesquisaCodigoItemStateChanged(evt);
+                rbNomerbPesquisaCodigoItemStateChanged(evt);
             }
         });
 
-        rbPesquisaCodigo.setBackground(new java.awt.Color(255, 255, 255));
-        rbPesquisaCodigo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        rbPesquisaCodigo.setText("Pesquisar por código");
-        rbPesquisaCodigo.addItemListener(new java.awt.event.ItemListener() {
+        rbCodigo.setBackground(new java.awt.Color(255, 255, 255));
+        rbCodigo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        rbCodigo.setText("Por código");
+        rbCodigo.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                rbPesquisaCodigoItemStateChanged(evt);
+                rbCodigoItemStateChanged(evt);
             }
         });
 
@@ -252,17 +236,17 @@ public class frmTipoCama extends javax.swing.JInternalFrame {
             pnlOpcaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlOpcaoLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(rbPesquisaNome)
+                .addComponent(rbNome)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rbPesquisaCodigo))
+                .addComponent(rbCodigo))
         );
         pnlOpcaoLayout.setVerticalGroup(
             pnlOpcaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlOpcaoLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(pnlOpcaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rbPesquisaNome)
-                    .addComponent(rbPesquisaCodigo))
+                    .addComponent(rbNome)
+                    .addComponent(rbCodigo))
                 .addContainerGap())
         );
 
@@ -288,7 +272,7 @@ public class frmTipoCama extends javax.swing.JInternalFrame {
                     .addComponent(tfdPesquisa))
                 .addGap(18, 18, 18)
                 .addComponent(btnPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 157, Short.MAX_VALUE))
+                .addGap(0, 289, Short.MAX_VALUE))
         );
         pnlDetalheLayout.setVerticalGroup(
             pnlDetalheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -439,10 +423,7 @@ public class frmTipoCama extends javax.swing.JInternalFrame {
 
     private void tfdDescricaoTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfdDescricaoTyped
         char vChar = evt.getKeyChar();
-        if (!(Character.isLetter(vChar)
-                || (vChar == KeyEvent.VK_BACK_SPACE)
-                || (vChar == KeyEvent.VK_DELETE)
-                || (vChar == KeyEvent.VK_SPACE))) {
+        if (!(Character.isLetter(vChar) || (vChar == KeyEvent.VK_BACK_SPACE) || (vChar == KeyEvent.VK_DELETE) || (vChar == KeyEvent.VK_SPACE))) {
             evt.consume();
         }
     }//GEN-LAST:event_tfdDescricaoTyped
@@ -450,19 +431,23 @@ public class frmTipoCama extends javax.swing.JInternalFrame {
     private void tfdPesquisaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfdPesquisaKeyTyped
         char vChar = evt.getKeyChar();
         if (!(Character.isDigit(vChar) || (vChar == KeyEvent.VK_BACK_SPACE) || (vChar == KeyEvent.VK_DELETE))) {
-            if (rbPesquisaCodigo.isSelected()) {
+            if (rbCodigo.isSelected()) {
                 evt.consume();
             }
         }
     }//GEN-LAST:event_tfdPesquisaKeyTyped
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-
+        if (tfdPesquisa.getText().trim().isEmpty()) {
+            new TipoCamaDAO().popularTabela(tblLista, 0, "");
+        } else if (rbNome.isSelected()) {
+            new TipoCamaDAO().popularTabela(tblLista, 1, tfdPesquisa.getText());
+        } else if (rbCodigo.isSelected()) {
+            new TipoCamaDAO().popularTabela(tblLista, 2, tfdPesquisa.getText());
+        } else {
+            new TipoCamaDAO().popularTabela(tblLista, 0, "");
+        }
     }//GEN-LAST:event_btnPesquisarActionPerformed
-
-    private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
-
-    }//GEN-LAST:event_formInternalFrameOpened
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         if (Validacao.validarCampos(pnlCadastro) == 0) {
@@ -478,20 +463,22 @@ public class frmTipoCama extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(this, "Cadastrado com sucesso!");
             }
 
-            tipoCama = new TipoCama();
-            setAba(1);            
+            new TipoCamaDAO().popularTabela(tblLista, 0, "");
+
+            limparCampos();
+            setAba(1);
         } else {
             JOptionPane.showMessageDialog(this, "Campos obrigatórios não preenchidos!");
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
-    private void rbPesquisaCodigoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbPesquisaCodigoItemStateChanged
-        tfdPesquisa.setText("");
-    }//GEN-LAST:event_rbPesquisaCodigoItemStateChanged
+    private void rbCodigoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbCodigoItemStateChanged
+        tfdPesquisa.setText("Código:");
+    }//GEN-LAST:event_rbCodigoItemStateChanged
 
-    private void rbPesquisaNomerbPesquisaCodigoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbPesquisaNomerbPesquisaCodigoItemStateChanged
-        tfdPesquisa.setText("");
-    }//GEN-LAST:event_rbPesquisaNomerbPesquisaCodigoItemStateChanged
+    private void rbNomerbPesquisaCodigoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbNomerbPesquisaCodigoItemStateChanged
+        tfdPesquisa.setText("Nome:");
+    }//GEN-LAST:event_rbNomerbPesquisaCodigoItemStateChanged
 
     private void tbpTipoCamaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tbpTipoCamaStateChanged
         habilitar();
@@ -531,8 +518,8 @@ public class frmTipoCama extends javax.swing.JInternalFrame {
     private javax.swing.JPanel pnlHeader;
     private javax.swing.JPanel pnlListagem;
     private javax.swing.JPanel pnlOpcao;
-    private javax.swing.JRadioButton rbPesquisaCodigo;
-    private javax.swing.JRadioButton rbPesquisaNome;
+    private javax.swing.JRadioButton rbCodigo;
+    private javax.swing.JRadioButton rbNome;
     private javax.swing.JScrollPane scpLista;
     private javax.swing.JTable tblLista;
     private javax.swing.JTabbedPane tbpTipoCama;
