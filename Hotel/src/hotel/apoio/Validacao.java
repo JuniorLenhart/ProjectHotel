@@ -77,34 +77,33 @@ public class Validacao {
     public static int validarCampos(Container pContainer) { //Retorna 0 se todos os campos estiverem OK, retorna 1 se um dos campos estiver em branco
         Component lComponent[] = pContainer.getComponents();
         for (int i = 0; i < lComponent.length; i++) {
-            if((lComponent[i].isVisible())) {
+            if ((lComponent[i].isVisible())) {
                 if (lComponent[i] instanceof JFormattedTextField) {
                     JFormattedTextField lField = (JFormattedTextField) lComponent[i];
-                    if(lField.getValue().equals("")) {
+                    if (lField.getValue().equals("")) {
                         return 1;
                     }
                 } else if (lComponent[i] instanceof JTextField) {
                     JTextField lField = (JTextField) lComponent[i];
-                    if(lField.getText().equals("")) {
+                    if (lField.getText().equals("")) {
                         return 1;
                     }
                 } else if (lComponent[i] instanceof JNumberFormatField) {
                     JNumberFormatField lField = (JNumberFormatField) lComponent[i];
-                    if(lField.getValue().equals(BigDecimal.ZERO)) {
+                    if (lField.getValue().equals(BigDecimal.ZERO)) {
                         return 1;
                     }
                 } else if (lComponent[i] instanceof JTextArea) {
                     JTextArea lField = (JTextArea) lComponent[i];
-                    if(lField.getText().equals("")) {
+                    if (lField.getText().equals("")) {
                         return 1;
                     }
                 } else if (lComponent[i] instanceof JSpinner) {
                     JSpinner lField = (JSpinner) lComponent[i];
                     if ((int) lField.getValue() <= 0) {
                         return 1;
-                    }   
+                    }
                 }
-                
             }
         }
         return 0;
