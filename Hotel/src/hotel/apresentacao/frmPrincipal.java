@@ -1,9 +1,7 @@
 package hotel.apresentacao;
 
 import hotel.apoio.Unit;
-import java.awt.Dimension;
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 public class frmPrincipal extends javax.swing.JFrame {
 
@@ -15,7 +13,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void abrirTela(JInternalFrame pInternalFrame) {
         dkpSistema.add(pInternalFrame);
         Unit.setPosition(pInternalFrame);
-        pInternalFrame.setVisible(true);     
+        pInternalFrame.setVisible(true);
     }
 
     @SuppressWarnings("unchecked")
@@ -26,11 +24,11 @@ public class frmPrincipal extends javax.swing.JFrame {
         };
         mnbPrincipal = new javax.swing.JMenuBar();
         mnuCadastro = new javax.swing.JMenu();
-        mniFilme = new javax.swing.JMenuItem();
-        mniFormaPgto = new javax.swing.JMenuItem();
-        mniGenero = new javax.swing.JMenuItem();
         mniPessoa = new javax.swing.JMenuItem();
-        mniTipoMidia = new javax.swing.JMenuItem();
+        mniTipoCama = new javax.swing.JMenuItem();
+        mniQuarto = new javax.swing.JMenuItem();
+        mniConsumivel = new javax.swing.JMenuItem();
+        mniFormaPgto = new javax.swing.JMenuItem();
         mnuLocacao = new javax.swing.JMenu();
         mnuReserva = new javax.swing.JMenu();
         mnuFinanceiro = new javax.swing.JMenu();
@@ -38,11 +36,11 @@ public class frmPrincipal extends javax.swing.JFrame {
         mniReserva = new javax.swing.JMenuItem();
         mniLocacao = new javax.swing.JMenuItem();
         mnuUsuario = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        mniUsuario = new javax.swing.JMenuItem();
+        mniPermissao = new javax.swing.JMenuItem();
+        mniAuditoria = new javax.swing.JMenuItem();
         mnuAjuda = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        mniAplicacao = new javax.swing.JMenuItem();
         mniSair = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -63,27 +61,32 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         mnuCadastro.setText("Cadastros");
 
-        mniFilme.setText("Pessoa");
-        mnuCadastro.add(mniFilme);
-
-        mniFormaPgto.setText("Tipo de Quarto");
-        mnuCadastro.add(mniFormaPgto);
-
-        mniGenero.setText("Quarto");
-        mnuCadastro.add(mniGenero);
-
-        mniPessoa.setText("Consumível");
-        mniPessoa.setToolTipText("");
-        mniPessoa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mniPessoaActionPerformed(evt);
-            }
-        });
+        mniPessoa.setText("Pessoa");
         mnuCadastro.add(mniPessoa);
 
-        mniTipoMidia.setText("Forma de Pagamento");
-        mniTipoMidia.setActionCommand("Tipo Mídia");
-        mnuCadastro.add(mniTipoMidia);
+        mniTipoCama.setText("Tipo de Quarto");
+        mniTipoCama.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniTipoCamaActionPerformed(evt);
+            }
+        });
+        mnuCadastro.add(mniTipoCama);
+
+        mniQuarto.setText("Quarto");
+        mnuCadastro.add(mniQuarto);
+
+        mniConsumivel.setText("Consumível");
+        mniConsumivel.setToolTipText("");
+        mniConsumivel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniConsumivelActionPerformed(evt);
+            }
+        });
+        mnuCadastro.add(mniConsumivel);
+
+        mniFormaPgto.setText("Forma de Pagamento");
+        mniFormaPgto.setActionCommand("Tipo Mídia");
+        mnuCadastro.add(mniFormaPgto);
 
         mnbPrincipal.add(mnuCadastro);
 
@@ -108,21 +111,21 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         mnuUsuario.setText("Usuário");
 
-        jMenuItem2.setText("Cadastro");
-        mnuUsuario.add(jMenuItem2);
+        mniUsuario.setText("Cadastro");
+        mnuUsuario.add(mniUsuario);
 
-        jMenuItem3.setText("Permissão");
-        mnuUsuario.add(jMenuItem3);
+        mniPermissao.setText("Permissão");
+        mnuUsuario.add(mniPermissao);
 
-        jMenuItem4.setText("Auditoria");
-        mnuUsuario.add(jMenuItem4);
+        mniAuditoria.setText("Auditoria");
+        mnuUsuario.add(mniAuditoria);
 
         mnbPrincipal.add(mnuUsuario);
 
         mnuAjuda.setText("Ajuda");
 
-        jMenuItem1.setText("Cadastro de Aplicação");
-        mnuAjuda.add(jMenuItem1);
+        mniAplicacao.setText("Cadastro de Aplicação");
+        mnuAjuda.add(mniAplicacao);
 
         mniSair.setText("Sair");
         mniSair.addActionListener(new java.awt.event.ActionListener() {
@@ -155,10 +158,13 @@ public class frmPrincipal extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_mniSairActionPerformed
 
-    private void mniPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniPessoaActionPerformed
-        frmConsumivel consumivel = new frmConsumivel();
-        retornaTelaRedimensionada(consumivel);
-    }//GEN-LAST:event_mniPessoaActionPerformed
+    private void mniConsumivelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniConsumivelActionPerformed
+        abrirTela(new frmConsumivel());
+    }//GEN-LAST:event_mniConsumivelActionPerformed
+
+    private void mniTipoCamaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniTipoCamaActionPerformed
+        abrirTela(new frmTipoCama());
+    }//GEN-LAST:event_mniTipoCamaActionPerformed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -167,34 +173,22 @@ public class frmPrincipal extends javax.swing.JFrame {
             }
         });
     }
-    
-    public void retornaTelaRedimensionada(JInternalFrame frame)
-    {
-        Dimension desktopSize = dkpSistema.getSize();
-        Dimension jInternalFrameSize = frame.getSize();
-        frame.setLocation((desktopSize.width - jInternalFrameSize.width)/2,
-                                         (desktopSize.height- jInternalFrameSize.height)/2);
-        dkpSistema.add(frame);
-        BasicInternalFrameUI bi = (BasicInternalFrameUI)frame.getUI();
-        bi.setNorthPane(null);
-        frame.setVisible(true);
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane dkpSistema;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuBar mnbPrincipal;
-    private javax.swing.JMenuItem mniFilme;
+    private javax.swing.JMenuItem mniAplicacao;
+    private javax.swing.JMenuItem mniAuditoria;
+    private javax.swing.JMenuItem mniConsumivel;
     private javax.swing.JMenuItem mniFormaPgto;
-    private javax.swing.JMenuItem mniGenero;
     private javax.swing.JMenuItem mniLocacao;
+    private javax.swing.JMenuItem mniPermissao;
     private javax.swing.JMenuItem mniPessoa;
+    private javax.swing.JMenuItem mniQuarto;
     private javax.swing.JMenuItem mniReserva;
     private javax.swing.JMenuItem mniSair;
-    private javax.swing.JMenuItem mniTipoMidia;
+    private javax.swing.JMenuItem mniTipoCama;
+    private javax.swing.JMenuItem mniUsuario;
     private javax.swing.JMenu mnuAjuda;
     private javax.swing.JMenu mnuCadastro;
     private javax.swing.JMenu mnuFinanceiro;

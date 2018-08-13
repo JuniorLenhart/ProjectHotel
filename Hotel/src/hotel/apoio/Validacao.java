@@ -3,9 +3,8 @@ package hotel.apoio;
 import java.awt.Component;
 import java.awt.Container;
 import java.math.BigDecimal;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
+import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -74,33 +73,37 @@ public class Validacao {
     public static boolean validarCelular(JFormattedTextField pCampo) {
         return (pCampo.getText().trim().length() < 14);
     }
-    
+
     public static int validarCampos(Container pContainer) { //Retorna 0 se todos os campos estiverem OK, retorna 1 se um dos campos estiver em branco
         Component lComponent[] = pContainer.getComponents();
-        int retorno = 0;
         for (int i = 0; i < lComponent.length; i++) {
             if (lComponent[i] instanceof JFormattedTextField) {
                 JFormattedTextField lField = (JFormattedTextField) lComponent[i];
-                if(lField.getValue().equals("")) {
-                    retorno = 1;
+                if (lField.getValue().equals("")) {
+                    return 1;
                 }
             } else if (lComponent[i] instanceof JTextField) {
                 JTextField lField = (JTextField) lComponent[i];
-                if(lField.getText().equals("")) {
-                    retorno = 1;
+                if (lField.getText().equals("")) {
+                    return 1;
                 }
             } else if (lComponent[i] instanceof JNumberFormatField) {
                 JNumberFormatField lField = (JNumberFormatField) lComponent[i];
-                if(lField.getValue().equals(BigDecimal.ZERO)) {
-                    retorno = 1;
+                if (lField.getValue().equals(BigDecimal.ZERO)) {
+                    return 1;
                 }
             } else if (lComponent[i] instanceof JTextArea) {
                 JTextArea lField = (JTextArea) lComponent[i];
-                if(lField.getText().equals("")) {
-                    retorno = 1;
+                if (lField.getText().equals("")) {
+                    return 1;
+                }
+            } else if (lComponent[i] instanceof JSpinner) {
+                JSpinner lField = (JSpinner) lComponent[i];
+                if ((int) lField.getValue() <= 0) {
+                    return 1;
                 }
             }
         }
-        return retorno;
+        return 0;
     }
 }

@@ -9,31 +9,34 @@
             <Property name="text" type="java.lang.String" value="Cadastros"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="mniFilme">
+            <MenuItem class="javax.swing.JMenuItem" name="mniPessoa">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Pessoa"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mniFormaPgto">
+            <MenuItem class="javax.swing.JMenuItem" name="mniTipoCama">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Tipo de Quarto"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mniTipoCamaActionPerformed"/>
+              </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mniGenero">
+            <MenuItem class="javax.swing.JMenuItem" name="mniQuarto">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Quarto"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mniPessoa">
+            <MenuItem class="javax.swing.JMenuItem" name="mniConsumivel">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Consum&#xed;vel"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mniPessoaActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mniConsumivelActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mniTipoMidia">
+            <MenuItem class="javax.swing.JMenuItem" name="mniFormaPgto">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Forma de Pagamento"/>
                 <Property name="actionCommand" type="java.lang.String" value="Tipo M&#xed;dia"/>
@@ -78,17 +81,17 @@
             <Property name="text" type="java.lang.String" value="Usu&#xe1;rio"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+            <MenuItem class="javax.swing.JMenuItem" name="mniUsuario">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Cadastro"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem3">
+            <MenuItem class="javax.swing.JMenuItem" name="mniPermissao">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Permiss&#xe3;o"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem4">
+            <MenuItem class="javax.swing.JMenuItem" name="mniAuditoria">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Auditoria"/>
               </Properties>
@@ -100,7 +103,7 @@
             <Property name="text" type="java.lang.String" value="Ajuda"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+            <MenuItem class="javax.swing.JMenuItem" name="mniAplicacao">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Cadastro de Aplica&#xe7;&#xe3;o"/>
               </Properties>
