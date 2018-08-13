@@ -79,25 +79,27 @@ public class Validacao {
         Component lComponent[] = pContainer.getComponents();
         int retorno = 0;
         for (int i = 0; i < lComponent.length; i++) {
-            if (lComponent[i] instanceof JFormattedTextField) {
-                JFormattedTextField lField = (JFormattedTextField) lComponent[i];
-                if(lField.getValue().equals("")) {
-                    retorno = 1;
-                }
-            } else if (lComponent[i] instanceof JTextField) {
-                JTextField lField = (JTextField) lComponent[i];
-                if(lField.getText().equals("")) {
-                    retorno = 1;
-                }
-            } else if (lComponent[i] instanceof JNumberFormatField) {
-                JNumberFormatField lField = (JNumberFormatField) lComponent[i];
-                if(lField.getValue().equals(BigDecimal.ZERO)) {
-                    retorno = 1;
-                }
-            } else if (lComponent[i] instanceof JTextArea) {
-                JTextArea lField = (JTextArea) lComponent[i];
-                if(lField.getText().equals("")) {
-                    retorno = 1;
+            if((lComponent[i].isVisible())) {
+                if (lComponent[i] instanceof JFormattedTextField) {
+                    JFormattedTextField lField = (JFormattedTextField) lComponent[i];
+                    if(lField.getValue().equals("")) {
+                        retorno = 1;
+                    }
+                } else if (lComponent[i] instanceof JTextField) {
+                    JTextField lField = (JTextField) lComponent[i];
+                    if(lField.getText().equals("")) {
+                        retorno = 1;
+                    }
+                } else if (lComponent[i] instanceof JNumberFormatField) {
+                    JNumberFormatField lField = (JNumberFormatField) lComponent[i];
+                    if(lField.getValue().equals(BigDecimal.ZERO)) {
+                        retorno = 1;
+                    }
+                } else if (lComponent[i] instanceof JTextArea) {
+                    JTextArea lField = (JTextArea) lComponent[i];
+                    if(lField.getText().equals("")) {
+                        retorno = 1;
+                    }
                 }
             }
         }
