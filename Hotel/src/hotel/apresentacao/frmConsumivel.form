@@ -32,9 +32,9 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jPanel1" max="32767" attributes="0"/>
+                  <Component id="pnlHeader" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="tbConsumivel" min="-2" pref="670" max="-2" attributes="0"/>
+                      <Component id="tbpConsumivel" min="-2" pref="670" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -46,16 +46,16 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+              <Component id="pnlHeader" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="tbConsumivel" max="32767" attributes="0"/>
+              <Component id="tbpConsumivel" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JTabbedPane" name="tbConsumivel">
+    <Container class="javax.swing.JTabbedPane" name="tbpConsumivel">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -65,19 +65,19 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="tbConsumivelStateChanged"/>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="tbpConsumivelStateChanged"/>
       </Events>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
       <SubComponents>
-        <Container class="javax.swing.JPanel" name="tbAdicionar">
+        <Container class="javax.swing.JPanel" name="pnlCadastro">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="Cadastro de Consum&#xed;vel">
+                <TitledBorder title=" Cadastro de Consum&#xed;vel ">
                   <Font PropertyName="font" name="SansSerif" size="14" style="1"/>
                 </TitledBorder>
               </Border>
@@ -97,16 +97,16 @@
                   <Group type="102" attributes="0">
                       <EmptySpace min="-2" pref="150" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="lbCodigo" max="32767" attributes="0"/>
-                          <Component id="lbNome1" alignment="0" max="32767" attributes="0"/>
-                          <Component id="lbNome2" alignment="1" max="32767" attributes="0"/>
-                          <Component id="lbNome3" alignment="1" max="32767" attributes="0"/>
-                          <Component id="lbNome" alignment="1" max="32767" attributes="0"/>
+                          <Component id="lblCodigo" max="32767" attributes="0"/>
+                          <Component id="lblPreco" alignment="0" max="32767" attributes="0"/>
+                          <Component id="lblTipo" alignment="1" max="32767" attributes="0"/>
+                          <Component id="lblDescricao" alignment="1" max="32767" attributes="0"/>
+                          <Component id="lblNome" alignment="1" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jScrollPane2" alignment="0" pref="250" max="32767" attributes="0"/>
-                          <Component id="cbxTipo" alignment="0" max="32767" attributes="0"/>
+                          <Component id="scpDescricao" alignment="0" pref="250" max="32767" attributes="0"/>
+                          <Component id="cmbTipo" alignment="0" max="32767" attributes="0"/>
                           <Component id="tfdPreco" alignment="0" max="32767" attributes="0"/>
                           <Component id="tfdNome" alignment="0" max="32767" attributes="0"/>
                           <Component id="tfdCodigo" max="32767" attributes="0"/>
@@ -120,28 +120,28 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lbCodigo" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblCodigo" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="tfdCodigo" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="tfdNome" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lbNome" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblNome" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lbNome1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblPreco" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="tfdPreco" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lbNome2" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cbxTipo" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblTipo" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cmbTipo" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lbNome3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jScrollPane2" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblDescricao" min="-2" max="-2" attributes="0"/>
+                          <Component id="scpDescricao" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="162" max="32767" attributes="0"/>
                   </Group>
@@ -149,7 +149,7 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JLabel" name="lbNome">
+            <Component class="javax.swing.JLabel" name="lblNome">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="16" style="1"/>
@@ -180,7 +180,7 @@
                 <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tfdNomeTyped"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="lbCodigo">
+            <Component class="javax.swing.JLabel" name="lblCodigo">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="16" style="1"/>
@@ -207,7 +207,7 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JComboBox" name="cbxTipo">
+            <Component class="javax.swing.JComboBox" name="cmbTipo">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="SansSerif" size="14" style="0"/>
@@ -225,7 +225,7 @@
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
             </Component>
-            <Component class="javax.swing.JLabel" name="lbNome1">
+            <Component class="javax.swing.JLabel" name="lblPreco">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="16" style="1"/>
@@ -252,7 +252,7 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="lbNome2">
+            <Component class="javax.swing.JLabel" name="lblTipo">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="16" style="1"/>
@@ -264,14 +264,14 @@
                 <Property name="text" type="java.lang.String" value="&lt;html&gt;Tipo&lt;font color=&apos;red&apos;&gt;&lt;b&gt;*&lt;/b&gt;&lt;/font&gt;:&lt;/html&gt;"/>
               </Properties>
             </Component>
-            <Container class="javax.swing.JScrollPane" name="jScrollPane2">
+            <Container class="javax.swing.JScrollPane" name="scpDescricao">
               <AuxValues>
                 <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
               </AuxValues>
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JTextArea" name="tfaDescricao">
+                <Component class="javax.swing.JTextArea" name="tfdDescricao">
                   <Properties>
                     <Property name="columns" type="int" value="20"/>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -290,7 +290,7 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JLabel" name="lbNome3">
+            <Component class="javax.swing.JLabel" name="lblDescricao">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="16" style="1"/>
@@ -304,7 +304,7 @@
             </Component>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JPanel" name="tbListagem">
+        <Container class="javax.swing.JPanel" name="pnlListagem">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -323,10 +323,10 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jPanel4" alignment="0" max="32767" attributes="0"/>
+                          <Component id="pnlDetalhe" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jScrollPane1" max="32767" attributes="0"/>
+                              <Component id="scpLista" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -337,16 +337,16 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
+                      <Component id="pnlDetalhe" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" pref="264" max="32767" attributes="0"/>
+                      <Component id="scpLista" pref="264" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Container class="javax.swing.JPanel" name="jPanel4">
+            <Container class="javax.swing.JPanel" name="pnlDetalhe">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -359,13 +359,13 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jPanel2" alignment="0" max="32767" attributes="0"/>
+                              <Component id="pnlOpcao" alignment="0" max="32767" attributes="0"/>
                               <Component id="lblPesquisa" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="tfdPesquisa" alignment="0" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="btnPesquisa" min="-2" pref="140" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="157" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="289" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -373,7 +373,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jPanel2" min="-2" pref="56" max="-2" attributes="0"/>
+                          <Component id="pnlOpcao" min="-2" pref="56" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="lblPesquisa" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
@@ -409,17 +409,17 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Segoe UI" size="14" style="1"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="Pesquisa por nome:"/>
+                    <Property name="text" type="java.lang.String" value="Nome ou C&#xf3;digo:"/>
                   </Properties>
                 </Component>
-                <Container class="javax.swing.JPanel" name="jPanel2">
+                <Container class="javax.swing.JPanel" name="pnlOpcao">
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
                     </Property>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                        <TitledBorder title="Pesquisa detalhada">
+                        <TitledBorder title=" Pesquisa Detalhada ">
                           <Font PropertyName="font" name="Segoe UI" size="14" style="1"/>
                         </TitledBorder>
                       </Border>
@@ -431,19 +431,19 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="32767" attributes="0"/>
-                              <Component id="jrbNome" min="-2" max="-2" attributes="0"/>
+                              <Component id="rbNome" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jrbCodigo" min="-2" max="-2" attributes="0"/>
+                              <Component id="rbCodigo" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jrbNome" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jrbCodigo" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="rbNome" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="rbCodigo" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
@@ -451,7 +451,7 @@
                     </DimensionLayout>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JRadioButton" name="jrbNome">
+                    <Component class="javax.swing.JRadioButton" name="rbNome">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -462,13 +462,15 @@
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="SansSerif" size="14" style="0"/>
                         </Property>
-                        <Property name="text" type="java.lang.String" value="Pesquisar por nome"/>
+                        <Property name="selected" type="boolean" value="true"/>
+                        <Property name="text" type="java.lang.String" value="Por nome"/>
                       </Properties>
                       <Events>
-                        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jrbNomerbPesquisaCodigoItemStateChanged"/>
+                        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="rbNomerbPesquisaCodigoItemStateChanged"/>
+                        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="rbNomeStateChanged"/>
                       </Events>
                     </Component>
-                    <Component class="javax.swing.JRadioButton" name="jrbCodigo">
+                    <Component class="javax.swing.JRadioButton" name="rbCodigo">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -479,10 +481,11 @@
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="SansSerif" size="14" style="0"/>
                         </Property>
-                        <Property name="text" type="java.lang.String" value="Pesquisar por c&#xf3;digo"/>
+                        <Property name="text" type="java.lang.String" value="Por c&#xf3;digo"/>
                       </Properties>
                       <Events>
-                        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jrbCodigoItemStateChanged"/>
+                        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="rbCodigoItemStateChanged"/>
+                        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="rbCodigoStateChanged"/>
                       </Events>
                     </Component>
                   </SubComponents>
@@ -506,14 +509,14 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+            <Container class="javax.swing.JScrollPane" name="scpLista">
               <AuxValues>
                 <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
               </AuxValues>
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JTable" name="tableListagem">
+                <Component class="javax.swing.JTable" name="tblLista">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="4" rowCount="4">
@@ -534,7 +537,7 @@
         </Container>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JPanel" name="jPanel1">
+    <Container class="javax.swing.JPanel" name="pnlHeader">
 
       <Layout>
         <DimensionLayout dim="0">

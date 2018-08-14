@@ -23,13 +23,13 @@ import org.hibernate.Transaction;
  */
 public class FormaPagamentoDAO implements DAO<FormaPagamento>{
 
-    Session sessao = null;
-    Transaction t;
     @Override
     public String insert(FormaPagamento pT) {
-        sessao = HibernateUtil.getSessionFactory().openSession();
-        t = sessao.beginTransaction();
+        Session sessao = HibernateUtil.getSessionFactory().openSession();
+        Transaction t = sessao.beginTransaction();
+
         sessao.saveOrUpdate(pT);
+
         t.commit();
         sessao.close();
         return null;
@@ -37,22 +37,14 @@ public class FormaPagamentoDAO implements DAO<FormaPagamento>{
 
     @Override
     public String update(FormaPagamento pT) {
-        sessao = HibernateUtil.getSessionFactory().openSession();
-        t = sessao.beginTransaction();
-        sessao.update(pT);
-        t.commit();
-        sessao.close();
         return null;
     }
 
     @Override
     public String delete(int pCodigo) {
-        sessao = HibernateUtil.getSessionFactory().openSession();
-        t = sessao.beginTransaction();
-        FormaPagamento formaPagamento = (FormaPagamento) sessao.load(FormaPagamento.class,pCodigo);
-        sessao.delete(formaPagamento);
-        t.commit();
-        sessao.close();
+        FormaPagamento forma = (FormaPagamento) readId(pCodigo);
+        forma.setIndSituacao("E");
+        insert(forma);
         return null;
     }
 
@@ -64,10 +56,8 @@ public class FormaPagamentoDAO implements DAO<FormaPagamento>{
         
         org.hibernate.Query q = sessao.createQuery("from FormaPagamento");
         resultado = q.list();
-
-        for (Object o : resultado) {
-            FormaPagamento s = (FormaPagamento) o;
-        }
+        
+        sessao.close();
         return (ArrayList<FormaPagamento>) resultado;
     }
 
@@ -80,10 +70,8 @@ public class FormaPagamentoDAO implements DAO<FormaPagamento>{
         org.hibernate.Query q = sessao.createQuery("from FormaPagamento where lower(desFormaPgto) LIKE :nome ");
         q.setParameter("nome", "%"+pParam.toLowerCase()+"%");
         resultado = q.list();
-
-        for (Object o : resultado) {
-            FormaPagamento s = (FormaPagamento) o;
-        }
+        
+        sessao.close();
         return (ArrayList<FormaPagamento>) resultado;
     }
 
@@ -91,11 +79,12 @@ public class FormaPagamentoDAO implements DAO<FormaPagamento>{
     public FormaPagamento readId(int pCodigo) {
         Session sessao = HibernateUtil.getSessionFactory().openSession();
         sessao.beginTransaction();
-        
-        org.hibernate.Query q = sessao.createQuery("from FormaPagamento where id = " + pCodigo);
-        FormaPagamento c = (FormaPagamento) q.uniqueResult();
-        
-        return c;
+
+        org.hibernate.Query q = sessao.createQuery("FROM FormaPagamento WHERE codFormaPgto = " + pCodigo);
+        FormaPagamento tc = (FormaPagamento) q.uniqueResult();
+
+        sessao.close();
+        return tc;
     }
     
     public void popularTabela(JTable tabela, int escolha, String parametro)
@@ -111,21 +100,25 @@ public class FormaPagamentoDAO implements DAO<FormaPagamento>{
         // cria matriz de acordo com nº de registros da tabela
         int lin = 0;
         if(escolha==0) {
-            dadosTabela = new Object[readAll().size()][6];
+            dadosTabela = new Object[readAll().size()][3];
         
             for (FormaPagamento formaPagamento : readAll()) {
+                String situacao = (formaPagamento.getIndSituacao().equals("A") ? "Ativo" : "Excluído");
+                
                 dadosTabela[lin][0] = formaPagamento.getCodFormaPgto();
                 dadosTabela[lin][1] = formaPagamento.getDesFormaPgto();
-                dadosTabela[lin][2] = formaPagamento.getIndSituacao();
+                dadosTabela[lin][2] = situacao;
                 lin++;
             }
         } else if(escolha==1) {
-            dadosTabela = new Object[read(parametro).size()][6];
+            dadosTabela = new Object[read(parametro).size()][3];
         
             for (FormaPagamento formaPagamento : read(parametro)) {
+                String situacao = (formaPagamento.getIndSituacao().equals("A") ? "Ativo" : "Excluído");
+                
                 dadosTabela[lin][0] = formaPagamento.getCodFormaPgto();
                 dadosTabela[lin][1] = formaPagamento.getDesFormaPgto();
-                dadosTabela[lin][2] = formaPagamento.getIndSituacao();
+                dadosTabela[lin][2] = situacao;
                 lin++;
             }
         } else if(escolha==2) {
@@ -133,11 +126,12 @@ public class FormaPagamentoDAO implements DAO<FormaPagamento>{
             if(formaPagamento == null) {
                 JOptionPane.showMessageDialog(null, "Forma de Pagamento não encontrado pelo codigo: "+parametro);
             } else {
-                dadosTabela = new Object[1][6];
+                dadosTabela = new Object[1][3];
+                String situacao = (formaPagamento.getIndSituacao().equals("A") ? "Ativo" : "Excluído");
         
                 dadosTabela[lin][0] = formaPagamento.getCodFormaPgto();
                 dadosTabela[lin][1] = formaPagamento.getDesFormaPgto();
-                dadosTabela[lin][2] = formaPagamento.getIndSituacao();
+                dadosTabela[lin][2] = situacao;
                 lin++;
             }
             

@@ -24,16 +24,16 @@ import org.hibernate.cfg.Configuration;
  */
 public class ConsumivelDAO implements DAO<Consumivel>{
 
-    Session sessao = null;
-    Transaction t;
     public ConsumivelDAO() {
     }
     
     @Override
     public String insert(Consumivel pT) {
-        sessao = HibernateUtil.getSessionFactory().openSession();
-        t = sessao.beginTransaction();
+        Session sessao = HibernateUtil.getSessionFactory().openSession();
+        Transaction t = sessao.beginTransaction();
+
         sessao.saveOrUpdate(pT);
+
         t.commit();
         sessao.close();
         return null;
@@ -41,22 +41,14 @@ public class ConsumivelDAO implements DAO<Consumivel>{
 
     @Override
     public String update(Consumivel pT) {
-        sessao = HibernateUtil.getSessionFactory().openSession();
-        t = sessao.beginTransaction();
-        sessao.update(pT);
-        t.commit();
-        sessao.close();
         return null;
     }
 
     @Override
     public String delete(int pCodigo) {
-        sessao = HibernateUtil.getSessionFactory().openSession();
-        t = sessao.beginTransaction();
-        Consumivel consumivel = (Consumivel) sessao.load(Consumivel.class,pCodigo);
-        sessao.delete(consumivel);
-        t.commit();
-        sessao.close();
+        Consumivel forma = (Consumivel) readId(pCodigo);
+        forma.setIndSituacao("E");
+        insert(forma);
         return null;
     }
 
@@ -74,9 +66,7 @@ public class ConsumivelDAO implements DAO<Consumivel>{
         org.hibernate.Query q = sessao.createQuery("from Consumivel");
         resultado = q.list();
 
-        for (Object o : resultado) {
-            Consumivel s = (Consumivel) o;
-        }
+        sessao.close();
         return (ArrayList<Consumivel>) resultado;
     }
 
@@ -95,9 +85,7 @@ public class ConsumivelDAO implements DAO<Consumivel>{
         q.setParameter("nome", "%"+pParam.toLowerCase()+"%");
         resultado = q.list();
 
-        for (Object o : resultado) {
-            Consumivel s = (Consumivel) o;
-        }
+        sessao.close();
         return (ArrayList<Consumivel>) resultado;
     }
 
@@ -106,9 +94,10 @@ public class ConsumivelDAO implements DAO<Consumivel>{
         Session sessao = HibernateUtil.getSessionFactory().openSession();
         sessao.beginTransaction();
         
-        org.hibernate.Query q = sessao.createQuery("from Consumivel where id = " + pCodigo);
+        org.hibernate.Query q = sessao.createQuery("from Consumivel where codConsumivel = " + pCodigo);
         Consumivel c = (Consumivel) q.uniqueResult();
         
+        sessao.close();
         return c;
     }
     
@@ -131,24 +120,28 @@ public class ConsumivelDAO implements DAO<Consumivel>{
             dadosTabela = new Object[readAll().size()][6];
         
             for (Consumivel consumivel : readAll()) {
+                String situacao = (consumivel.getIndSituacao().equals("A") ? "Ativo" : "Excluído");
+                
                 dadosTabela[lin][0] = consumivel.getCodConsumivel();
                 dadosTabela[lin][1] = consumivel.getNomConsumivel();
                 dadosTabela[lin][2] = consumivel.getDesConsumivel();
                 dadosTabela[lin][3] = consumivel.getVlrConsumivel();
                 dadosTabela[lin][4] = consumivel.getTipConsumivel();
-                dadosTabela[lin][5] = consumivel.getIndSituacao();
+                dadosTabela[lin][5] = situacao;
                 lin++;
             }
         } else if(escolha==1) {
             dadosTabela = new Object[read(parametro).size()][6];
         
             for (Consumivel consumivel : read(parametro)) {
+                String situacao = (consumivel.getIndSituacao().equals("A") ? "Ativo" : "Excluído");
+                
                 dadosTabela[lin][0] = consumivel.getCodConsumivel();
                 dadosTabela[lin][1] = consumivel.getNomConsumivel();
                 dadosTabela[lin][2] = consumivel.getDesConsumivel();
                 dadosTabela[lin][3] = consumivel.getVlrConsumivel();
                 dadosTabela[lin][4] = consumivel.getTipConsumivel();
-                dadosTabela[lin][5] = consumivel.getIndSituacao();
+                dadosTabela[lin][5] = situacao;
                 lin++;
             }
         } else if(escolha==2) {
@@ -157,13 +150,14 @@ public class ConsumivelDAO implements DAO<Consumivel>{
                 JOptionPane.showMessageDialog(null, "Consumível não encontrado pelo codigo: "+parametro);
             } else {
                 dadosTabela = new Object[1][6];
-        
+                String situacao = (consumivel.getIndSituacao().equals("A") ? "Ativo" : "Excluído");
+                
                 dadosTabela[lin][0] = consumivel.getCodConsumivel();
                 dadosTabela[lin][1] = consumivel.getNomConsumivel();
                 dadosTabela[lin][2] = consumivel.getDesConsumivel();
                 dadosTabela[lin][3] = consumivel.getVlrConsumivel();
                 dadosTabela[lin][4] = consumivel.getTipConsumivel();
-                dadosTabela[lin][5] = consumivel.getIndSituacao();
+                dadosTabela[lin][5] = situacao;
                 lin++;
             }
             
