@@ -1,7 +1,7 @@
 package hotel.persistencia;
 
 import hotel.config.HibernateUtil;
-import hotel.model.TipoCama;
+import hotel.model.Quarto;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -13,13 +13,13 @@ import javax.swing.table.TableColumn;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class TipoCamaDAO implements DAO<TipoCama> {
+public class QuartoDAO implements DAO<Quarto> {
 
-    public TipoCamaDAO() {
+    public QuartoDAO() {
     }
 
     @Override
-    public String insert(TipoCama pT) {
+    public String insert(Quarto pT) {
         Session sessao = HibernateUtil.getSessionFactory().openSession();
         Transaction t = sessao.beginTransaction();
 
@@ -31,55 +31,52 @@ public class TipoCamaDAO implements DAO<TipoCama> {
     }
 
     @Override
-    public String update(TipoCama pT) {
+    public String update(Quarto pT) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public String delete(int pCodigo) {
-        TipoCama tipoCama = (TipoCama) readId(pCodigo);
-        tipoCama.setIndSituacao("E");
-        insert(tipoCama);
+        Quarto quarto = (Quarto) readId(pCodigo);
+        quarto.setIndSituacao("E");
+        insert(quarto);
         return null;
     }
 
     @Override
-    public ArrayList<TipoCama> readAll() {
+    public ArrayList<Quarto> readAll() {
         List resultado = null;
         Session sessao = HibernateUtil.getSessionFactory().openSession();
         sessao.beginTransaction();
 
-        org.hibernate.Query q = sessao.createQuery("FROM TipoCama");
+        org.hibernate.Query q = sessao.createQuery("FROM Quarto");
         resultado = q.list();
 
-        sessao.close();
-        return (ArrayList<TipoCama>) resultado;
+        return (ArrayList<Quarto>) resultado;
     }
 
     @Override
-    public ArrayList<TipoCama> read(String pParam) {
+    public ArrayList<Quarto> read(String pParam) {
         List resultado = null;
         Session sessao = HibernateUtil.getSessionFactory().openSession();
         sessao.beginTransaction();
 
-        org.hibernate.Query q = sessao.createQuery("FROM TipoCama WHERE desTipoCama LIKE :desTipoCama");
-        q.setParameter("desTipoCama", "%" + pParam.toLowerCase() + "%");
+        org.hibernate.Query q = sessao.createQuery("FROM Quarto WHERE numQuarto LIKE :numQuarto");
+        q.setParameter("numQuarto", "%" + pParam.toLowerCase() + "%");
         resultado = q.list();
 
-        sessao.close();
-        return (ArrayList<TipoCama>) resultado;
+        return (ArrayList<Quarto>) resultado;
     }
 
     @Override
-    public TipoCama readId(int pCodigo) {
+    public Quarto readId(int pCodigo) {
         Session sessao = HibernateUtil.getSessionFactory().openSession();
         sessao.beginTransaction();
 
-        org.hibernate.Query q = sessao.createQuery("FROM TipoCama WHERE codTipoCama = " + pCodigo);
-        TipoCama tipoCama = (TipoCama) q.uniqueResult();
+        org.hibernate.Query q = sessao.createQuery("FROM Quarto WHERE codQuarto = " + pCodigo);
+        Quarto quarto = (Quarto) q.uniqueResult();
 
-        sessao.close();
-        return tipoCama;
+        return quarto;
     }
 
     public void popularTabela(JTable pTabela, int pOption, String pParam) {
@@ -93,43 +90,43 @@ public class TipoCamaDAO implements DAO<TipoCama> {
 
         int lLinha = 0;
         if (pOption == 0) {
-            ArrayList<TipoCama> listTipoCama = readAll();
+            ArrayList<Quarto> listQuarto = readAll();
 
-            lTabela = new Object[listTipoCama.size()][6];
-            for (TipoCama tipoCama : listTipoCama) {
-                String situacao = (tipoCama.getIndSituacao().equals("A") ? "Ativo" : "Excluído");
+            lTabela = new Object[listQuarto.size()][6];
+            for (Quarto quarto : listQuarto) {
+                String situacao = (quarto.getIndSituacao().equals("A") ? "Ativo" : "Excluído");
 
-                lTabela[lLinha][0] = tipoCama.getCodTipoCama();
-                lTabela[lLinha][1] = tipoCama.getDesTipoCama();
-                lTabela[lLinha][2] = tipoCama.getQtdLugarTipoCama();
-                lTabela[lLinha][3] = situacao;
+//                lTabela[lLinha][0] = quarto.getCodTipoCama();
+//                lTabela[lLinha][1] = quarto.getDesTipoCama();
+//                lTabela[lLinha][2] = quarto.getQtdLugarTipoCama();
+//                lTabela[lLinha][3] = situacao;
                 lLinha++;
             }
         } else if (pOption == 1) {
-            ArrayList<TipoCama> listTipoCama = read(pParam);
+            ArrayList<Quarto> listQuarto = read(pParam);
 
-            lTabela = new Object[listTipoCama.size()][6];
-            for (TipoCama tipoCama : listTipoCama) {
-                String situacao = (tipoCama.getIndSituacao().equals("A") ? "Ativo" : "Excluído");
+            lTabela = new Object[listQuarto.size()][6];
+            for (Quarto quarto : listQuarto) {
+                String situacao = (quarto.getIndSituacao().equals("A") ? "Ativo" : "Excluído");
 
-                lTabela[lLinha][0] = tipoCama.getCodTipoCama();
-                lTabela[lLinha][1] = tipoCama.getDesTipoCama();
-                lTabela[lLinha][2] = tipoCama.getQtdLugarTipoCama();
+//                lTabela[lLinha][0] = quarto.getCodTipoCama();
+//                lTabela[lLinha][1] = quarto.getDesTipoCama();
+//                lTabela[lLinha][2] = quarto.getQtdLugarTipoCama();
                 lTabela[lLinha][3] = situacao;
                 lLinha++;
             }
         } else {
-            TipoCama tipoCama = readId(Integer.parseInt(pParam));
-            if (tipoCama == null) {
+            Quarto quarto = readId(Integer.parseInt(pParam));
+            if (quarto == null) {
                 JOptionPane.showMessageDialog(null, "Tipo de Cama não encontrado pelo código " + pParam);
             } else {
-                String situacao = (tipoCama.getIndSituacao().equals("A") ? "Ativo" : "Excluído");
+                String situacao = (quarto.getIndSituacao().equals("A") ? "Ativo" : "Excluído");
 
                 lTabela = new Object[1][4];
 
-                lTabela[lLinha][0] = tipoCama.getCodTipoCama();
-                lTabela[lLinha][1] = tipoCama.getDesTipoCama();
-                lTabela[lLinha][2] = tipoCama.getQtdLugarTipoCama();
+//                lTabela[lLinha][0] = quarto.getCodTipoCama();
+//                lTabela[lLinha][1] = quarto.getDesTipoCama();
+//                lTabela[lLinha][2] = quarto.getQtdLugarTipoCama();
                 lTabela[lLinha][3] = situacao;
                 lLinha++;
             }

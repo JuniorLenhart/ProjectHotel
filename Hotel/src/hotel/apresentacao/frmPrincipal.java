@@ -73,6 +73,11 @@ public class frmPrincipal extends javax.swing.JFrame {
         mnuCadastro.add(mniTipoCama);
 
         mniQuarto.setText("Quarto");
+        mniQuarto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniQuartoActionPerformed(evt);
+            }
+        });
         mnuCadastro.add(mniQuarto);
 
         mniConsumivel.setText("Consumível");
@@ -174,6 +179,10 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void mniFormaPgtoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniFormaPgtoActionPerformed
         abrirTela(new frmFormaPagamento());
     }//GEN-LAST:event_mniFormaPgtoActionPerformed
+
+    private void mniQuartoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniQuartoActionPerformed
+        abrirTela(new frmQuarto());
+    }//GEN-LAST:event_mniQuartoActionPerformed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
