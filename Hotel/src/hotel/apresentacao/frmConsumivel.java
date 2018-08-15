@@ -109,6 +109,15 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
         }
         setVisibleCodigo(true);
     }
+    
+    public void adicionaVariaveisComboBox(javax.swing.JComboBox comboBox) {
+        List<String> lc;
+        lc = new ArrayList<>();
+        for(TipoConsumivel tc : TipoConsumivel.values()) {
+            lc.add(tc.getValor());
+        }
+        comboBox.setModel(new DefaultComboBoxModel(lc.toArray()));
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -218,6 +227,7 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
         tfdPreco.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
         tfdPreco.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         tfdPreco.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        tfdPreco.setLimit(10);
 
         lblTipo.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lblTipo.setForeground(new java.awt.Color(102, 102, 102));
@@ -638,15 +648,6 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
         lblPesquisa.setText("Código:");
     }//GEN-LAST:event_rbCodigoStateChanged
     
-    
-    public void adicionaVariaveisComboBox(javax.swing.JComboBox comboBox) {
-        List<String> lc;
-        lc = new ArrayList<>();
-        for(TipoConsumivel tc : TipoConsumivel.values()) {
-            lc.add(tc.getValor());
-        }
-        comboBox.setModel(new DefaultComboBoxModel(lc.toArray()));
-    }
     /**
      * @param args the command line arguments
      */

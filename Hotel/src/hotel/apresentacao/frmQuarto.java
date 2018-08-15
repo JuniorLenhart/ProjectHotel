@@ -1,12 +1,24 @@
 package hotel.apresentacao;
 
 import hotel.apoio.DocumentoLimitado;
+import hotel.apoio.JCheckBoxList;
 import hotel.apoio.LimpaCampos;
 import hotel.apoio.Validacao;
 import hotel.model.Quarto;
+import hotel.model.TipoCama;
 import hotel.persistencia.QuartoDAO;
+import hotel.persistencia.TipoCamaDAO;
+import java.awt.Dimension;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultListModel;
+import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -21,7 +33,8 @@ public class frmQuarto extends javax.swing.JInternalFrame {
 
         new QuartoDAO().popularTabela(tblLista, 0, "");
 
-//        tfdDescricao.setDocument(new DocumentoLimitado(100));
+        tfdNumero.setDocument(new DocumentoLimitado(100));
+        tfdValor.setLimit(10);
 
         tblLista.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -29,7 +42,7 @@ public class frmQuarto extends javax.swing.JInternalFrame {
                 habilitar();
             }
         });
-
+        populaListTipoQuarto();
         setAba(0);
     }
 
@@ -63,7 +76,7 @@ public class frmQuarto extends javax.swing.JInternalFrame {
         } else {
             String lSituacao = "";
             if (tblLista.getSelectedRow() != -1) {
-                lSituacao = String.valueOf(tblLista.getValueAt(tblLista.getSelectedRow(), 3));
+                lSituacao = String.valueOf(tblLista.getValueAt(tblLista.getSelectedRow(), 4));
             }
 
             btnSalvar.setEnabled(false);
@@ -72,11 +85,44 @@ public class frmQuarto extends javax.swing.JInternalFrame {
         }
     }
 
+    private void populaListTipoQuarto() {
+        List<TipoCama> lc;
+        lc = new ArrayList<>();
+        DefaultListModel<JCheckBox> model = new DefaultListModel();
+        TipoCamaDAO cama = new TipoCamaDAO();
+        for (TipoCama tc : cama.readAll()) {
+            JCheckBox checkBox = new JCheckBox(tc.getDesTipoCama() + " - Lugares: " + tc.getQtdLugarTipoCama(), false);
+            checkBox.setName(tc.getCodTipoCama().toString());
+            model.addElement(checkBox);
+        }
+        JCheckBoxList jCheckBoxList = new JCheckBoxList(model);
+        lstTipoQuarto.setModel(model);
+        lstTipoQuarto.setCellRenderer(jCheckBoxList.getCellRenderer());
+        lstTipoQuarto.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                int index = lstTipoQuarto.locationToIndex(e.getPoint());
+                if (index != -1) {
+                    JCheckBox checkbox = (JCheckBox) lstTipoQuarto.getModel().getElementAt(index);
+                    checkbox.setSelected(!checkbox.isSelected());
+                    repaint();
+                }
+            }
+        });
+        lstTipoQuarto.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+    }
+
     public void popularTelaCadastro() {
-//        tfdCodigo.setText(tipoCama.getCodTipoCama().toString());
-//        tfdDescricao.setText(tipoCama.getDesTipoCama());
-//        tfdLugar.setValue(tipoCama.getQtdLugarTipoCama());
-//        setVisibleCodigo(true);
+        tfdCodigo.setText(quarto.getCodQuarto().toString());
+        tfdNumero.setText(quarto.getNumQuarto());
+        tfdValor.setValue(quarto.getVlrQuarto());
+        for (TipoCama cama : quarto.getTipoCama()) {
+            for (int i = 0; i < lstTipoQuarto.getModel().getSize(); i++) {
+                if (cama.getCodTipoCama().toString().equals(lstTipoQuarto.getModel().getElementAt(i).getName())) {
+                    lstTipoQuarto.getModel().getElementAt(i).setSelected(true);
+                }
+            }
+        }
+        setVisibleCodigo(true);
     }
 
     @SuppressWarnings("unchecked")
@@ -86,12 +132,15 @@ public class frmQuarto extends javax.swing.JInternalFrame {
         rbGroup = new javax.swing.ButtonGroup();
         tbpTipoCama = new javax.swing.JTabbedPane();
         pnlCadastro = new javax.swing.JPanel();
-        lblDescricao = new javax.swing.JLabel();
+        lblNumero = new javax.swing.JLabel();
         lblCodigo = new javax.swing.JLabel();
         tfdCodigo = new javax.swing.JTextField();
-        lblLugar = new javax.swing.JLabel();
-        jNumberFormatField1 = new hotel.apoio.JNumberFormatField();
-        jNumberFormatField2 = new hotel.apoio.JNumberFormatField();
+        lblValor = new javax.swing.JLabel();
+        tfdNumero = new hotel.apoio.JNumberFormatField();
+        tfdValor = new hotel.apoio.JNumberFormatField();
+        scpTipoQuarto = new javax.swing.JScrollPane();
+        lstTipoQuarto = new javax.swing.JList<>();
+        lblTipoQuarto = new javax.swing.JLabel();
         pnlListagem = new javax.swing.JPanel();
         pnlDetalhe = new javax.swing.JPanel();
         tfdPesquisa = new javax.swing.JTextField();
@@ -121,11 +170,11 @@ public class frmQuarto extends javax.swing.JInternalFrame {
         pnlCadastro.setBackground(new java.awt.Color(255, 255, 255));
         pnlCadastro.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Cadastro de Quarto", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("SansSerif", 1, 14))); // NOI18N
 
-        lblDescricao.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        lblDescricao.setForeground(new java.awt.Color(102, 102, 102));
-        lblDescricao.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblDescricao.setText("<html>Número<font color='red'><b>*</b></font>:</html>");
-        lblDescricao.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        lblNumero.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        lblNumero.setForeground(new java.awt.Color(102, 102, 102));
+        lblNumero.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblNumero.setText("<html>Número<font color='red'><b>*</b></font>:</html>");
+        lblNumero.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
         lblCodigo.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lblCodigo.setForeground(new java.awt.Color(102, 102, 102));
@@ -136,34 +185,46 @@ public class frmQuarto extends javax.swing.JInternalFrame {
         tfdCodigo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         tfdCodigo.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
 
-        lblLugar.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        lblLugar.setForeground(new java.awt.Color(102, 102, 102));
-        lblLugar.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblLugar.setText("<html>Valor<font color='red'><b>*</b></font>:</html>");
-        lblLugar.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        lblValor.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        lblValor.setForeground(new java.awt.Color(102, 102, 102));
+        lblValor.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblValor.setText("<html>Valor<font color='red'><b>*</b></font>:</html>");
+        lblValor.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
-        jNumberFormatField1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        jNumberFormatField1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        tfdNumero.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
+        tfdNumero.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
 
-        jNumberFormatField2.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        jNumberFormatField2.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        tfdValor.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
+        tfdValor.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+
+        lstTipoQuarto.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
+        lstTipoQuarto.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        scpTipoQuarto.setViewportView(lstTipoQuarto);
+
+        lblTipoQuarto.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        lblTipoQuarto.setForeground(new java.awt.Color(102, 102, 102));
+        lblTipoQuarto.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblTipoQuarto.setText("<html>Tipo(s) de quarto(s):<font color='red'><b>*</b></font>:</html>");
+        lblTipoQuarto.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
         javax.swing.GroupLayout pnlCadastroLayout = new javax.swing.GroupLayout(pnlCadastro);
         pnlCadastro.setLayout(pnlCadastroLayout);
         pnlCadastroLayout.setHorizontalGroup(
             pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlCadastroLayout.createSequentialGroup()
-                .addGap(150, 150, 150)
+                .addGap(110, 110, 110)
                 .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
-                    .addComponent(lblDescricao, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblLugar, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(lblCodigo)
+                    .addComponent(lblNumero, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblValor, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblTipoQuarto, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
                 .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(tfdCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                    .addComponent(jNumberFormatField1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jNumberFormatField2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(150, Short.MAX_VALUE))
+                    .addComponent(scpTipoQuarto)
+                    .addComponent(tfdCodigo)
+                    .addComponent(tfdNumero, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tfdValor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(102, Short.MAX_VALUE))
         );
         pnlCadastroLayout.setVerticalGroup(
             pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -174,13 +235,17 @@ public class frmQuarto extends javax.swing.JInternalFrame {
                     .addComponent(tfdCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jNumberFormatField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfdNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblLugar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jNumberFormatField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(309, Short.MAX_VALUE))
+                    .addComponent(lblValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfdValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTipoQuarto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(scpTipoQuarto, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(169, Short.MAX_VALUE))
         );
 
         tbpTipoCama.addTab("Adicionar", pnlCadastro);
@@ -313,7 +378,7 @@ public class frmQuarto extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(pnlDetalhe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scpLista, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
+                .addComponent(scpLista, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -409,7 +474,7 @@ public class frmQuarto extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(pnlHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tbpTipoCama, javax.swing.GroupLayout.DEFAULT_SIZE, 486, Short.MAX_VALUE)
+                .addComponent(tbpTipoCama)
                 .addContainerGap())
         );
 
@@ -426,33 +491,43 @@ public class frmQuarto extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tfdPesquisaKeyTyped
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-//        if (tfdPesquisa.getText().trim().isEmpty()) {
-//            new TipoCamaDAO().popularTabela(tblLista, 0, "");
-//        } else if (rbNome.isSelected()) {
-//            new TipoCamaDAO().popularTabela(tblLista, 1, tfdPesquisa.getText());
-//        } else if (rbCodigo.isSelected()) {
-//            new TipoCamaDAO().popularTabela(tblLista, 2, tfdPesquisa.getText());
-//        }
+        if (tfdPesquisa.getText().trim().isEmpty()) {
+            new TipoCamaDAO().popularTabela(tblLista, 0, "");
+        } else if (rbNome.isSelected()) {
+            new TipoCamaDAO().popularTabela(tblLista, 1, tfdPesquisa.getText());
+        } else if (rbCodigo.isSelected()) {
+            new TipoCamaDAO().popularTabela(tblLista, 2, tfdPesquisa.getText());
+        }
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         if (Validacao.validarCampos(pnlCadastro) == 0) {
-//            tipoCama.setDesTipoCama(tfdDescricao.getText());
-//            tipoCama.setQtdLugarTipoCama((int) tfdLugar.getValue());
-//            tipoCama.setIndSituacao("A");
-//            new TipoCamaDAO().insert(tipoCama);
-//
-//            if (tipoCama.getCodTipoCama() != null) {
-//                JOptionPane.showMessageDialog(this, "Atualizado com sucesso!");
-//                setVisibleCodigo(false);
-//            } else {
-//                JOptionPane.showMessageDialog(this, "Cadastrado com sucesso!");
-//            }
-//
-//            new TipoCamaDAO().popularTabela(tblLista, 0, "");
-//
-//            limparCampos();
-//            setAba(1);
+            boolean isNew = (quarto.getCodQuarto() != null ? false : true);
+
+            quarto.setNumQuarto(tfdNumero.getText());
+            quarto.setVlrQuarto(tfdValor.getValue());
+            List<TipoCama> listaTiposCamasSelecionadas = new ArrayList<>();
+            for (int i = 0; i < lstTipoQuarto.getModel().getSize(); i++) {
+                if (lstTipoQuarto.getModel().getElementAt(i).isSelected()) {
+                    int codigo = Integer.parseInt(lstTipoQuarto.getModel().getElementAt(i).getName());
+                    listaTiposCamasSelecionadas.add(new TipoCamaDAO().readId(codigo));
+                }
+            }
+            quarto.setTipoCama(listaTiposCamasSelecionadas);
+            quarto.setIndSituacao("A");
+            new QuartoDAO().insert(quarto);
+
+            if (!isNew) {
+                JOptionPane.showMessageDialog(this, "Atualizado com sucesso!");
+                setVisibleCodigo(false);
+            } else {
+                JOptionPane.showMessageDialog(this, "Cadastrado com sucesso!");
+            }
+
+            new QuartoDAO().popularTabela(tblLista, 0, "");
+
+            limparCampos();
+            setAba(1);
         } else {
             JOptionPane.showMessageDialog(this, "Campos obrigatórios não preenchidos!");
         }
@@ -471,10 +546,10 @@ public class frmQuarto extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnFecharActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-//        tipoCama = new TipoCamaDAO().readId(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString()));
-//        popularTelaCadastro();
-//        setAba(0);
-//        tfdDescricao.requestFocus();
+        quarto = new QuartoDAO().readId(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString()));
+        popularTelaCadastro();
+        setAba(0);
+        tfdNumero.requestFocus();
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void rbNomeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbNomeItemStateChanged
@@ -482,13 +557,13 @@ public class frmQuarto extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_rbNomeItemStateChanged
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-//        Object[] options = {"Sim", "Não"};
-//        int option = JOptionPane.showOptionDialog(null, "Você tem certeza que gostaria de excluir o registro " + tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString() + "?", "Escolha", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-//        if (option == 0) {
-//            new TipoCamaDAO().delete(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString()));
-//            JOptionPane.showMessageDialog(this, "Excluído com sucesso!");
-//            new TipoCamaDAO().popularTabela(tblLista, 0, "");
-//        }
+        Object[] options = {"Sim", "Não"};
+        int option = JOptionPane.showOptionDialog(null, "Você tem certeza que gostaria de excluir o registro " + tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString() + "?", "Escolha", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        if (option == 0) {
+            new QuartoDAO().delete(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString()));
+            JOptionPane.showMessageDialog(this, "Excluído com sucesso!");
+            new QuartoDAO().popularTabela(tblLista, 0, "");
+        }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     public static void main(String args[]) {
@@ -505,12 +580,12 @@ public class frmQuarto extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnFechar;
     private javax.swing.JButton btnPesquisar;
     private javax.swing.JButton btnSalvar;
-    private hotel.apoio.JNumberFormatField jNumberFormatField1;
-    private hotel.apoio.JNumberFormatField jNumberFormatField2;
     private javax.swing.JLabel lblCodigo;
-    private javax.swing.JLabel lblDescricao;
-    private javax.swing.JLabel lblLugar;
+    private javax.swing.JLabel lblNumero;
     private javax.swing.JLabel lblPesquisa;
+    private javax.swing.JLabel lblTipoQuarto;
+    private javax.swing.JLabel lblValor;
+    private javax.swing.JList<JCheckBox> lstTipoQuarto;
     private javax.swing.JPanel pnlCadastro;
     private javax.swing.JPanel pnlDetalhe;
     private javax.swing.JPanel pnlHeader;
@@ -520,9 +595,12 @@ public class frmQuarto extends javax.swing.JInternalFrame {
     private javax.swing.ButtonGroup rbGroup;
     private javax.swing.JRadioButton rbNome;
     private javax.swing.JScrollPane scpLista;
+    private javax.swing.JScrollPane scpTipoQuarto;
     private javax.swing.JTable tblLista;
     private javax.swing.JTabbedPane tbpTipoCama;
     private javax.swing.JTextField tfdCodigo;
+    private hotel.apoio.JNumberFormatField tfdNumero;
     private javax.swing.JTextField tfdPesquisa;
+    private hotel.apoio.JNumberFormatField tfdValor;
     // End of variables declaration//GEN-END:variables
 }

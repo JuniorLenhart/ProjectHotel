@@ -2,14 +2,19 @@ package hotel.persistencia;
 
 import hotel.config.HibernateUtil;
 import hotel.model.Quarto;
+import hotel.model.TipoCama;
+import java.awt.Color;
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -52,6 +57,7 @@ public class QuartoDAO implements DAO<Quarto> {
         org.hibernate.Query q = sessao.createQuery("FROM Quarto");
         resultado = q.list();
 
+        sessao.close();
         return (ArrayList<Quarto>) resultado;
     }
 
@@ -65,6 +71,7 @@ public class QuartoDAO implements DAO<Quarto> {
         q.setParameter("numQuarto", "%" + pParam.toLowerCase() + "%");
         resultado = q.list();
 
+        sessao.close();
         return (ArrayList<Quarto>) resultado;
     }
 
@@ -76,17 +83,19 @@ public class QuartoDAO implements DAO<Quarto> {
         org.hibernate.Query q = sessao.createQuery("FROM Quarto WHERE codQuarto = " + pCodigo);
         Quarto quarto = (Quarto) q.uniqueResult();
 
+        sessao.close();
         return quarto;
     }
 
     public void popularTabela(JTable pTabela, int pOption, String pParam) {
         Object[][] lTabela = null;
 
-        Object[] lTabelaTitulo = new Object[4];
+        Object[] lTabelaTitulo = new Object[5];
         lTabelaTitulo[0] = "Código";
-        lTabelaTitulo[1] = "Descrição";
-        lTabelaTitulo[2] = "Lugar";
-        lTabelaTitulo[3] = "Situação";
+        lTabelaTitulo[1] = "Número Quarto";
+        lTabelaTitulo[2] = "Valor";
+        lTabelaTitulo[3] = "Tipo(s) de quarto(s)";
+        lTabelaTitulo[4] = "Situação";
 
         int lLinha = 0;
         if (pOption == 0) {
@@ -96,10 +105,17 @@ public class QuartoDAO implements DAO<Quarto> {
             for (Quarto quarto : listQuarto) {
                 String situacao = (quarto.getIndSituacao().equals("A") ? "Ativo" : "Excluído");
 
-//                lTabela[lLinha][0] = quarto.getCodTipoCama();
-//                lTabela[lLinha][1] = quarto.getDesTipoCama();
-//                lTabela[lLinha][2] = quarto.getQtdLugarTipoCama();
-//                lTabela[lLinha][3] = situacao;
+                lTabela[lLinha][0] = quarto.getCodQuarto();
+                lTabela[lLinha][1] = quarto.getNumQuarto();
+                lTabela[lLinha][2] = quarto.getVlrQuarto();
+                String inicio = "<html> ";
+                for (TipoCama cama : quarto.getTipoCama()) {
+                    lTabela[lLinha][3] += inicio + cama.getDesTipoCama() + " - Lugares: " + cama.getQtdLugarTipoCama() + "<br/> ";
+                    inicio = null;
+                }
+                lTabela[lLinha][3] += " </html>";
+                lTabela[lLinha][4] = situacao;
+
                 lLinha++;
             }
         } else if (pOption == 1) {
@@ -109,10 +125,14 @@ public class QuartoDAO implements DAO<Quarto> {
             for (Quarto quarto : listQuarto) {
                 String situacao = (quarto.getIndSituacao().equals("A") ? "Ativo" : "Excluído");
 
-//                lTabela[lLinha][0] = quarto.getCodTipoCama();
-//                lTabela[lLinha][1] = quarto.getDesTipoCama();
-//                lTabela[lLinha][2] = quarto.getQtdLugarTipoCama();
-                lTabela[lLinha][3] = situacao;
+                lTabela[lLinha][0] = quarto.getCodQuarto();
+                lTabela[lLinha][1] = quarto.getNumQuarto();
+                lTabela[lLinha][2] = quarto.getVlrQuarto();
+                for (TipoCama cama : quarto.getTipoCama()) {
+                    lTabela[lLinha][3] += "<html>" + cama.getDesTipoCama() + " - Lugares: " + cama.getQtdLugarTipoCama() + "<br /> </html>";
+                }
+                lTabela[lLinha][4] = situacao;
+
                 lLinha++;
             }
         } else {
@@ -124,10 +144,14 @@ public class QuartoDAO implements DAO<Quarto> {
 
                 lTabela = new Object[1][4];
 
-//                lTabela[lLinha][0] = quarto.getCodTipoCama();
-//                lTabela[lLinha][1] = quarto.getDesTipoCama();
-//                lTabela[lLinha][2] = quarto.getQtdLugarTipoCama();
-                lTabela[lLinha][3] = situacao;
+                lTabela[lLinha][0] = quarto.getCodQuarto();
+                lTabela[lLinha][1] = quarto.getNumQuarto();
+                lTabela[lLinha][2] = quarto.getVlrQuarto();
+                for (TipoCama cama : quarto.getTipoCama()) {
+                    lTabela[lLinha][3] += "<html>" + cama.getDesTipoCama() + " - Lugares: " + cama.getQtdLugarTipoCama() + "<br> </html>";
+                }
+                lTabela[lLinha][4] = situacao;
+
                 lLinha++;
             }
         }
@@ -144,7 +168,7 @@ public class QuartoDAO implements DAO<Quarto> {
                 }
                  */
             }
-
+            
             // Alteração no método que determina a coluna em que o objeto ImageIcon deverá aparecer
             @Override
             public Class getColumnClass(int pColumn) {
@@ -177,7 +201,7 @@ public class QuartoDAO implements DAO<Quarto> {
                     lColumn.setCellRenderer(lRight);
                     break;
                 case 1:
-                    lColumn.setPreferredWidth(200);
+                    lColumn.setPreferredWidth(50);
                     lColumn.setCellRenderer(lLeft);
                     break;
                 case 2:
@@ -185,19 +209,25 @@ public class QuartoDAO implements DAO<Quarto> {
                     lColumn.setCellRenderer(lCenter);
                     break;
                 case 3:
+                    lColumn.setPreferredWidth(200);
+                    lColumn.setCellRenderer(lCenter);
+                    break;
+                case 4:
                     lColumn.setPreferredWidth(50);
                     lColumn.setCellRenderer(lCenter);
                     break;
             }
         }
-
-        /*
-        // Renderização das linhas da tabela mudar a cor
+        /*// Renderização das linhas da tabela mudar a cor
         pTabela.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                
+                int fontHeight = this.getFontMetrics(this.getFont()).getHeight();
+                int textLength = this.getText().length();
+                int lines = textLength / table.getColumnCount() +1;//+1, cause we need at least 1 row.           
+                int height = fontHeight * lines;            
+                table.setRowHeight(row, height);
                 if (row % 2 == 0) {
                     setBackground(Color.GREEN);
                 } else {
@@ -205,7 +235,7 @@ public class QuartoDAO implements DAO<Quarto> {
                 }
                 return this;
             }
-        });
-         */
+            
+        });*/
     }
 }
