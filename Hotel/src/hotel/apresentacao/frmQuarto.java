@@ -89,8 +89,9 @@ public class frmQuarto extends javax.swing.JInternalFrame {
         List<TipoCama> lc;
         lc = new ArrayList<>();
         DefaultListModel<JCheckBox> model = new DefaultListModel();
-        TipoCamaDAO cama = new TipoCamaDAO();
-        for (TipoCama tc : cama.readAll()) {
+        TipoCamaDAO tipoCama = new TipoCamaDAO();
+        ArrayList<TipoCama> listTipoCama = tipoCama.readAll();
+        for (TipoCama tc : listTipoCama) {
             JCheckBox checkBox = new JCheckBox(tc.getDesTipoCama() + " - Lugares: " + tc.getQtdLugarTipoCama(), false);
             checkBox.setName(tc.getCodTipoCama().toString());
             model.addElement(checkBox);
