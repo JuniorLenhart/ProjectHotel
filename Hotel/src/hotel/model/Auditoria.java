@@ -1,13 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package hotel.model;
 
-import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,44 +8,29 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- *
- * @author Júnior
- */
 @Entity
 @Table(name = "auditoria")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Auditoria.findAll", query = "SELECT a FROM Auditoria a")
-    , @NamedQuery(name = "Auditoria.findByCodAuditoria", query = "SELECT a FROM Auditoria a WHERE a.codAuditoria = :codAuditoria")
-    , @NamedQuery(name = "Auditoria.findByTipAuditoria", query = "SELECT a FROM Auditoria a WHERE a.tipAuditoria = :tipAuditoria")
-    , @NamedQuery(name = "Auditoria.findByDtaAuditoria", query = "SELECT a FROM Auditoria a WHERE a.dtaAuditoria = :dtaAuditoria")
-    , @NamedQuery(name = "Auditoria.findByDesAuditoria", query = "SELECT a FROM Auditoria a WHERE a.desAuditoria = :desAuditoria")})
-public class Auditoria implements Serializable {
+public class Auditoria {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
     @Column(name = "cod_auditoria")
     private Integer codAuditoria;
-    @Basic(optional = false)
+
     @Column(name = "tip_auditoria")
     private String tipAuditoria;
-    @Basic(optional = false)
+
     @Column(name = "dta_auditoria")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dtaAuditoria;
-    @Basic(optional = false)
+
     @Column(name = "des_auditoria")
     private String desAuditoria;
+
     @JoinColumn(name = "cod_usuario", referencedColumnName = "cod_usuario")
     @ManyToOne(optional = false)
     private Usuario codUsuario;
@@ -120,7 +98,6 @@ public class Auditoria implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Auditoria)) {
             return false;
         }
@@ -135,5 +112,4 @@ public class Auditoria implements Serializable {
     public String toString() {
         return "hotel.model.Auditoria[ codAuditoria=" + codAuditoria + " ]";
     }
-    
 }

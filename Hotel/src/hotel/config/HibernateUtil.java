@@ -1,11 +1,14 @@
 package hotel.config;
 
+import org.hibernate.Session;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 public class HibernateUtil {
 
     private static final SessionFactory sessionFactory;
+    private static Session session;
 
     static {
         try {
@@ -18,5 +21,22 @@ public class HibernateUtil {
 
     public static SessionFactory getSessionFactory() {
         return sessionFactory;
+    }
+
+    public static Session getSession() {
+        if (session == null) {
+            session = getSessionFactory().openSession();
+        }
+        return session;
+    }
+
+    public static void closeSession() {
+        if (session != null) {
+            session.close();
+        }
+    }
+
+    public static Transaction getBeginTransaction() {
+        return getSession().beginTransaction();
     }
 }

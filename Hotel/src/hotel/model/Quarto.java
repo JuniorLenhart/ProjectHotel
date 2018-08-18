@@ -1,9 +1,7 @@
 package hotel.model;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,23 +16,19 @@ import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name = "quarto")
-public class Quarto implements Serializable {
+public class Quarto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
     @Column(name = "cod_quarto")
     private Integer codQuarto;
 
-    @Basic(optional = false)
     @Column(name = "num_quarto")
     private String numQuarto;
 
-    @Basic(optional = false)
     @Column(name = "vlr_quarto")
     private BigDecimal vlrQuarto;
 
-    @Basic(optional = false)
     @Column(name = "ind_situacao")
     private String indSituacao;
 

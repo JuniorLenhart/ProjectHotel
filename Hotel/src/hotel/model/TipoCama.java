@@ -1,7 +1,5 @@
 package hotel.model;
 
-import java.io.Serializable;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,23 +9,19 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tipo_cama")
-public class TipoCama implements Serializable {
+public class TipoCama {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
     @Column(name = "cod_tipo_cama")
     private Integer codTipoCama;
 
-    @Basic(optional = false)
     @Column(name = "des_tipo_cama")
     private String desTipoCama;
 
-    @Basic(optional = false)
     @Column(name = "qtd_lugar_tipo_cama")
     private int qtdLugarTipoCama;
 
-    @Basic(optional = false)
     @Column(name = "ind_situacao")
     private String indSituacao;
 
