@@ -1,12 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package hotel.model;
 
-import java.io.Serializable;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,40 +7,27 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- *
- * @author Júnior
- */
 @Entity
 @Table(name = "permissao")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Permissao.findAll", query = "SELECT p FROM Permissao p")
-    , @NamedQuery(name = "Permissao.findByCodPermissao", query = "SELECT p FROM Permissao p WHERE p.codPermissao = :codPermissao")
-    , @NamedQuery(name = "Permissao.findByIndLeitura", query = "SELECT p FROM Permissao p WHERE p.indLeitura = :indLeitura")
-    , @NamedQuery(name = "Permissao.findByIndEscrita", query = "SELECT p FROM Permissao p WHERE p.indEscrita = :indEscrita")})
-public class Permissao implements Serializable {
+public class Permissao {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
     @Column(name = "cod_permissao")
     private Integer codPermissao;
-    @Basic(optional = false)
+
     @Column(name = "ind_leitura")
     private String indLeitura;
-    @Basic(optional = false)
+
     @Column(name = "ind_escrita")
     private String indEscrita;
+
     @JoinColumn(name = "cod_aplicacao", referencedColumnName = "cod_aplicacao")
     @ManyToOne(optional = false)
     private Aplicacao codAplicacao;
+
     @JoinColumn(name = "cod_usuario", referencedColumnName = "cod_usuario")
     @ManyToOne(optional = false)
     private Usuario codUsuario;
@@ -129,5 +109,4 @@ public class Permissao implements Serializable {
     public String toString() {
         return "hotel.model.Permissao[ codPermissao=" + codPermissao + " ]";
     }
-    
 }

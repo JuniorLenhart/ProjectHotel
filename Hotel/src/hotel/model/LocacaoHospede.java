@@ -1,12 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package hotel.model;
 
-import java.io.Serializable;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,36 +7,24 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- *
- * @author Júnior
- */
 @Entity
 @Table(name = "locacao_hospede")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "LocacaoHospede.findAll", query = "SELECT l FROM LocacaoHospede l")
-    , @NamedQuery(name = "LocacaoHospede.findByCodLocacaoHospede", query = "SELECT l FROM LocacaoHospede l WHERE l.codLocacaoHospede = :codLocacaoHospede")
-    , @NamedQuery(name = "LocacaoHospede.findByIndResponsavel", query = "SELECT l FROM LocacaoHospede l WHERE l.indResponsavel = :indResponsavel")})
-public class LocacaoHospede implements Serializable {
+public class LocacaoHospede {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
     @Column(name = "cod_locacao_hospede")
     private Integer codLocacaoHospede;
-    @Basic(optional = false)
+
     @Column(name = "ind_responsavel")
     private String indResponsavel;
+
     @JoinColumn(name = "cod_locacao", referencedColumnName = "cod_locacao")
     @ManyToOne(optional = false)
     private Locacao codLocacao;
+
     @JoinColumn(name = "cod_pessoa", referencedColumnName = "cod_pessoa")
     @ManyToOne(optional = false)
     private Pessoa codPessoa;
@@ -101,7 +82,6 @@ public class LocacaoHospede implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof LocacaoHospede)) {
             return false;
         }
@@ -116,5 +96,4 @@ public class LocacaoHospede implements Serializable {
     public String toString() {
         return "hotel.model.LocacaoHospede[ codLocacaoHospede=" + codLocacaoHospede + " ]";
     }
-    
 }
