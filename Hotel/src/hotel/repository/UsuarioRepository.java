@@ -13,13 +13,23 @@ public class UsuarioRepository {
     }
 
     public static List<Usuario> read(String pParam) {
-        Query query = HibernateUtil.getSession().createQuery("FROM Usuario u WHERE LOWER(u.pessoa.nomPessoa) LIKE :nomPessoa");
-        query.setParameter("nomPessoa", "%" + pParam.toLowerCase() + "%");
+        Query query = HibernateUtil.getSession().createQuery("FROM Usuario u WHERE LOWER(u.pessoa.nomPessoa) LIKE :nomUsuario");
+        query.setParameter("nomUsuario", "%" + pParam.toLowerCase() + "%");
         return query.list();
     }
 
     public static Usuario readId(int pCodigo) {
-        Query query = HibernateUtil.getSession().createQuery("FROM Usuario WHERE codPessoa = " + pCodigo);
+        Query query = HibernateUtil.getSession().createQuery("FROM Usuario WHERE codUsuario = " + pCodigo);
         return (Usuario) query.uniqueResult();
+    }
+    
+    public static Usuario validaLogin(String login, String senha) {
+        Query query = HibernateUtil.getSession().createQuery("FROM Usuario WHERE desLogin = '" + login +"' AND desSenha = '" + senha+"'");
+        Usuario u = (Usuario) query.uniqueResult();
+        if(u == null) {
+            return null;
+        } else {
+            return u;
+        }
     }
 }

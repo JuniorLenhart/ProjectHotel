@@ -1,5 +1,6 @@
 package hotel.controller;
 
+import hotel.config.HibernateUtil;
 import hotel.model.Usuario;
 import hotel.repository.UsuarioRepository;
 import hotel.support.Formatacao;
@@ -10,6 +11,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import org.hibernate.Query;
 
 public class UsuarioController extends BaseController<Usuario> {
 
@@ -22,6 +24,10 @@ public class UsuarioController extends BaseController<Usuario> {
 
     public Usuario getReadId(int pCodigo) {
         return UsuarioRepository.readId(pCodigo);
+    }
+    
+    public Usuario validaLogin(String login, String senha) {
+        return UsuarioRepository.validaLogin(login, senha);
     }
 
     public void popularTabela(JTable pTabela, int pOption, String pParam) {

@@ -1,11 +1,15 @@
 package hotel.view;
 
+import hotel.controller.UsuarioController;
+import hotel.model.Usuario;
+import hotel.support.Criptografia;
 import hotel.support.Validacao;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.geom.RoundRectangle2D;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -13,8 +17,13 @@ import javax.swing.JOptionPane;
 
 public class frmLogin extends javax.swing.JFrame {
 
+    Usuario usuario;
+    UsuarioController usuarioController;
     public frmLogin() {
         initComponents();
+        usuario = new Usuario();
+        usuarioController = new UsuarioController();
+        
         setLocationRelativeTo(null); //centralizando o form
 
         pnlLogin.setBackground(new Color(0, 0, 0, 100)); //setando opacidade do panel
@@ -199,8 +208,13 @@ public class frmLogin extends javax.swing.JFrame {
 
     private void btnLogarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogarActionPerformed
         if(Validacao.validarCampos(pnlLogin) == 0) {
-            this.dispose();
-            new frmPrincipal().setVisible(true);
+            String senha = new Criptografia().criptografar(tfdSenha.getText());
+            if(usuarioController.validaLogin(tfdLogin.getText(), senha) != null) {
+                this.dispose();
+                new frmPrincipal().setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(this, "Login e/ou senha incorreto(s)!");
+            }
         } else {
             JOptionPane.showMessageDialog(this, "Campos obrigatórios não preenchidos!");
         }
