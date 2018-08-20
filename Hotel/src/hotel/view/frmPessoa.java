@@ -222,7 +222,7 @@ public class frmPessoa extends javax.swing.JInternalFrame {
         });
 
         pnlCadastro.setBackground(new java.awt.Color(255, 255, 255));
-        pnlCadastro.setBorder(javax.swing.BorderFactory.createTitledBorder(null, " Cadastro de Consumível ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("SansSerif", 1, 14))); // NOI18N
+        pnlCadastro.setBorder(javax.swing.BorderFactory.createTitledBorder(null, " Cadastro de Pessoa ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("SansSerif", 1, 14))); // NOI18N
 
         lblNome.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lblNome.setForeground(new java.awt.Color(102, 102, 102));
@@ -481,11 +481,6 @@ public class frmPessoa extends javax.swing.JInternalFrame {
         rbNome.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         rbNome.setSelected(true);
         rbNome.setText("Por nome");
-        rbNome.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                rbNomerbPesquisaCodigoItemStateChanged(evt);
-            }
-        });
         rbNome.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 rbNomeStateChanged(evt);
@@ -496,11 +491,6 @@ public class frmPessoa extends javax.swing.JInternalFrame {
         btnGrupoRadio.add(rbCodigo);
         rbCodigo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         rbCodigo.setText("Por código");
-        rbCodigo.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                rbCodigoItemStateChanged(evt);
-            }
-        });
         rbCodigo.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 rbCodigoStateChanged(evt);
@@ -678,10 +668,10 @@ public class frmPessoa extends javax.swing.JInternalFrame {
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         Object[] options = {"Sim", "Não"};
-        int escolha = JOptionPane.showOptionDialog(null, "Você tem certeza que gostaria de excluir o registro " + tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString() + "?", "Escolha sua ação", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        int escolha = JOptionPane.showOptionDialog(null, "Você tem certeza que gostaria de excluir o registro " + tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString() + "?", "Escolha", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (escolha == 0) {
             pessoaController.changeSituation(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString()));
-            JOptionPane.showMessageDialog(this, "Excluido com sucesso!");
+            JOptionPane.showMessageDialog(this, "Excluído com sucesso!");
             pessoaController.popularTabela(tblLista, 0, "");
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
@@ -706,20 +696,14 @@ public class frmPessoa extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_tfdPesquisaKeyTyped
 
-    private void rbNomerbPesquisaCodigoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbNomerbPesquisaCodigoItemStateChanged
-        tfdPesquisa.setText("");
-    }//GEN-LAST:event_rbNomerbPesquisaCodigoItemStateChanged
-
     private void rbNomeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rbNomeStateChanged
         lblPesquisa.setText("Nome:");
-    }//GEN-LAST:event_rbNomeStateChanged
-
-    private void rbCodigoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbCodigoItemStateChanged
         tfdPesquisa.setText("");
-    }//GEN-LAST:event_rbCodigoItemStateChanged
+    }//GEN-LAST:event_rbNomeStateChanged
 
     private void rbCodigoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rbCodigoStateChanged
         lblPesquisa.setText("Código:");
+        tfdPesquisa.setText("");
     }//GEN-LAST:event_rbCodigoStateChanged
 
     private void btnPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaActionPerformed

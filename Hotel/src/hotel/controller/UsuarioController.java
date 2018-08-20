@@ -11,7 +11,6 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-import org.hibernate.Query;
 
 public class UsuarioController extends BaseController<Usuario> {
 
@@ -25,7 +24,24 @@ public class UsuarioController extends BaseController<Usuario> {
     public Usuario getReadId(int pCodigo) {
         return UsuarioRepository.readId(pCodigo);
     }
+
+    public String resetPassword(int id) {
+        Usuario usuario = getReadId(id);
+        usuario.setDesSenha(null);
+        save(usuario);
+        return null;
+    }
     
+    public String resetPassword(Usuario usuario) {
+        usuario.setDesSenha(null);
+        return null;
+    }
+
+    public Boolean verifyExistsLogin(String pLogin) {
+        Usuario usuario = UsuarioRepository.getUserWithLogin(pLogin);
+        return usuario != null;
+    }
+
     public Usuario validaLogin(String login, String senha) {
         return UsuarioRepository.validaLogin(login, senha);
     }

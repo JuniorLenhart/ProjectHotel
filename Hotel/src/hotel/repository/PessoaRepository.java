@@ -6,7 +6,7 @@ import java.util.List;
 import org.hibernate.Query;
 
 public class PessoaRepository {
-    
+
     public static List<Pessoa> readAll() {
         Query query = HibernateUtil.getSession().createQuery("FROM Pessoa");
         return query.list();
@@ -21,5 +21,10 @@ public class PessoaRepository {
     public static Pessoa readId(int pCodigo) {
         Query query = HibernateUtil.getSession().createQuery("FROM Pessoa WHERE codPessoa = " + pCodigo);
         return (Pessoa) query.uniqueResult();
+    }
+
+    public static List<Pessoa> readSituation(String pSituation) {
+        Query query = HibernateUtil.getSession().createQuery("FROM Pessoa WHERE indSituacao = " + pSituation);
+        return query.list();
     }
 }

@@ -22,14 +22,19 @@ public class UsuarioRepository {
         Query query = HibernateUtil.getSession().createQuery("FROM Usuario WHERE codUsuario = " + pCodigo);
         return (Usuario) query.uniqueResult();
     }
-    
-    public static Usuario validaLogin(String login, String senha) {
-        Query query = HibernateUtil.getSession().createQuery("FROM Usuario WHERE desLogin = '" + login +"' AND desSenha = '" + senha+"'");
-        Usuario u = (Usuario) query.uniqueResult();
-        if(u == null) {
-            return null;
-        } else {
-            return u;
+
+    public static Usuario getUserWithLogin(String pLogin) {
+        Query query = HibernateUtil.getSession().createQuery("FROM Usuario u WHERE u.pessoa.desLogin LIKE :desLogin");
+        query.setParameter("desLogin", "%" + pLogin.toLowerCase() + "%");
+        return (Usuario) query.uniqueResult();
+    }
+
+    public static Usuario validaLogin(String pLogin, String pSenha) {
+        Query query = HibernateUtil.getSession().createQuery("FROM Usuario WHERE desLogin = '" + pLogin + "' AND desSenha = '" + pSenha + "'");
+        Usuario usuario = (Usuario) query.uniqueResult();
+        if (usuario != null) {
+            return usuario;
         }
+        return null;
     }
 }

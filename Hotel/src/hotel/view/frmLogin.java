@@ -9,7 +9,6 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.geom.RoundRectangle2D;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -19,11 +18,12 @@ public class frmLogin extends javax.swing.JFrame {
 
     Usuario usuario;
     UsuarioController usuarioController;
+
     public frmLogin() {
         initComponents();
         usuario = new Usuario();
         usuarioController = new UsuarioController();
-        
+
         setLocationRelativeTo(null); //centralizando o form
 
         pnlLogin.setBackground(new Color(0, 0, 0, 100)); //setando opacidade do panel
@@ -207,9 +207,9 @@ public class frmLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLogarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogarActionPerformed
-        if(Validacao.validarCampos(pnlLogin) == 0) {
+        if (Validacao.validarCampos(pnlLogin) == 0) {
             String senha = new Criptografia().criptografar(tfdSenha.getText());
-            if(usuarioController.validaLogin(tfdLogin.getText(), senha) != null) {
+            if (usuarioController.validaLogin(tfdLogin.getText(), senha) != null) {
                 this.dispose();
                 new frmPrincipal().setVisible(true);
             } else {
@@ -244,34 +244,7 @@ public class frmLogin extends javax.swing.JFrame {
         definindoAperenciaButton();
     }//GEN-LAST:event_btnFecharMouseReleased
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(frmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(frmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(frmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(frmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new frmLogin().setVisible(true);

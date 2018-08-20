@@ -174,7 +174,7 @@
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title=" Cadastro de Consum&#xed;vel ">
+                <TitledBorder title=" Cadastro de Pessoa ">
                   <Font PropertyName="font" name="SansSerif" size="14" style="1"/>
                 </TitledBorder>
               </Border>
@@ -786,7 +786,6 @@
                         <Property name="text" type="java.lang.String" value="Por nome"/>
                       </Properties>
                       <Events>
-                        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="rbNomerbPesquisaCodigoItemStateChanged"/>
                         <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="rbNomeStateChanged"/>
                       </Events>
                     </Component>
@@ -804,7 +803,6 @@
                         <Property name="text" type="java.lang.String" value="Por c&#xf3;digo"/>
                       </Properties>
                       <Events>
-                        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="rbCodigoItemStateChanged"/>
                         <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="rbCodigoStateChanged"/>
                       </Events>
                     </Component>

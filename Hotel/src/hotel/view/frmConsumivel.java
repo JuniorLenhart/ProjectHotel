@@ -274,11 +274,6 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
         rbNome.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         rbNome.setSelected(true);
         rbNome.setText("Por nome");
-        rbNome.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                rbNomerbPesquisaCodigoItemStateChanged(evt);
-            }
-        });
         rbNome.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 rbNomeStateChanged(evt);
@@ -289,11 +284,6 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
         buttonGroup1.add(rbCodigo);
         rbCodigo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         rbCodigo.setText("Por código");
-        rbCodigo.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                rbCodigoItemStateChanged(evt);
-            }
-        });
         rbCodigo.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 rbCodigoStateChanged(evt);
@@ -508,14 +498,6 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_tfdPesquisaKeyTyped
 
-    private void rbNomerbPesquisaCodigoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbNomerbPesquisaCodigoItemStateChanged
-        tfdPesquisa.setText("");
-    }//GEN-LAST:event_rbNomerbPesquisaCodigoItemStateChanged
-
-    private void rbCodigoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbCodigoItemStateChanged
-        tfdPesquisa.setText("");
-    }//GEN-LAST:event_rbCodigoItemStateChanged
-
     private void btnPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaActionPerformed
         if (rbNome.isSelected()) {
             consumivelController.popularTabela(tblLista, 1, tfdPesquisa.getText());
@@ -572,20 +554,22 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         Object[] options = {"Sim", "Não"};
-        int escolha = JOptionPane.showOptionDialog(null, "Você tem certeza que gostaria de excluir o registro " + tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString() + "?", "Escolha sua ação", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        int escolha = JOptionPane.showOptionDialog(null, "Você tem certeza que gostaria de excluir o registro " + tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString() + "?", "Escolha", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (escolha == 0) {
             consumivelController.changeSituation(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString()));
-            JOptionPane.showMessageDialog(this, "Excluido com sucesso!");
+            JOptionPane.showMessageDialog(this, "Excluído com sucesso!");
             consumivelController.popularTabela(tblLista, 0, "");
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void rbNomeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rbNomeStateChanged
         lblPesquisa.setText("Nome:");
+        tfdPesquisa.setText("");
     }//GEN-LAST:event_rbNomeStateChanged
 
     private void rbCodigoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rbCodigoStateChanged
         lblPesquisa.setText("Código:");
+        tfdPesquisa.setText("");
     }//GEN-LAST:event_rbCodigoStateChanged
 
     public static void main(String args[]) {

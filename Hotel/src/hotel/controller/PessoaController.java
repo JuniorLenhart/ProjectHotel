@@ -11,8 +11,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-public class PessoaController extends BaseController<Pessoa>{
-    
+public class PessoaController extends BaseController<Pessoa> {
+
     public String changeSituation(int pCodigo) {
         Pessoa pessoa = PessoaRepository.readId(pCodigo);
         pessoa.setIndSituacao("E");
@@ -72,11 +72,29 @@ public class PessoaController extends BaseController<Pessoa>{
                 }
                 break;
             }
-            default:
+            case 2: {
                 Pessoa p = PessoaRepository.readId(Integer.parseInt(pParam));
                 if (p == null) {
                     JOptionPane.showMessageDialog(null, "Pessoa não encontrado pelo código: " + pParam);
                 } else {
+                    String situacao = (p.getIndSituacao().equals("A") ? "Ativo" : "Excluído");
+
+                    lTabela = new Object[1][7];
+                    lTabela[lLinha][0] = p.getCodPessoa();
+                    lTabela[lLinha][1] = p.getNomPessoa();
+                    lTabela[lLinha][2] = Formatacao.formatarCPF(p.getNumCpf());
+                    lTabela[lLinha][3] = Formatacao.ajustaDataDMA(p.getDtaNasc().toString());
+                    lTabela[lLinha][4] = p.getDesEmail();
+                    lTabela[lLinha][5] = p.getNumCelular();
+                    lTabela[lLinha][6] = situacao;
+                    lLinha++;
+                }
+                break;
+            }
+            default:
+                List<Pessoa> listPessoa = PessoaRepository.readSituation(pParam);
+                lTabela = new Object[listPessoa.size()][7];
+                for (Pessoa p : listPessoa) {
                     String situacao = (p.getIndSituacao().equals("A") ? "Ativo" : "Excluído");
 
                     lTabela = new Object[1][7];
@@ -107,7 +125,7 @@ public class PessoaController extends BaseController<Pessoa>{
         });
 
         pTabela.setSelectionMode(0);
-        
+
         TableColumn lColumn = null;
 
         DefaultTableCellRenderer lLeft = new DefaultTableCellRenderer();
@@ -152,13 +170,13 @@ public class PessoaController extends BaseController<Pessoa>{
                 case 7:
                     lColumn.setPreferredWidth(50);
                     lColumn.setCellRenderer(lLeft);
-                    break;    
+                    break;
                 case 8:
                     lColumn.setPreferredWidth(50);
                     lColumn.setCellRenderer(lCenter);
-                    break; 
+                    break;
             }
         }
     }
-    
+
 }

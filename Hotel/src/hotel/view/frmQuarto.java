@@ -538,6 +538,7 @@ public class frmQuarto extends javax.swing.JInternalFrame {
 
     private void rbCodigoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbCodigoItemStateChanged
         lblPesquisa.setText("Código:");
+        tfdPesquisa.setText("");
     }//GEN-LAST:event_rbCodigoItemStateChanged
 
     private void tbpQuartoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tbpQuartoStateChanged
@@ -557,6 +558,7 @@ public class frmQuarto extends javax.swing.JInternalFrame {
 
     private void rbNomeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbNomeItemStateChanged
         lblPesquisa.setText("Número:");
+        tfdPesquisa.setText("");
     }//GEN-LAST:event_rbNomeItemStateChanged
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed

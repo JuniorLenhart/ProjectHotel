@@ -438,7 +438,7 @@ public class frmFormaPagamento extends javax.swing.JInternalFrame {
         int escolha = JOptionPane.showOptionDialog(null, "Você tem certeza que gostaria de excluir o registro " + tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString() + "?", "Escolha", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (escolha == 0) {
             formaPagamentoController.changeSituation(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString()));
-            JOptionPane.showMessageDialog(this, "Excluido com sucesso!");
+            JOptionPane.showMessageDialog(this, "Excluído com sucesso!");
             formaPagamentoController.popularTabela(tblLista, 0, "");
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
@@ -479,10 +479,12 @@ public class frmFormaPagamento extends javax.swing.JInternalFrame {
 
     private void rbNomeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rbNomeStateChanged
         lblPesquisa.setText("Nome:");
+        tfdPesquisa.setText("");
     }//GEN-LAST:event_rbNomeStateChanged
 
     private void rbCodigoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rbCodigoStateChanged
         lblPesquisa.setText("Código:");
+        tfdPesquisa.setText("");
     }//GEN-LAST:event_rbCodigoStateChanged
 
     public static void main(String args[]) {
