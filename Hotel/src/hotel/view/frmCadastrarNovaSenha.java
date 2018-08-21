@@ -1,14 +1,21 @@
 package hotel.view;
 
+import hotel.controller.UsuarioController;
+import hotel.model.Usuario;
+import hotel.support.Criptografia;
 import hotel.support.Validacao;
 import javax.swing.JOptionPane;
 
-public class frmCadastrarNovaSenha extends javax.swing.JInternalFrame {
+public class frmCadastrarNovaSenha extends javax.swing.JFrame {
 
     String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{6,}";
+    Usuario usuario;
+    UsuarioController usuarioController;
 
-    public frmCadastrarNovaSenha() {
+    public frmCadastrarNovaSenha(Usuario usuario) {
         initComponents();
+        this.usuario = usuario;
+        usuarioController = new UsuarioController();
     }
 
     @SuppressWarnings("unchecked")
@@ -183,15 +190,18 @@ public class frmCadastrarNovaSenha extends javax.swing.JInternalFrame {
             String confirmaSenha = tfdConfirmarSenha.getText();
             if (senha.equals(confirmaSenha)) {
                 if (senha.matches(pattern)) {
-                    /// MUDA SENHA
+                    usuario.setDesSenha(Criptografia.criptografar(senha));
+                    usuarioController.save(usuario);
+                    this.dispose();
+                    new frmPrincipal().setVisible(true);
                 } else {
-                    JOptionPane.showMessageDialog(this, "Senha não atende a todas as características!");
+                    JOptionPane.showMessageDialog(null, "Senha não atende a todas as características!");
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "Senhas não são iguais!");
+                JOptionPane.showMessageDialog(null, "Senhas não são iguais!");
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Campos obrigatórios não preenchidos!");
+            JOptionPane.showMessageDialog(null, "Campos obrigatórios não preenchidos!");
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 

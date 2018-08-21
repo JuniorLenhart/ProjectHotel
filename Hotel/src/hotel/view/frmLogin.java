@@ -1,6 +1,8 @@
 package hotel.view;
 
+import hotel.controller.ParametroController;
 import hotel.controller.UsuarioController;
+import hotel.model.Parametro;
 import hotel.model.Usuario;
 import hotel.support.Criptografia;
 import hotel.support.Validacao;
@@ -21,6 +23,7 @@ public class frmLogin extends javax.swing.JFrame {
 
     public frmLogin() {
         initComponents();
+        new ParametroController().loadClass();
         usuario = new Usuario();
         usuarioController = new UsuarioController();
 
@@ -209,9 +212,15 @@ public class frmLogin extends javax.swing.JFrame {
     private void btnLogarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogarActionPerformed
         if (Validacao.validarCampos(pnlLogin) == 0) {
             String senha = new Criptografia().criptografar(tfdSenha.getText());
-            if (usuarioController.validaLogin(tfdLogin.getText(), senha) != null) {
+            String login = tfdLogin.getText();
+            if (usuarioController.validaLogin(login, senha) != null) {
                 this.dispose();
-                new frmPrincipal().setVisible(true);
+                if (senha.equals(Parametro.DES_SENHA_DEFAULT)) {
+                    
+                    new frmCadastrarNovaSenha(usuarioController.getUserWithLogin(login)).setVisible(true);
+                } else {
+                    new frmPrincipal().setVisible(true);
+                }
             } else {
                 JOptionPane.showMessageDialog(this, "Login e/ou senha incorreto(s)!");
             }

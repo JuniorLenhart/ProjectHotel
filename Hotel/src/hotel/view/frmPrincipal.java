@@ -1,5 +1,6 @@
 package hotel.view;
 
+import com.sun.org.apache.bcel.internal.generic.FMUL;
 import hotel.support.Unit;
 import javax.swing.*;
 
@@ -127,6 +128,11 @@ public class frmPrincipal extends javax.swing.JFrame {
         mnuUsuario.setText("Usuário");
 
         mniUsuario.setText("Cadastro");
+        mniUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniUsuarioActionPerformed(evt);
+            }
+        });
         mnuUsuario.add(mniUsuario);
 
         mniPermissao.setText("Permissão");
@@ -192,6 +198,10 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void mniPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniPessoaActionPerformed
         abrirTela(new frmPessoa());
     }//GEN-LAST:event_mniPessoaActionPerformed
+
+    private void mniUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniUsuarioActionPerformed
+        abrirTela(new frmUsuario());
+    }//GEN-LAST:event_mniUsuarioActionPerformed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {

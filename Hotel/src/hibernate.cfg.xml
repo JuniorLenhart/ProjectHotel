@@ -23,5 +23,6 @@
         <mapping class="hotel.model.Reserva"/>
         <mapping class="hotel.model.TipoCama"/>
         <mapping class="hotel.model.Usuario"/>
+        <mapping class="hotel.model.Parametro"/>
     </session-factory>
 </hibernate-configuration>

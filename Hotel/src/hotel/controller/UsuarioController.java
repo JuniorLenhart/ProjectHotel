@@ -38,8 +38,11 @@ public class UsuarioController extends BaseController<Usuario> {
     }
 
     public Boolean verifyExistsLogin(String pLogin) {
-        Usuario usuario = UsuarioRepository.getUserWithLogin(pLogin);
-        return usuario != null;
+        return getUserWithLogin(pLogin) != null;
+    }
+    
+    public Usuario getUserWithLogin(String pLogin) {
+        return UsuarioRepository.getUserWithLogin(pLogin);
     }
 
     public Usuario validaLogin(String login, String senha) {
