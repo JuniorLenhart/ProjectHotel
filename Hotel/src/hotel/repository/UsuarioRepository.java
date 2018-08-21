@@ -24,7 +24,7 @@ public class UsuarioRepository {
     }
 
     public static Usuario getUserWithLogin(String pLogin) {
-        Query query = HibernateUtil.getSession().createQuery("FROM Usuario u WHERE u.pessoa.desLogin LIKE :desLogin");
+        Query query = HibernateUtil.getSession().createQuery("FROM Usuario WHERE desLogin LIKE :desLogin");
         query.setParameter("desLogin", "%" + pLogin.toLowerCase() + "%");
         return (Usuario) query.uniqueResult();
     }

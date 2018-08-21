@@ -97,7 +97,6 @@ public class PessoaController extends BaseController<Pessoa> {
                 for (Pessoa p : listPessoa) {
                     String situacao = (p.getIndSituacao().equals("A") ? "Ativo" : "Excluído");
 
-                    lTabela = new Object[1][7];
                     lTabela[lLinha][0] = p.getCodPessoa();
                     lTabela[lLinha][1] = p.getNomPessoa();
                     lTabela[lLinha][2] = Formatacao.formatarCPF(p.getNumCpf());

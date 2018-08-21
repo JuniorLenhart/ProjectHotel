@@ -1,6 +1,5 @@
 package hotel.controller;
 
-import hotel.config.HibernateUtil;
 import hotel.model.Usuario;
 import hotel.repository.UsuarioRepository;
 import hotel.support.Formatacao;
@@ -31,7 +30,7 @@ public class UsuarioController extends BaseController<Usuario> {
         save(usuario);
         return null;
     }
-    
+
     public String resetPassword(Usuario usuario) {
         usuario.setDesSenha(null);
         return null;
@@ -40,7 +39,7 @@ public class UsuarioController extends BaseController<Usuario> {
     public Boolean verifyExistsLogin(String pLogin) {
         return getUserWithLogin(pLogin) != null;
     }
-    
+
     public Usuario getUserWithLogin(String pLogin) {
         return UsuarioRepository.getUserWithLogin(pLogin);
     }

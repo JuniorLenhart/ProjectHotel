@@ -24,6 +24,13 @@ public class frmUsuario extends javax.swing.JInternalFrame {
         pessoaController.popularTabela(tblPessoa, 3, "A");
         usuarioController.popularTabela(tblLista, 0, "");
 
+        tblPessoa.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                habilitar();
+            }
+        });
+
         tblLista.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -47,13 +54,18 @@ public class frmUsuario extends javax.swing.JInternalFrame {
 
     private void habilitar() {
         if (tbpUsuario.getSelectedIndex() == 0) {
-            btnUsuario.setEnabled(true);
+            String lCodigo = "";
+            if (tblPessoa.getSelectedRow() != -1) {
+                lCodigo = String.valueOf(tblPessoa.getValueAt(tblPessoa.getSelectedRow(), 0));
+            }
+
+            btnUsuario.setEnabled(!lCodigo.isEmpty());
             btnResetar.setEnabled(false);
             btnExcluir.setEnabled(false);
         } else {
             String lSituacao = "";
             if (tblLista.getSelectedRow() != -1) {
-                lSituacao = String.valueOf(tblLista.getValueAt(tblLista.getSelectedRow(), 6));
+                lSituacao = String.valueOf(tblLista.getValueAt(tblLista.getSelectedRow(), 5));
             }
 
             btnUsuario.setEnabled(false);
@@ -364,7 +376,7 @@ public class frmUsuario extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, "Campo 'Login' deve ser preenchido.");
                 return true;
             }
-            if (usuarioController.verifyExistsLogin(pStr[1])) {
+            if (!usuarioController.verifyExistsLogin(pStr[1])) {
                 JOptionPane.showMessageDialog(null, "Este Login já está cadastrado. Verifique!");
                 return true;
             }
@@ -375,9 +387,9 @@ public class frmUsuario extends javax.swing.JInternalFrame {
     }
 
     private void btnUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuarioActionPerformed
-        usuario = usuarioController.getReadId(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString()));
+        usuario = usuarioController.getReadId(Integer.parseInt(tblPessoa.getModel().getValueAt(tblPessoa.getSelectedRow(), 0).toString()));
 
-        if (usuario != null && usuario.getIndSituacao().equals("E")) {
+        if (usuario == null || usuario.getIndSituacao().equals("E")) {
             frmTornarUsuario lTornarUsuario = new frmTornarUsuario(null);
             lTornarUsuario.setVisible(true);
 

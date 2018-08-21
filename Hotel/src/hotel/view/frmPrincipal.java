@@ -1,6 +1,5 @@
 package hotel.view;
 
-import com.sun.org.apache.bcel.internal.generic.FMUL;
 import hotel.support.Unit;
 import javax.swing.*;
 

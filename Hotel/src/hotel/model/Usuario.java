@@ -5,6 +5,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -34,7 +35,7 @@ public class Usuario {
     private List<Permissao> permissao;
 
     @JoinColumn(name = "cod_usuario", referencedColumnName = "cod_pessoa", insertable = false, updatable = false)
-    @OneToOne(optional = false)
+    @OneToOne(fetch = FetchType.EAGER)
     private Pessoa pessoa;
 
     public Usuario() {

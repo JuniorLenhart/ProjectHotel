@@ -24,7 +24,8 @@ public class PessoaRepository {
     }
 
     public static List<Pessoa> readSituation(String pSituation) {
-        Query query = HibernateUtil.getSession().createQuery("FROM Pessoa WHERE indSituacao = " + pSituation);
+        Query query = HibernateUtil.getSession().createQuery("FROM Pessoa WHERE indSituacao = :indSituacao");
+        query.setParameter("indSituacao", pSituation);
         return query.list();
     }
 }
