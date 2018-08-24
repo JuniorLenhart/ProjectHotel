@@ -5,7 +5,6 @@ import java.awt.Container;
 import java.math.BigDecimal;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javafx.scene.control.CheckBox;
 import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JList;
@@ -79,7 +78,7 @@ public class Validacao {
         return (pCampo.getText().trim().length() < 14);
     }
 
-    public static int validarCampos(Container pContainer) { //Retorna 0 se todos os campos estiverem OK, retorna 1 se um dos campos estiver em branco
+    public static int validarCampos(Container pContainer) {
         Component lComponent[] = pContainer.getComponents();
         for (int i = 0; i < lComponent.length; i++) {
             if ((lComponent[i].isVisible())) {
@@ -115,7 +114,7 @@ public class Validacao {
         return 0;
     }
 
-    public static int validarList(JList<JCheckBox> pList) { //Retorna 0 se pelo menos um elemento do JList estiver selecionado, retorna 1 se nenhum elemento estiver selecionado
+    public static int validarList(JList<JCheckBox> pList) {
         for (int i = 0; i < pList.getModel().getSize(); i++) {
             if ((pList.getModel().getElementAt(i).isVisible())) {
                 if (pList.getModel().getElementAt(i).isSelected()) {

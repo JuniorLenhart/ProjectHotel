@@ -372,7 +372,7 @@ public class frmUsuario extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public boolean verificarRetorno(String[] pStr) {
-        if (pStr[0].equals("Confirm")) {
+        if (pStr[0].equals("Yes")) {
             if (pStr[1].trim().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Campo 'Login' deve ser preenchido.");
                 return true;
@@ -391,7 +391,7 @@ public class frmUsuario extends javax.swing.JInternalFrame {
         usuario = usuarioController.getReadId(Integer.parseInt(tblPessoa.getModel().getValueAt(tblPessoa.getSelectedRow(), 0).toString()));
 
         if (usuario == null || usuario.getIndSituacao().equals("E")) {
-            frmTornarUsuario lTornarUsuario = new frmTornarUsuario(null);
+            frmTornarUsuario lTornarUsuario = new frmTornarUsuario(null, true);
             lTornarUsuario.setVisible(true);
 
             String[] lStr = lTornarUsuario.getResult();
