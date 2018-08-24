@@ -5,7 +5,10 @@ import java.awt.Container;
 import java.math.BigDecimal;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javafx.scene.control.CheckBox;
+import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
+import javax.swing.JList;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -110,6 +113,17 @@ public class Validacao {
             }
         }
         return 0;
+    }
+
+    public static int validarList(JList<JCheckBox> pList) { //Retorna 0 se pelo menos um elemento do JList estiver selecionado, retorna 1 se nenhum elemento estiver selecionado
+        for (int i = 0; i < pList.getModel().getSize(); i++) {
+            if ((pList.getModel().getElementAt(i).isVisible())) {
+                if (pList.getModel().getElementAt(i).isSelected()) {
+                    return 0;
+                }
+            }
+        }
+        return 1;
     }
 
     public static boolean validarEmail(String email) {

@@ -31,7 +31,7 @@ public class frmCadastrarNovaSenha extends javax.swing.JFrame {
                     usuarioController.save(usuario);
                     JOptionPane.showMessageDialog(this, "Senha alterada com sucesso");
                     this.dispose();
-                    new frmPrincipal().setVisible(true);
+                    new frmPrincipal(usuario).setVisible(true);
                 } else {
                     JOptionPane.showMessageDialog(null, "Senha não atende a todas as características!");
                 }
@@ -58,9 +58,9 @@ public class frmCadastrarNovaSenha extends javax.swing.JFrame {
         lblInstrucao3 = new javax.swing.JLabel();
         lblInstrucao4 = new javax.swing.JLabel();
         lblInstrucao5 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
+        pnlHeader = new javax.swing.JPanel();
         btnSalvar = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        lblTitulo = new javax.swing.JLabel();
         cbxMostrarSenha = new javax.swing.JCheckBox();
 
         lblSenha.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
@@ -142,22 +142,22 @@ public class frmCadastrarNovaSenha extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlHeaderLayout = new javax.swing.GroupLayout(pnlHeader);
+        pnlHeader.setLayout(pnlHeaderLayout);
+        pnlHeaderLayout.setHorizontalGroup(
+            pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlHeaderLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnSalvar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        pnlHeaderLayout.setVerticalGroup(
+            pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(btnSalvar)
         );
 
-        jLabel1.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
-        jLabel1.setText("Cadastro de nova senha");
+        lblTitulo.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
+        lblTitulo.setText("Cadastro de nova senha");
 
         cbxMostrarSenha.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         cbxMostrarSenha.setText("Mostrar senha");
@@ -172,7 +172,7 @@ public class frmCadastrarNovaSenha extends javax.swing.JFrame {
         pnlPaiLayout.setHorizontalGroup(
             pnlPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlInstrucoes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlHeader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(pnlPaiLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,15 +186,15 @@ public class frmCadastrarNovaSenha extends javax.swing.JFrame {
                             .addComponent(tfdConfirmarSenha))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cbxMostrarSenha))
-                    .addComponent(jLabel1))
+                    .addComponent(lblTitulo))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlPaiLayout.setVerticalGroup(
             pnlPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlPaiLayout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel1)
+                .addComponent(lblTitulo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlInstrucoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -252,8 +252,6 @@ public class frmCadastrarNovaSenha extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSalvar;
     private javax.swing.JCheckBox cbxMostrarSenha;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblConfirmarSenha;
     private javax.swing.JLabel lblInstrucao1;
     private javax.swing.JLabel lblInstrucao2;
@@ -261,6 +259,8 @@ public class frmCadastrarNovaSenha extends javax.swing.JFrame {
     private javax.swing.JLabel lblInstrucao4;
     private javax.swing.JLabel lblInstrucao5;
     private javax.swing.JLabel lblSenha;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JPanel pnlHeader;
     private javax.swing.JPanel pnlInstrucoes;
     private javax.swing.JPanel pnlPai;
     private javax.swing.JPasswordField tfdConfirmarSenha;

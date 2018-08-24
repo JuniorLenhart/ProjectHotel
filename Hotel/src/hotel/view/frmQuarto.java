@@ -504,7 +504,7 @@ public class frmQuarto extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        if (Validacao.validarCampos(pnlCadastro) == 0) {
+        if ((Validacao.validarCampos(pnlCadastro) == 0) && (Validacao.validarList(lstTipoCama)) == 0) {
             boolean isNew = (quarto.getCodQuarto() == null);
 
             quarto.setNumQuarto(tfdNumero.getText());

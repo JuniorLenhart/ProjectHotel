@@ -1,13 +1,17 @@
 package hotel.view;
 
+import hotel.model.Usuario;
 import hotel.support.Unit;
 import javax.swing.*;
 
 public class frmPrincipal extends javax.swing.JFrame {
 
-    public frmPrincipal() {
+    Usuario usuario;
+    public frmPrincipal(Usuario usuario) {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
+        this.usuario = usuario;
+        lblUsuarioLogado.setText(lblUsuarioLogado.getText() + this.usuario.getPessoa().getNomPessoa());
     }
 
     private void abrirTela(JInternalFrame pInternalFrame) {
@@ -22,6 +26,7 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         dkpSistema = new javax.swing.JDesktopPane(){
         };
+        lblUsuarioLogado = new javax.swing.JLabel();
         mnbPrincipal = new javax.swing.JMenuBar();
         mnuCadastro = new javax.swing.JMenu();
         mniPessoa = new javax.swing.JMenuItem();
@@ -48,15 +53,26 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         dkpSistema.setBackground(new java.awt.Color(255, 255, 255));
 
+        lblUsuarioLogado.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblUsuarioLogado.setText("Usuário: ");
+
+        dkpSistema.setLayer(lblUsuarioLogado, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
         javax.swing.GroupLayout dkpSistemaLayout = new javax.swing.GroupLayout(dkpSistema);
         dkpSistema.setLayout(dkpSistemaLayout);
         dkpSistemaLayout.setHorizontalGroup(
             dkpSistemaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 704, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dkpSistemaLayout.createSequentialGroup()
+                .addContainerGap(619, Short.MAX_VALUE)
+                .addComponent(lblUsuarioLogado)
+                .addContainerGap())
         );
         dkpSistemaLayout.setVerticalGroup(
             dkpSistemaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 426, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dkpSistemaLayout.createSequentialGroup()
+                .addContainerGap(390, Short.MAX_VALUE)
+                .addComponent(lblUsuarioLogado)
+                .addContainerGap())
         );
 
         mnuCadastro.setText("Cadastros");
@@ -201,17 +217,11 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void mniUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniUsuarioActionPerformed
         abrirTela(new frmUsuario());
     }//GEN-LAST:event_mniUsuarioActionPerformed
-
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new frmPrincipal().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane dkpSistema;
+    private javax.swing.JLabel lblUsuarioLogado;
     private javax.swing.JMenuBar mnbPrincipal;
     private javax.swing.JMenuItem mniAplicacao;
     private javax.swing.JMenuItem mniAuditoria;

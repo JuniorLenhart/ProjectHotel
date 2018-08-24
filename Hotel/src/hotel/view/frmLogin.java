@@ -61,17 +61,17 @@ public class frmLogin extends javax.swing.JFrame {
         return imageIcon;
     }
 
-    public void salvar() {
+    public void logar() {
         if (Validacao.validarCampos(pnlLogin) == 0) {
             String senha = new Criptografia().criptografar(tfdSenha.getText());
             String login = tfdLogin.getText();
             if (usuarioController.validaLogin(login, senha) != null) {
                 this.dispose();
+                Usuario usuarioLogado = usuarioController.getUserWithLogin(login);
                 if (senha.equals(Parametro.DES_SENHA_DEFAULT)) {
-
-                    new frmCadastrarNovaSenha(usuarioController.getUserWithLogin(login)).setVisible(true);
+                    new frmCadastrarNovaSenha(usuarioLogado).setVisible(true);
                 } else {
-                    new frmPrincipal().setVisible(true);
+                    new frmPrincipal(usuarioLogado).setVisible(true);
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "Login e/ou senha incorreto(s)!");
@@ -241,7 +241,7 @@ public class frmLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLogarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogarActionPerformed
-        salvar();
+        logar();
     }//GEN-LAST:event_btnLogarActionPerformed
 
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
@@ -270,7 +270,7 @@ public class frmLogin extends javax.swing.JFrame {
 
     private void tfdLoginKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfdLoginKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            salvar();
+            logar();
         }
     }//GEN-LAST:event_tfdLoginKeyPressed
 
