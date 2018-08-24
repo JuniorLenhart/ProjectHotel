@@ -360,11 +360,6 @@ public class frmPessoa extends javax.swing.JInternalFrame {
 
         tfdEmail.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         tfdEmail.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
-        tfdEmail.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                tfdEmailTyped(evt);
-            }
-        });
 
         lblTelefone.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lblTelefone.setForeground(new java.awt.Color(102, 102, 102));
@@ -481,9 +476,9 @@ public class frmPessoa extends javax.swing.JInternalFrame {
         rbNome.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         rbNome.setSelected(true);
         rbNome.setText("Por nome");
-        rbNome.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                rbNomeStateChanged(evt);
+        rbNome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbNomeActionPerformed(evt);
             }
         });
 
@@ -491,9 +486,9 @@ public class frmPessoa extends javax.swing.JInternalFrame {
         btnGrupoRadio.add(rbCodigo);
         rbCodigo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         rbCodigo.setText("Por código");
-        rbCodigo.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                rbCodigoStateChanged(evt);
+        rbCodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbCodigoActionPerformed(evt);
             }
         });
 
@@ -696,20 +691,12 @@ public class frmPessoa extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_tfdPesquisaKeyTyped
 
-    private void rbNomeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rbNomeStateChanged
-        lblPesquisa.setText("Nome:");
-        tfdPesquisa.setText("");
-    }//GEN-LAST:event_rbNomeStateChanged
-
-    private void rbCodigoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rbCodigoStateChanged
-        lblPesquisa.setText("Código:");
-        tfdPesquisa.setText("");
-    }//GEN-LAST:event_rbCodigoStateChanged
-
     private void btnPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaActionPerformed
-        if (rbNome.isSelected()) {
+        if (tfdPesquisa.getText().trim().isEmpty()) {
+            pessoaController.popularTabela(tblLista, 0, "");
+        } else if (rbNome.isSelected()) {
             pessoaController.popularTabela(tblLista, 1, tfdPesquisa.getText());
-        } else {
+        } else if (rbCodigo.isSelected()) {
             pessoaController.popularTabela(tblLista, 2, tfdPesquisa.getText());
         }
     }//GEN-LAST:event_btnPesquisaActionPerformed
@@ -717,10 +704,6 @@ public class frmPessoa extends javax.swing.JInternalFrame {
     private void tbpConsumivelStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tbpConsumivelStateChanged
         habilitar();
     }//GEN-LAST:event_tbpConsumivelStateChanged
-
-    private void tfdEmailTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfdEmailTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfdEmailTyped
 
     private void tfdRuaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfdRuaKeyTyped
         char vChar = evt.getKeyChar();
@@ -735,6 +718,16 @@ public class frmPessoa extends javax.swing.JInternalFrame {
             evt.consume();
         }
     }//GEN-LAST:event_tfdNumeroKeyTyped
+
+    private void rbNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbNomeActionPerformed
+        lblPesquisa.setText("Nome:");
+        tfdPesquisa.setText("");
+    }//GEN-LAST:event_rbNomeActionPerformed
+
+    private void rbCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbCodigoActionPerformed
+        lblPesquisa.setText("Código:");
+        tfdPesquisa.setText("");
+    }//GEN-LAST:event_rbCodigoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

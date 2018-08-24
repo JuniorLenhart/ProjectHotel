@@ -13,7 +13,7 @@ public class PessoaRepository {
     }
 
     public static List<Pessoa> read(String pParam) {
-        Query query = HibernateUtil.getSession().createQuery("FROM Pessoa WHERE LOWER(nomPessoa) ILIKE :nomPessoa");
+        Query query = HibernateUtil.getSession().createQuery("FROM Pessoa WHERE LOWER(nomPessoa) LIKE :nomPessoa");
         query.setParameter("nomPessoa", "%" + pParam.toLowerCase() + "%");
         return query.list();
     }

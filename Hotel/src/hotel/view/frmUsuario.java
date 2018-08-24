@@ -2,6 +2,7 @@ package hotel.view;
 
 import hotel.controller.PessoaController;
 import hotel.controller.UsuarioController;
+import hotel.model.Pessoa;
 import hotel.model.Usuario;
 import hotel.support.LimpaCampos;
 import java.awt.event.KeyEvent;
@@ -113,7 +114,7 @@ public class frmUsuario extends javax.swing.JInternalFrame {
 
         btnResetar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnResetar.setForeground(new java.awt.Color(12, 91, 160));
-        btnResetar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/resetPassword.png"))); // NOI18N
+        btnResetar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/password.png"))); // NOI18N
         btnResetar.setText("Resetar");
         btnResetar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnResetar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -235,9 +236,9 @@ public class frmUsuario extends javax.swing.JInternalFrame {
         rbNome.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         rbNome.setSelected(true);
         rbNome.setText("Por nome");
-        rbNome.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                rbNomeStateChanged(evt);
+        rbNome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbNomeActionPerformed(evt);
             }
         });
 
@@ -245,9 +246,9 @@ public class frmUsuario extends javax.swing.JInternalFrame {
         btnGrupoRadio.add(rbCodigo);
         rbCodigo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         rbCodigo.setText("Por código");
-        rbCodigo.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                rbCodigoStateChanged(evt);
+        rbCodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbCodigoActionPerformed(evt);
             }
         });
 
@@ -340,7 +341,7 @@ public class frmUsuario extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(pnlDetalhe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scpLista, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
+                .addComponent(scpLista, javax.swing.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -376,7 +377,7 @@ public class frmUsuario extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, "Campo 'Login' deve ser preenchido.");
                 return true;
             }
-            if (!usuarioController.verifyExistsLogin(pStr[1])) {
+            if (usuarioController.verifyExistsLogin(pStr[1])) {
                 JOptionPane.showMessageDialog(null, "Este Login já está cadastrado. Verifique!");
                 return true;
             }
@@ -396,8 +397,15 @@ public class frmUsuario extends javax.swing.JInternalFrame {
             String[] lStr = lTornarUsuario.getResult();
 
             if (!verificarRetorno(lStr)) {
+                if (usuario == null) {
+                    usuario = new Usuario();
+
+                    Pessoa pessoa = pessoaController.getReadId(Integer.parseInt(tblPessoa.getModel().getValueAt(tblPessoa.getSelectedRow(), 0).toString()));
+                    usuario.setCodUsuario(pessoa.getCodPessoa());
+                    usuario.setPessoa(pessoa);
+                }
                 usuario.setDesLogin(lStr[1]);
-                usuario.setIndTipo(Character.toString(lStr[2].charAt(0)));
+                usuario.setIndTipo(lStr[2]);
                 usuario.setIndSituacao("A");
                 usuarioController.resetPassword(usuario);
                 usuarioController.save(usuario);
@@ -445,27 +453,29 @@ public class frmUsuario extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_tfdPesquisaKeyTyped
 
-    private void rbNomeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rbNomeStateChanged
-        lblPesquisa.setText("Nome:");
-        tfdPesquisa.setText("");
-    }//GEN-LAST:event_rbNomeStateChanged
-
-    private void rbCodigoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rbCodigoStateChanged
-        lblPesquisa.setText("Código:");
-        tfdPesquisa.setText("");
-    }//GEN-LAST:event_rbCodigoStateChanged
-
     private void btnPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaActionPerformed
-        if (rbNome.isSelected()) {
-            pessoaController.popularTabela(tblLista, 1, tfdPesquisa.getText());
-        } else {
-            pessoaController.popularTabela(tblLista, 2, tfdPesquisa.getText());
+        if (tfdPesquisa.getText().trim().isEmpty()) {
+            usuarioController.popularTabela(tblLista, 0, "");
+        } else if (rbNome.isSelected()) {
+            usuarioController.popularTabela(tblLista, 1, tfdPesquisa.getText());
+        } else if (rbCodigo.isSelected()) {
+            usuarioController.popularTabela(tblLista, 2, tfdPesquisa.getText());
         }
     }//GEN-LAST:event_btnPesquisaActionPerformed
 
     private void tbpUsuarioStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tbpUsuarioStateChanged
         habilitar();
     }//GEN-LAST:event_tbpUsuarioStateChanged
+
+    private void rbNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbNomeActionPerformed
+        lblPesquisa.setText("Nome:");
+        tfdPesquisa.setText("");
+    }//GEN-LAST:event_rbNomeActionPerformed
+
+    private void rbCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbCodigoActionPerformed
+        lblPesquisa.setText("Código:");
+        tfdPesquisa.setText("");
+    }//GEN-LAST:event_rbCodigoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

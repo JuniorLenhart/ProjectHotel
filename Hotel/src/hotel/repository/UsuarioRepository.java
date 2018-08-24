@@ -13,8 +13,8 @@ public class UsuarioRepository {
     }
 
     public static List<Usuario> read(String pParam) {
-        Query query = HibernateUtil.getSession().createQuery("FROM Usuario u WHERE LOWER(u.pessoa.nomPessoa) LIKE :nomUsuario");
-        query.setParameter("nomUsuario", "%" + pParam.toLowerCase() + "%");
+        Query query = HibernateUtil.getSession().createQuery("FROM Usuario u WHERE LOWER(u.pessoa.nomPessoa) LIKE :nomPessoa");
+        query.setParameter("nomPessoa", "%" + pParam.toLowerCase() + "%");
         return query.list();
     }
 
@@ -24,8 +24,8 @@ public class UsuarioRepository {
     }
 
     public static Usuario getUserWithLogin(String pLogin) {
-        Query query = HibernateUtil.getSession().createQuery("FROM Usuario WHERE desLogin LIKE :desLogin");
-        query.setParameter("desLogin", "%" + pLogin.toLowerCase() + "%");
+        Query query = HibernateUtil.getSession().createQuery("FROM Usuario WHERE desLogin = :desLogin AND indSituacao = 'A'");
+        query.setParameter("desLogin", pLogin);
         return (Usuario) query.uniqueResult();
     }
 

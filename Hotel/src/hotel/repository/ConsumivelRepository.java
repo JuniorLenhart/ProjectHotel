@@ -13,7 +13,7 @@ public class ConsumivelRepository {
     }
 
     public static List<Consumivel> read(String pParam) {
-        Query query = HibernateUtil.getSession().createQuery("FROM Consumivel WHERE LOWER(nomConsumivel) ILIKE :nomConsumivel");
+        Query query = HibernateUtil.getSession().createQuery("FROM Consumivel WHERE LOWER(nomConsumivel) LIKE :nomConsumivel");
         query.setParameter("nomConsumivel", "%" + pParam.toLowerCase() + "%");
         return query.list();
     }

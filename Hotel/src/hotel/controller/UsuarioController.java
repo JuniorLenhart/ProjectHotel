@@ -1,5 +1,6 @@
 package hotel.controller;
 
+import hotel.model.Parametro;
 import hotel.model.Usuario;
 import hotel.repository.UsuarioRepository;
 import hotel.support.Formatacao;
@@ -26,13 +27,13 @@ public class UsuarioController extends BaseController<Usuario> {
 
     public String resetPassword(int id) {
         Usuario usuario = getReadId(id);
-        usuario.setDesSenha(null);
+        resetPassword(usuario);
         save(usuario);
         return null;
     }
 
     public String resetPassword(Usuario usuario) {
-        usuario.setDesSenha(null);
+        usuario.setDesSenha(Parametro.DES_SENHA_DEFAULT);
         return null;
     }
 

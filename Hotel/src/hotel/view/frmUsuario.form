@@ -102,7 +102,7 @@
               <Color blue="a0" green="5b" red="c" type="rgb"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/hotel/images/resetPassword.png"/>
+              <Image iconType="3" name="/hotel/images/password.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Resetar"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -269,7 +269,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="pnlDetalhe" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="scpLista" pref="301" max="32767" attributes="0"/>
+                      <Component id="scpLista" pref="313" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -396,7 +396,7 @@
                         <Property name="text" type="java.lang.String" value="Por nome"/>
                       </Properties>
                       <Events>
-                        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="rbNomeStateChanged"/>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rbNomeActionPerformed"/>
                       </Events>
                     </Component>
                     <Component class="javax.swing.JRadioButton" name="rbCodigo">
@@ -413,7 +413,7 @@
                         <Property name="text" type="java.lang.String" value="Por c&#xf3;digo"/>
                       </Properties>
                       <Events>
-                        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="rbCodigoStateChanged"/>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rbCodigoActionPerformed"/>
                       </Events>
                     </Component>
                   </SubComponents>

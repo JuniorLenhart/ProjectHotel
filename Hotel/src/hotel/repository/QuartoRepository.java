@@ -13,7 +13,7 @@ public class QuartoRepository {
     }
 
     public static List<Quarto> read(String pParam) {
-        Query query = HibernateUtil.getSession().createQuery("FROM Quarto WHERE numQuarto ILIKE :numQuarto");
+        Query query = HibernateUtil.getSession().createQuery("FROM Quarto WHERE numQuarto LIKE :numQuarto");
         query.setParameter("numQuarto", "%" + pParam.toLowerCase() + "%");
         return query.list();
     }

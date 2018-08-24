@@ -13,7 +13,7 @@ public class FormaPagamentoRepository {
     }
 
     public static List<FormaPagamento> read(String pParam) {
-        Query query = HibernateUtil.getSession().createQuery("FROM FormaPagamento WHERE LOWER(desFormaPgto) ILIKE :desFormaPgto");
+        Query query = HibernateUtil.getSession().createQuery("FROM FormaPagamento WHERE LOWER(desFormaPgto) LIKE :desFormaPgto");
         query.setParameter("desFormaPgto", "%" + pParam.toLowerCase() + "%");
         return query.list();
     }

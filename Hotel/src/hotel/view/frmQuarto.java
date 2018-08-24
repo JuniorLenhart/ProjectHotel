@@ -276,9 +276,9 @@ public class frmQuarto extends javax.swing.JInternalFrame {
         rbNome.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         rbNome.setSelected(true);
         rbNome.setText("Por número");
-        rbNome.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                rbNomeItemStateChanged(evt);
+        rbNome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbNomeActionPerformed(evt);
             }
         });
 
@@ -286,9 +286,9 @@ public class frmQuarto extends javax.swing.JInternalFrame {
         rbGroup.add(rbCodigo);
         rbCodigo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         rbCodigo.setText("Por código");
-        rbCodigo.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                rbCodigoItemStateChanged(evt);
+        rbCodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbCodigoActionPerformed(evt);
             }
         });
 
@@ -536,11 +536,6 @@ public class frmQuarto extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
-    private void rbCodigoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbCodigoItemStateChanged
-        lblPesquisa.setText("Código:");
-        tfdPesquisa.setText("");
-    }//GEN-LAST:event_rbCodigoItemStateChanged
-
     private void tbpQuartoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tbpQuartoStateChanged
         habilitar();
     }//GEN-LAST:event_tbpQuartoStateChanged
@@ -556,11 +551,6 @@ public class frmQuarto extends javax.swing.JInternalFrame {
         tfdNumero.requestFocus();
     }//GEN-LAST:event_btnEditarActionPerformed
 
-    private void rbNomeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbNomeItemStateChanged
-        lblPesquisa.setText("Número:");
-        tfdPesquisa.setText("");
-    }//GEN-LAST:event_rbNomeItemStateChanged
-
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         Object[] options = {"Sim", "Não"};
         int option = JOptionPane.showOptionDialog(null, "Você tem certeza que gostaria de excluir o registro " + tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString() + "?", "Escolha", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
@@ -570,6 +560,16 @@ public class frmQuarto extends javax.swing.JInternalFrame {
             quartoController.popularTabela(tblLista, 0, "");
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void rbNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbNomeActionPerformed
+        lblPesquisa.setText("Número:");
+        tfdPesquisa.setText("");
+    }//GEN-LAST:event_rbNomeActionPerformed
+
+    private void rbCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbCodigoActionPerformed
+        lblPesquisa.setText("Código:");
+        tfdPesquisa.setText("");
+    }//GEN-LAST:event_rbCodigoActionPerformed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
