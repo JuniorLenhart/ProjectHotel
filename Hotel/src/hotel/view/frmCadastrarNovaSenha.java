@@ -4,6 +4,7 @@ import hotel.controller.UsuarioController;
 import hotel.model.Usuario;
 import hotel.support.Criptografia;
 import hotel.support.Validacao;
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
 public class frmCadastrarNovaSenha extends javax.swing.JFrame {
@@ -14,8 +15,32 @@ public class frmCadastrarNovaSenha extends javax.swing.JFrame {
 
     public frmCadastrarNovaSenha(Usuario usuario) {
         initComponents();
+        setLocationRelativeTo(this);
+        setResizable(false);
         this.usuario = usuario;
         usuarioController = new UsuarioController();
+    }
+
+    public void salvar() {
+        if (Validacao.validarCampos(pnlPai) == 0) {
+            String senha = tfdSenha.getText();
+            String confirmaSenha = tfdConfirmarSenha.getText();
+            if (senha.equals(confirmaSenha)) {
+                if (senha.matches(pattern)) {
+                    usuario.setDesSenha(Criptografia.criptografar(senha));
+                    usuarioController.save(usuario);
+                    JOptionPane.showMessageDialog(this, "Senha alterada com sucesso");
+                    this.dispose();
+                    new frmPrincipal().setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Senha não atende a todas as características!");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Senhas não são iguais!");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Campos obrigatórios não preenchidos!");
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -36,16 +61,27 @@ public class frmCadastrarNovaSenha extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         btnSalvar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        cbxMostrarSenha = new javax.swing.JCheckBox();
 
         lblSenha.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         lblSenha.setText("Nova senha:");
 
         tfdSenha.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        tfdSenha.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tfdSenhaKeyPressed(evt);
+            }
+        });
 
         lblConfirmarSenha.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         lblConfirmarSenha.setText("Confirmar senha:");
 
         tfdConfirmarSenha.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        tfdConfirmarSenha.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tfdSenhaKeyPressed(evt);
+            }
+        });
 
         lblInstrucao1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         lblInstrucao1.setText("* Pelo menos um número.");
@@ -76,7 +112,7 @@ public class frmCadastrarNovaSenha extends javax.swing.JFrame {
                     .addComponent(lblInstrucao2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblInstrucao3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblInstrucao4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblInstrucao5, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE))
+                    .addComponent(lblInstrucao5, javax.swing.GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE))
                 .addContainerGap())
         );
         pnlInstrucoesLayout.setVerticalGroup(
@@ -123,6 +159,14 @@ public class frmCadastrarNovaSenha extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
         jLabel1.setText("Cadastro de nova senha");
 
+        cbxMostrarSenha.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        cbxMostrarSenha.setText("Mostrar senha");
+        cbxMostrarSenha.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                cbxMostrarSenhaStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlPaiLayout = new javax.swing.GroupLayout(pnlPai);
         pnlPai.setLayout(pnlPaiLayout);
         pnlPaiLayout.setHorizontalGroup(
@@ -137,13 +181,13 @@ public class frmCadastrarNovaSenha extends javax.swing.JFrame {
                             .addComponent(lblSenha)
                             .addComponent(lblConfirmarSenha))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(pnlPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfdSenha)
-                            .addComponent(tfdConfirmarSenha)))
-                    .addGroup(pnlPaiLayout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addGroup(pnlPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(tfdSenha, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                            .addComponent(tfdConfirmarSenha))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cbxMostrarSenha))
+                    .addComponent(jLabel1))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlPaiLayout.setVerticalGroup(
             pnlPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -156,7 +200,8 @@ public class frmCadastrarNovaSenha extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSenha)
-                    .addComponent(tfdSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfdSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbxMostrarSenha))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlPaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblConfirmarSenha)
@@ -170,8 +215,7 @@ public class frmCadastrarNovaSenha extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnlPai, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(pnlPai, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -185,29 +229,29 @@ public class frmCadastrarNovaSenha extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        if (Validacao.validarCampos(pnlPai) == 0) {
-            String senha = tfdSenha.getText();
-            String confirmaSenha = tfdConfirmarSenha.getText();
-            if (senha.equals(confirmaSenha)) {
-                if (senha.matches(pattern)) {
-                    usuario.setDesSenha(Criptografia.criptografar(senha));
-                    usuarioController.save(usuario);
-                    this.dispose();
-                    new frmPrincipal().setVisible(true);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Senha não atende a todas as características!");
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Senhas não são iguais!");
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Campos obrigatórios não preenchidos!");
-        }
+        salvar();
     }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void tfdSenhaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfdSenhaKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            salvar();
+        }
+    }//GEN-LAST:event_tfdSenhaKeyPressed
+
+    private void cbxMostrarSenhaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_cbxMostrarSenhaStateChanged
+        if (cbxMostrarSenha.isSelected()) {
+            tfdSenha.setEchoChar((char) 0);
+            tfdConfirmarSenha.setEchoChar((char) 0);
+        } else {
+            tfdSenha.setEchoChar('*');
+            tfdConfirmarSenha.setEchoChar('*');
+        }
+    }//GEN-LAST:event_cbxMostrarSenhaStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSalvar;
+    private javax.swing.JCheckBox cbxMostrarSenha;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblConfirmarSenha;

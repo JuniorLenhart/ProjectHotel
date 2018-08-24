@@ -9,6 +9,7 @@ import hotel.support.Validacao;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.event.KeyEvent;
 import java.awt.geom.RoundRectangle2D;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -58,6 +59,26 @@ public class frmLogin extends javax.swing.JFrame {
                 .getScaledInstance(lblBackground.getWidth(), lblBackground.getHeight(), Image.SCALE_SMOOTH);
         ImageIcon imageIcon = new ImageIcon(img);
         return imageIcon;
+    }
+
+    public void salvar() {
+        if (Validacao.validarCampos(pnlLogin) == 0) {
+            String senha = new Criptografia().criptografar(tfdSenha.getText());
+            String login = tfdLogin.getText();
+            if (usuarioController.validaLogin(login, senha) != null) {
+                this.dispose();
+                if (senha.equals(Parametro.DES_SENHA_DEFAULT)) {
+
+                    new frmCadastrarNovaSenha(usuarioController.getUserWithLogin(login)).setVisible(true);
+                } else {
+                    new frmPrincipal().setVisible(true);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Login e/ou senha incorreto(s)!");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Campos obrigatórios não preenchidos!");
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -130,6 +151,11 @@ public class frmLogin extends javax.swing.JFrame {
 
         tfdLogin.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
         tfdLogin.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(12, 91, 160)));
+        tfdLogin.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tfdLoginKeyPressed(evt);
+            }
+        });
 
         lblSenha.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblSenha.setForeground(new java.awt.Color(255, 255, 255));
@@ -147,6 +173,11 @@ public class frmLogin extends javax.swing.JFrame {
 
         tfdSenha.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
         tfdSenha.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(12, 91, 160)));
+        tfdSenha.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tfdLoginKeyPressed(evt);
+            }
+        });
 
         lblLogarse.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
         lblLogarse.setForeground(new java.awt.Color(255, 255, 255));
@@ -210,23 +241,7 @@ public class frmLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLogarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogarActionPerformed
-        if (Validacao.validarCampos(pnlLogin) == 0) {
-            String senha = new Criptografia().criptografar(tfdSenha.getText());
-            String login = tfdLogin.getText();
-            if (usuarioController.validaLogin(login, senha) != null) {
-                this.dispose();
-                if (senha.equals(Parametro.DES_SENHA_DEFAULT)) {
-                    
-                    new frmCadastrarNovaSenha(usuarioController.getUserWithLogin(login)).setVisible(true);
-                } else {
-                    new frmPrincipal().setVisible(true);
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Login e/ou senha incorreto(s)!");
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Campos obrigatórios não preenchidos!");
-        }
+        salvar();
     }//GEN-LAST:event_btnLogarActionPerformed
 
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
@@ -252,6 +267,12 @@ public class frmLogin extends javax.swing.JFrame {
         definirIcone("/hotel/images/error.png");
         definindoAperenciaButton();
     }//GEN-LAST:event_btnFecharMouseReleased
+
+    private void tfdLoginKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfdLoginKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            salvar();
+        }
+    }//GEN-LAST:event_tfdLoginKeyPressed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
