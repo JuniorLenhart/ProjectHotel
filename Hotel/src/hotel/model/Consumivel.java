@@ -119,4 +119,8 @@ public class Consumivel {
     public String toString() {
         return "hotel.model.Consumivel[ codConsumivel=" + codConsumivel + " ]";
     }
+    
+    public String auditoriaFormat() {
+        return "ID: " + codConsumivel + " Nome: " + nomConsumivel + " Descrição: " + desConsumivel + " Valor: " + vlrConsumivel + " Tipo: " + tipConsumivel + " Situação: " + indSituacao;
+    }
 }

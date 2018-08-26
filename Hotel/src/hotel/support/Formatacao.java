@@ -206,4 +206,14 @@ public class Formatacao {
             }
         });
     }
+    
+    public static String formatacaoAuditoria(String tabelaNome, String descricaoNova, String descricaoAntiga) {
+        String retorno = "";
+        if(!descricaoAntiga.equals("")) {
+            retorno = "| Tabela "+tabelaNome+" | Dados antigos: ["+descricaoAntiga+"], Dados novos: ["+descricaoNova+"]";
+        } else {
+            retorno = "| Tabela "+tabelaNome+" | Dados: ["+descricaoNova+"]";
+        }
+        return retorno;
+    }
 }

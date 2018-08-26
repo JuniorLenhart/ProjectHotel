@@ -109,4 +109,9 @@ public class LocacaoConsumivel {
     public String toString() {
         return "hotel.model.LocacaoConsumivel[ codLocacaoConsumivel=" + codLocacaoConsumivel + " ]";
     }
+
+    public String auditoriaFormat() {
+        return "ID: " + codLocacaoConsumivel + " ID Consumível: " + codConsumivel.getCodConsumivel()+ " ID Locação: " + codLocacao.getCodLocacao()+ " Quantidade: " + qtdConsumivel
+                + " Valor: " + vlrConsumivel;
+    }
 }

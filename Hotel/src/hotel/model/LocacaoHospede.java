@@ -96,4 +96,8 @@ public class LocacaoHospede {
     public String toString() {
         return "hotel.model.LocacaoHospede[ codLocacaoHospede=" + codLocacaoHospede + " ]";
     }
+
+    public String auditoriaFormat() {
+        return "ID: " + codLocacaoHospede + " ID Locação: " + codLocacao.getCodLocacao() + " ID Pessoa: " + codPessoa.getCodPessoa() + " Responsável: " + indResponsavel;
+    }
 }

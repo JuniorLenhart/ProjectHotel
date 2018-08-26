@@ -132,4 +132,13 @@ public class Usuario {
     public String toString() {
         return "hotel.model.Usuario[ codUsuario=" + codUsuario + " ]";
     }
+
+    public String auditoriaFormat() {
+        String desListPermissao = "";
+        for (Permissao permissao1 : permissao) {
+            desListPermissao += permissao1.getCodPermissao() + ", ";
+        }
+        return "ID: " + codUsuario + " ID Pessoa: " + pessoa.getCodPessoa() + " ID Permissão(s): " + desListPermissao
+                + " Login: " + desLogin + " Senha: " + desSenha + " Tipo: " + indTipo + " Situação: " + indSituacao;
+    }
 }

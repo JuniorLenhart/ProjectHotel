@@ -116,4 +116,13 @@ public class Quarto {
     public String toString() {
         return "hotel.model.Quarto[ codQuarto=" + codQuarto + " ]";
     }
+
+    public String auditoriaFormat() {
+        String codTiposCamas = "";
+        for (TipoCama tipoCama1 : tipoCama) {
+            codTiposCamas += tipoCama1.getCodTipoCama() + ", ";
+        }
+        return "ID: " + codQuarto + " Número quarto: " + numQuarto + " Valor: " + vlrQuarto + " Tipo(s) cama(s): " + codTiposCamas
+                + " Situação:" + indSituacao;
+    }
 }

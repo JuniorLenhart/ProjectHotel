@@ -176,4 +176,10 @@ public class Locacao {
     public String toString() {
         return "hotel.model.Locacao[ codLocacao=" + codLocacao + " ]";
     }
+    
+    public String auditoriaFormat() {
+        return "ID: " + codLocacao + " ID Quarto: " + codQuarto.getCodQuarto() + " ID Usuário: " + codUsuario.getCodUsuario() + " Data locação: " + dtaLocacao
+                + " Data entrada prevista: " + dtaEntradaPrevista + " Data entrada: " + dtaEntrada + " Data saida prevista: " + dtaSaidaPrevista + " Data saida: " + dtaSaida
+                + " Valor locação: " + vlrLocacao + " Situação: " + indSituacao;
+    }
 }

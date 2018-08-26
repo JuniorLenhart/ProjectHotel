@@ -148,4 +148,8 @@ public class Financeiro {
     public String toString() {
         return "hotel.model.Financeiro[ codFinanceiro=" + codFinanceiro + " ]";
     }
+    
+    public String auditoriaFormat() {
+        return "ID: " + codFinanceiro + " ID Locação: " + codLocacao.getCodLocacao() + " ID FormaPgto: " + codFormaPgto.getCodFormaPgto() + " Parcela: " + parcela + " Data venc: " + dtaVencimento + " Data pgto: " + dtaPgto + " Valor financeiro: " + vlrFinanceiro + " Valor pago: " + vlrPago;
+    }
 }

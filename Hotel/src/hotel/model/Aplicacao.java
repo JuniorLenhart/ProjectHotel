@@ -82,4 +82,8 @@ public class Aplicacao {
     public String toString() {
         return "hotel.model.Aplicacao[ codAplicacao=" + codAplicacao + " ]";
     }
+    
+    public String auditoriaFormat() {
+        return "ID: "+codAplicacao+" Nome: "+nomAplicacao+" Nome arquivo: "+nomArquivoJava;
+    }
 }

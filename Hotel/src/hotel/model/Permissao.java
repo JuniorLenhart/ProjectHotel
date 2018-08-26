@@ -109,4 +109,9 @@ public class Permissao {
     public String toString() {
         return "hotel.model.Permissao[ codPermissao=" + codPermissao + " ]";
     }
+
+    public String auditoriaFormat() {
+        return "ID: " + codPermissao + " ID Aplicação: " + codAplicacao.getCodAplicacao() + " ID Usuário: " + codUsuario.getCodUsuario() + " Leitura: " + indLeitura
+                + " Escrita: " + indEscrita;
+    }
 }

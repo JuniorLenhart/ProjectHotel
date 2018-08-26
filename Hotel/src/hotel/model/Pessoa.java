@@ -153,4 +153,10 @@ public class Pessoa {
     public String toString() {
         return "hotel.model.Pessoa[ codPessoa=" + codPessoa + " ]";
     }
+
+    public String auditoriaFormat() {
+        return "ID: " + codPessoa + " Nome: " + nomPessoa + " CPF: " + numCpf + " Data nascimento: " + dtaNasc
+                + " Endereço:" + desEndereco + " Email: " + desEmail + " Telefone: " + numTelefone + " Celular: " + numCelular
+                + " Situação:"  + indSituacao;
+    }
 }

@@ -61,4 +61,8 @@ public class Parametro {
     public String toString() {
         return "hotel.model.Parametro[ codParametro=" + codParametro + " ]";
     }
+
+    public String auditoriaFormat() {
+        return "ID: " + codParametro + " Número dias checkin: " + numDiasCheckin + " Número dias pagamento reserva: " + numDiasPgtoReserva + " Senha default: " + desSenhaDefault;
+    }
 }

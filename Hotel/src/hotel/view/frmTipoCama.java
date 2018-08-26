@@ -1,10 +1,13 @@
 package hotel.view;
 
+import hotel.controller.AuditoriaController;
 import hotel.support.DocumentoLimitado;
 import hotel.support.LimpaCampos;
 import hotel.support.Validacao;
 import hotel.model.TipoCama;
 import hotel.controller.TipoCamaController;
+import hotel.model.Auditoria;
+import hotel.support.Formatacao;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
@@ -14,11 +17,17 @@ public class frmTipoCama extends javax.swing.JInternalFrame {
 
     TipoCama tipoCama;
     TipoCamaController tipoCamaController;
+    Auditoria auditoria;
+    AuditoriaController auditoriaController;
+    String descricaoObjetoAntigo;
 
     public frmTipoCama() {
         initComponents();
         tipoCama = new TipoCama();
         tipoCamaController = new TipoCamaController();
+        auditoria = new Auditoria();
+        auditoriaController = new AuditoriaController();
+        descricaoObjetoAntigo = "";
         setVisibleCodigo(false);
 
         tipoCamaController.popularTabela(tblLista, 0, "");
@@ -78,6 +87,7 @@ public class frmTipoCama extends javax.swing.JInternalFrame {
         tfdCodigo.setText(tipoCama.getCodTipoCama().toString());
         tfdDescricao.setText(tipoCama.getDesTipoCama());
         tfdLugar.setValue(tipoCama.getQtdLugarTipoCama());
+        descricaoObjetoAntigo = tipoCama.auditoriaFormat();
         setVisibleCodigo(true);
     }
 
@@ -459,9 +469,11 @@ public class frmTipoCama extends javax.swing.JInternalFrame {
             tipoCamaController.save(tipoCama);
 
             if (!isNew) {
+                auditoriaController.concatenarESalvar(Formatacao.formatacaoAuditoria("TipoCama", tipoCama.auditoriaFormat(), descricaoObjetoAntigo), "UPDATE", Auditoria.auditoriaAtiva);
                 JOptionPane.showMessageDialog(this, "Atualizado com sucesso!");
                 setVisibleCodigo(false);
             } else {
+                auditoriaController.concatenarESalvar(Formatacao.formatacaoAuditoria("TipoCama", tipoCama.auditoriaFormat(), ""), "INSERT", Auditoria.auditoriaAtiva);
                 JOptionPane.showMessageDialog(this, "Cadastrado com sucesso!");
             }
 
@@ -494,6 +506,10 @@ public class frmTipoCama extends javax.swing.JInternalFrame {
         int option = JOptionPane.showOptionDialog(null, "Você tem certeza que gostaria de excluir o registro " + tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString() + "?", "Escolha", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (option == 0) {
             tipoCamaController.changeSituation(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString()));
+            auditoriaController.concatenarESalvar(Formatacao.formatacaoAuditoria("TipoCama",
+                    tipoCamaController.getReadId(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString())).auditoriaFormat(),
+                    ""),
+                    "DELETE", Auditoria.auditoriaAtiva);
             JOptionPane.showMessageDialog(this, "Excluído com sucesso!");
             tipoCamaController.popularTabela(tblLista, 0, "");
         }

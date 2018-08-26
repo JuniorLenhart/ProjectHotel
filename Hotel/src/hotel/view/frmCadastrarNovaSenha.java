@@ -1,8 +1,11 @@
 package hotel.view;
 
+import hotel.controller.AuditoriaController;
 import hotel.controller.UsuarioController;
+import hotel.model.Auditoria;
 import hotel.model.Usuario;
 import hotel.support.Criptografia;
+import hotel.support.Formatacao;
 import hotel.support.Validacao;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
@@ -12,6 +15,8 @@ public class frmCadastrarNovaSenha extends javax.swing.JFrame {
     String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{6,}";
     Usuario usuario;
     UsuarioController usuarioController;
+    Auditoria auditoria;
+    AuditoriaController auditoriaController;
 
     public frmCadastrarNovaSenha(Usuario usuario) {
         initComponents();
@@ -19,6 +24,8 @@ public class frmCadastrarNovaSenha extends javax.swing.JFrame {
         setResizable(false);
         this.usuario = usuario;
         usuarioController = new UsuarioController();
+        auditoria = new Auditoria();
+        auditoriaController = new AuditoriaController();
     }
 
     public void salvar() {
@@ -29,6 +36,7 @@ public class frmCadastrarNovaSenha extends javax.swing.JFrame {
                 if (senha.matches(pattern)) {
                     usuario.setDesSenha(Criptografia.criptografar(senha));
                     usuarioController.save(usuario);
+                    auditoriaController.concatenarESalvar(Formatacao.formatacaoAuditoria("Usuario(Alterou senha padrão)", usuario.auditoriaFormat(), ""), "UPDATE", Auditoria.auditoriaAtiva);
                     JOptionPane.showMessageDialog(this, "Senha alterada com sucesso");
                     this.dispose();
                     new frmPrincipal(usuario).setVisible(true);

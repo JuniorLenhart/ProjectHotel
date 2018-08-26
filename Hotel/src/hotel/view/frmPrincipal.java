@@ -1,16 +1,19 @@
 package hotel.view;
 
+import hotel.model.Auditoria;
 import hotel.model.Usuario;
 import hotel.support.Unit;
 import javax.swing.*;
 
 public class frmPrincipal extends javax.swing.JFrame {
 
-    Usuario usuario;
+    public static Usuario usuario;
+    public static Auditoria auditoria;
     public frmPrincipal(Usuario usuario) {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
-        this.usuario = usuario;
+        frmPrincipal.usuario = usuario;
+        auditoria = new Auditoria();
         lblUsuarioLogado.setText(lblUsuarioLogado.getText() + this.usuario.getPessoa().getNomPessoa());
     }
 
@@ -154,6 +157,11 @@ public class frmPrincipal extends javax.swing.JFrame {
         mnuUsuario.add(mniPermissao);
 
         mniAuditoria.setText("Auditoria");
+        mniAuditoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniAuditoriaActionPerformed(evt);
+            }
+        });
         mnuUsuario.add(mniAuditoria);
 
         mnbPrincipal.add(mnuUsuario);
@@ -217,6 +225,10 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void mniUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniUsuarioActionPerformed
         abrirTela(new frmUsuario());
     }//GEN-LAST:event_mniUsuarioActionPerformed
+
+    private void mniAuditoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniAuditoriaActionPerformed
+        abrirTela(new frmAuditoria());
+    }//GEN-LAST:event_mniAuditoriaActionPerformed
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
