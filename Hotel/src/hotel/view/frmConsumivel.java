@@ -21,17 +21,11 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
 
     Consumivel consumivel;
     ConsumivelController consumivelController;
-    Auditoria auditoria;
-    AuditoriaController auditoriaController;
-    String descricaoObjetoAntigo;
 
     public frmConsumivel() {
         initComponents();
         consumivel = new Consumivel();
         consumivelController = new ConsumivelController();
-        auditoria = new Auditoria();
-        auditoriaController = new AuditoriaController();
-        descricaoObjetoAntigo = "";
         setVisibleCodigo(false);
 
         consumivelController.popularTabela(tblLista, 0, "");
@@ -94,7 +88,6 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
         tfdNome.setText(consumivel.getNomConsumivel());
         tfdDescricao.setText(consumivel.getDesConsumivel());
         tfdPreco.setValue(consumivel.getVlrConsumivel());
-        descricaoObjetoAntigo = consumivel.auditoriaFormat();
         for (TipoConsumivel tc : TipoConsumivel.values()) {
             if (consumivel.getTipConsumivel().equals(tc.name())) {
                 cmbTipo.setSelectedItem(tc.getValor());
@@ -532,11 +525,9 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
             consumivelController.save(consumivel);
 
             if (!isNew) {
-                auditoriaController.concatenarESalvar(Formatacao.formatacaoAuditoria("Consumivel", consumivel.auditoriaFormat(), descricaoObjetoAntigo), "UPDATE", Auditoria.auditoriaAtiva);
                 JOptionPane.showMessageDialog(this, "Atualizado com sucesso!");
                 setVisibleCodigo(false);
             } else {
-                auditoriaController.concatenarESalvar(Formatacao.formatacaoAuditoria("Consumivel", consumivel.auditoriaFormat(), ""), "INSERT", Auditoria.auditoriaAtiva);
                 JOptionPane.showMessageDialog(this, "Cadastrado com sucesso!");
             }
 
@@ -569,10 +560,6 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
         int escolha = JOptionPane.showOptionDialog(null, "Você tem certeza que gostaria de excluir o registro " + tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString() + "?", "Escolha", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (escolha == 0) {
             consumivelController.changeSituation(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString()));
-            auditoriaController.concatenarESalvar(Formatacao.formatacaoAuditoria("Consumivel",
-                    consumivelController.getReadId(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString())).auditoriaFormat(),
-                    ""),
-                    "DELETE", Auditoria.auditoriaAtiva);
             JOptionPane.showMessageDialog(this, "Excluído com sucesso!");
             consumivelController.popularTabela(tblLista, 0, "");
         }

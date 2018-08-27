@@ -13,19 +13,6 @@ import javax.swing.table.TableColumn;
 
 public class AuditoriaController extends BaseController<Auditoria> {
 
-    public void concatenarESalvar(String descricao, String tipo, boolean auditoriaAtiva) {
-        if (auditoriaAtiva) {
-            Auditoria auditoria = new Auditoria();
-            Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
-            auditoria.setCodUsuario(frmPrincipal.usuario);
-            auditoria.setDtaAuditoria(timestamp);
-            auditoria.setTipAuditoria(tipo);
-            auditoria.setDesAuditoria(descricao);
-
-            save(auditoria);
-        }
-    }
-    
     public Auditoria getReadId(int pCodigo) {
         return AuditoriaRepository.readId(pCodigo);
     }

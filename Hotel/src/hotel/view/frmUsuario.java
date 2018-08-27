@@ -18,16 +18,12 @@ public class frmUsuario extends javax.swing.JInternalFrame {
     Usuario usuario;
     UsuarioController usuarioController;
     PessoaController pessoaController;
-    Auditoria auditoria;
-    AuditoriaController auditoriaController;
 
     public frmUsuario() {
         initComponents();
         usuario = new Usuario();
         usuarioController = new UsuarioController();
         pessoaController = new PessoaController();
-        auditoria = new Auditoria();
-        auditoriaController = new AuditoriaController();
 
         pessoaController.popularTabela(tblPessoa, 3, "A");
         usuarioController.popularTabela(tblLista, 0, "");
@@ -416,7 +412,6 @@ public class frmUsuario extends javax.swing.JInternalFrame {
                 usuario.setIndSituacao("A");
                 usuarioController.resetPassword(usuario);
                 usuarioController.save(usuario);
-                auditoriaController.concatenarESalvar(Formatacao.formatacaoAuditoria("Usuario", usuario.auditoriaFormat(), ""), "INSERT", Auditoria.auditoriaAtiva);
 
                 JOptionPane.showMessageDialog(this, "Cadastrado com sucesso!");
 
@@ -434,7 +429,6 @@ public class frmUsuario extends javax.swing.JInternalFrame {
     private void btnResetarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetarActionPerformed
         int codigo = Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString());
         usuarioController.resetPassword(codigo);
-        auditoriaController.concatenarESalvar(Formatacao.formatacaoAuditoria("Usuario (Senha resetada)", usuario.auditoriaFormat(), ""), "UPDATE", Auditoria.auditoriaAtiva);
         JOptionPane.showMessageDialog(this, "Senha resetada com sucesso!");
     }//GEN-LAST:event_btnResetarActionPerformed
 
@@ -443,10 +437,6 @@ public class frmUsuario extends javax.swing.JInternalFrame {
         int escolha = JOptionPane.showOptionDialog(null, "Você tem certeza que gostaria de excluir o registro " + tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString() + "?", "Escolha", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (escolha == 0) {
             usuarioController.changeSituation(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString()));
-            auditoriaController.concatenarESalvar(Formatacao.formatacaoAuditoria("Usuario",
-                    usuarioController.getReadId(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString())).auditoriaFormat(),
-                    ""),
-                    "DELETE", Auditoria.auditoriaAtiva);
             JOptionPane.showMessageDialog(this, "Excluído com sucesso!");
             usuarioController.popularTabela(tblLista, 0, "");
             pessoaController.popularTabela(tblPessoa, 3, "A");

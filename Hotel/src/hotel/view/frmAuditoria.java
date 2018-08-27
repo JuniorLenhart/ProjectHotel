@@ -1,10 +1,11 @@
 package hotel.view;
 
 import hotel.controller.AuditoriaController;
+import hotel.controller.ParametroController;
 import hotel.model.Auditoria;
+import hotel.model.Parametro;
+import hotel.repository.ParametroRepository;
 import hotel.support.Formatacao;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
@@ -12,22 +13,26 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
 
     Auditoria auditoria;
     AuditoriaController auditoriaController;
+    ParametroController parametroController;
 
     public frmAuditoria() {
         initComponents();
         auditoria = new Auditoria();
         auditoriaController = new AuditoriaController();
+        parametroController = new ParametroController();
         
         checaAuditoriaAtiva();
+        
+        auditoriaController.popularTabela(tblLista, 0, "");
     }
 
     private void checaAuditoriaAtiva() {
-        if (Auditoria.auditoriaAtiva) {
-            btnAtivarAuditoria.setSelected(Auditoria.auditoriaAtiva);
+        if (Parametro.AUDITORIA_ATIVA) {
+            btnAtivarAuditoria.setSelected(Parametro.AUDITORIA_ATIVA);
             btnAtivarAuditoria.setText("Desativar Auditoria");
             btnAtivarAuditoria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/lampoff.png")));
         } else {
-            btnAtivarAuditoria.setSelected(Auditoria.auditoriaAtiva);
+            btnAtivarAuditoria.setSelected(Parametro.AUDITORIA_ATIVA);
             btnAtivarAuditoria.setText("Ativar Auditoria");
             btnAtivarAuditoria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/lampon.png")));
         }
@@ -377,19 +382,19 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tbpFormaPagamentoStateChanged
 
     private void btnAtivarAuditoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtivarAuditoriaActionPerformed
+        Parametro parametro = ParametroRepository.read();
         if (btnAtivarAuditoria.isSelected()) {
-            Auditoria.auditoriaAtiva = true;
+            parametro.setAuditoriaAtiva(true);
             btnAtivarAuditoria.setText("Desativar Auditoria");
             btnAtivarAuditoria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/lampoff.png")));
-            auditoriaController.concatenarESalvar(Formatacao.formatacaoAuditoria("Auditoria", "AUDITORIA ATIVADA", ""), "INSERT", Auditoria.auditoriaAtiva);
             JOptionPane.showMessageDialog(null, "Auditoria agora está ativada!");
         } else if (!btnAtivarAuditoria.isSelected()) {
-            Auditoria.auditoriaAtiva = false;
+            parametro.setAuditoriaAtiva(false);
             btnAtivarAuditoria.setText("Ativar Auditoria");
             btnAtivarAuditoria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/lampon.png")));
-            auditoriaController.concatenarESalvar(Formatacao.formatacaoAuditoria("Auditoria", "AUDITORIA DESATIVADA", ""), "INSERT", Auditoria.auditoriaAtiva);
             JOptionPane.showMessageDialog(null, "Auditoria agora está desativada!");
         }
+        parametroController.save(parametro);
     }//GEN-LAST:event_btnAtivarAuditoriaActionPerformed
 
     private void cbxInsertItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxInsertItemStateChanged

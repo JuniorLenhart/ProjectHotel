@@ -28,18 +28,12 @@ public class frmQuarto extends javax.swing.JInternalFrame {
     Quarto quarto;
     QuartoController quartoController;
     TipoCamaController tipoCamaController;
-    Auditoria auditoria;
-    AuditoriaController auditoriaController;
-    String descricaoObjetoAntigo;
 
     public frmQuarto() {
         initComponents();
         quarto = new Quarto();
         quartoController = new QuartoController();
         tipoCamaController = new TipoCamaController();
-        auditoria = new Auditoria();
-        auditoriaController = new AuditoriaController();
-        descricaoObjetoAntigo = "";
         setVisibleCodigo(false);
 
         quartoController.popularTabela(tblLista, 0, "");
@@ -127,7 +121,6 @@ public class frmQuarto extends javax.swing.JInternalFrame {
         tfdCodigo.setText(quarto.getCodQuarto().toString());
         tfdNumero.setText(quarto.getNumQuarto());
         tfdValor.setValue(quarto.getVlrQuarto());
-        descricaoObjetoAntigo = quarto.auditoriaFormat();
         for (TipoCama tc : quarto.getTipoCama()) {
             for (int i = 0; i < lstTipoCama.getModel().getSize(); i++) {
                 if (tc.getCodTipoCama().toString().equals(lstTipoCama.getModel().getElementAt(i).getName())) {
@@ -531,11 +524,9 @@ public class frmQuarto extends javax.swing.JInternalFrame {
             quartoController.save(quarto);
 
             if (!isNew) {
-                auditoriaController.concatenarESalvar(Formatacao.formatacaoAuditoria("Quarto", quarto.auditoriaFormat(), descricaoObjetoAntigo), "UPDATE", Auditoria.auditoriaAtiva);
                 JOptionPane.showMessageDialog(this, "Atualizado com sucesso!");
                 setVisibleCodigo(false);
             } else {
-                auditoriaController.concatenarESalvar(Formatacao.formatacaoAuditoria("Quarto", quarto.auditoriaFormat(), ""), "INSERT", Auditoria.auditoriaAtiva);
                 JOptionPane.showMessageDialog(this, "Cadastrado com sucesso!");
             }
 
@@ -568,10 +559,6 @@ public class frmQuarto extends javax.swing.JInternalFrame {
         int option = JOptionPane.showOptionDialog(null, "Você tem certeza que gostaria de excluir o registro " + tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString() + "?", "Escolha", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (option == 0) {
             quartoController.changeSituacao(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString()));
-            auditoriaController.concatenarESalvar(Formatacao.formatacaoAuditoria("Quarto",
-                    quartoController.getReadId(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString())).auditoriaFormat(),
-                    ""),
-                    "DELETE", Auditoria.auditoriaAtiva);
             JOptionPane.showMessageDialog(this, "Excluído com sucesso!");
             quartoController.popularTabela(tblLista, 0, "");
         }

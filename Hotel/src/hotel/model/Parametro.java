@@ -24,11 +24,19 @@ public class Parametro {
 
     @Column(name = "des_senha_default")
     private String desSenhaDefault;
+    
+    @Column(name = "cod_usuario")
+    private Integer codUsuario;
+    
+    @Column(name = "auditoria_ativa")
+    private boolean auditoriaAtiva;
 
     public static Integer NUM_DIAS_CHECKIN = 0;
     public static Integer NUM_DIAS_PGTO_RESERVA = 0;
     public static String DES_SENHA_DEFAULT = "";
-
+    public static Integer COD_USUARIO = 0;
+    public static boolean AUDITORIA_ATIVA = true;
+    
     public Parametro() {
     }
 
@@ -36,6 +44,26 @@ public class Parametro {
         DES_SENHA_DEFAULT = parametro.desSenhaDefault;
         NUM_DIAS_CHECKIN = parametro.numDiasCheckin;
         NUM_DIAS_PGTO_RESERVA = parametro.numDiasPgtoReserva;
+        COD_USUARIO = parametro.codUsuario;
+        AUDITORIA_ATIVA = parametro.auditoriaAtiva;
+    }
+
+    public Integer getCodUsuario() {
+        return codUsuario;
+    }
+
+    public void setCodUsuario(Integer codUsuario) {
+        this.codUsuario = codUsuario;
+        COD_USUARIO = codUsuario;
+    }
+
+    public boolean isAuditoriaAtiva() {
+        return auditoriaAtiva;
+    }
+
+    public void setAuditoriaAtiva(boolean auditoriaAtiva) {
+        this.auditoriaAtiva = auditoriaAtiva;
+        AUDITORIA_ATIVA = auditoriaAtiva;
     }
 
     @Override
@@ -60,9 +88,5 @@ public class Parametro {
     @Override
     public String toString() {
         return "hotel.model.Parametro[ codParametro=" + codParametro + " ]";
-    }
-
-    public String auditoriaFormat() {
-        return "ID: " + codParametro + " Número dias checkin: " + numDiasCheckin + " Número dias pagamento reserva: " + numDiasPgtoReserva + " Senha default: " + desSenhaDefault;
     }
 }

@@ -34,8 +34,6 @@ public class Auditoria {
     @JoinColumn(name = "cod_usuario", referencedColumnName = "cod_usuario")
     @ManyToOne(optional = false)
     private Usuario codUsuario;
-    
-    public static boolean auditoriaAtiva = true;
 
     public Auditoria() {
     }

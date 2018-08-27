@@ -17,17 +17,11 @@ public class frmFormaPagamento extends javax.swing.JInternalFrame {
 
     FormaPagamento formaPagamento;
     FormaPagamentoController formaPagamentoController;
-    Auditoria auditoria;
-    AuditoriaController auditoriaController;
-    String descricaoObjetoAntigo;
 
     public frmFormaPagamento() {
         initComponents();
         formaPagamento = new FormaPagamento();
         formaPagamentoController = new FormaPagamentoController();
-        auditoria = new Auditoria();
-        auditoriaController = new AuditoriaController();
-        descricaoObjetoAntigo = "";
         setVisibleCodigo(false);
 
         formaPagamentoController.popularTabela(tblLista, 0, "");
@@ -86,7 +80,6 @@ public class frmFormaPagamento extends javax.swing.JInternalFrame {
     public void popularTelaCadastro() {
         tfdCodigo.setText(formaPagamento.getCodFormaPgto().toString());
         tfdNome.setText(formaPagamento.getDesFormaPgto());
-        descricaoObjetoAntigo = formaPagamento.auditoriaFormat();
         setVisibleCodigo(true);
     }
 
@@ -421,11 +414,9 @@ public class frmFormaPagamento extends javax.swing.JInternalFrame {
             formaPagamentoController.save(formaPagamento);
 
             if (!isNew) {
-                auditoriaController.concatenarESalvar(Formatacao.formatacaoAuditoria("FormaPagamento", formaPagamento.auditoriaFormat(), descricaoObjetoAntigo), "UPDATE", Auditoria.auditoriaAtiva);
                 JOptionPane.showMessageDialog(this, "Atualizado com sucesso!");
                 setVisibleCodigo(false);
             } else {
-                auditoriaController.concatenarESalvar(Formatacao.formatacaoAuditoria("FormaPagamento", formaPagamento.auditoriaFormat(), ""), "INSERT", Auditoria.auditoriaAtiva);
                 JOptionPane.showMessageDialog(this, "Cadastrado com sucesso!");
             }
 
@@ -450,10 +441,6 @@ public class frmFormaPagamento extends javax.swing.JInternalFrame {
         int escolha = JOptionPane.showOptionDialog(null, "Você tem certeza que gostaria de excluir o registro " + tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString() + "?", "Escolha", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (escolha == 0) {
             formaPagamentoController.changeSituation(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString()));
-            auditoriaController.concatenarESalvar(Formatacao.formatacaoAuditoria("FormaPagamento",
-                    formaPagamentoController.getReadId(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString())).auditoriaFormat(),
-                    ""),
-                    "DELETE", Auditoria.auditoriaAtiva);
             JOptionPane.showMessageDialog(this, "Excluído com sucesso!");
             formaPagamentoController.popularTabela(tblLista, 0, "");
         }

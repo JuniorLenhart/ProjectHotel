@@ -18,17 +18,11 @@ public class frmPessoa extends javax.swing.JInternalFrame {
 
     Pessoa pessoa;
     PessoaController pessoaController;
-    Auditoria auditoria;
-    AuditoriaController auditoriaController;
-    String descricaoObjetoAntigo;
 
     public frmPessoa() {
         initComponents();
         pessoa = new Pessoa();
         pessoaController = new PessoaController();
-        auditoria = new Auditoria();
-        auditoriaController = new AuditoriaController();
-        descricaoObjetoAntigo = "";
         setVisibleCodigo(false);
 
         pessoaController.popularTabela(tblLista, 0, "");
@@ -100,8 +94,7 @@ public class frmPessoa extends javax.swing.JInternalFrame {
         String[] enderecoSplitado = pessoa.getDesEndereco().split(",");
         tfdRua.setText(enderecoSplitado[0]);
         tfdNumero.setText(enderecoSplitado[1]);
-        descricaoObjetoAntigo = pessoa.auditoriaFormat();
-        if (enderecoSplitado[2] != null) {
+        if (enderecoSplitado.length == 3) {
             tfdComplemento.setText(enderecoSplitado[2]);
         }
         setVisibleCodigo(true);
@@ -639,11 +632,9 @@ public class frmPessoa extends javax.swing.JInternalFrame {
                         pessoaController.save(pessoa);
 
                         if (!isNew) {
-                            auditoriaController.concatenarESalvar(Formatacao.formatacaoAuditoria("Pessoa", pessoa.auditoriaFormat(), descricaoObjetoAntigo), "UPDATE", Auditoria.auditoriaAtiva);
                             JOptionPane.showMessageDialog(this, "Atualizado com sucesso!");
                             setVisibleCodigo(false);
                         } else {
-                            auditoriaController.concatenarESalvar(Formatacao.formatacaoAuditoria("Pessoa", pessoa.auditoriaFormat(), ""), "INSERT", Auditoria.auditoriaAtiva);
                             JOptionPane.showMessageDialog(this, "Cadastrado com sucesso!");
                         }
 
@@ -677,10 +668,6 @@ public class frmPessoa extends javax.swing.JInternalFrame {
         int escolha = JOptionPane.showOptionDialog(null, "Você tem certeza que gostaria de excluir o registro " + tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString() + "?", "Escolha", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (escolha == 0) {
             pessoaController.changeSituation(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString()));
-            auditoriaController.concatenarESalvar(Formatacao.formatacaoAuditoria("Pessoa",
-                    pessoaController.getReadId(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString())).auditoriaFormat(),
-                    ""),
-                    "DELETE", Auditoria.auditoriaAtiva);
             JOptionPane.showMessageDialog(this, "Excluído com sucesso!");
             pessoaController.popularTabela(tblLista, 0, "");
         }
