@@ -8,37 +8,53 @@ public abstract class BaseController<T> implements IBaseController<T> {
 
     @Override
     public String save(T pT) {
-        Transaction transaction = HibernateUtil.getBeginTransaction();
+        try {
+            Transaction transaction = HibernateUtil.getBeginTransaction();
 
-        HibernateUtil.getSession().saveOrUpdate(pT);
+            HibernateUtil.getSession().saveOrUpdate(pT);
 
-        transaction.commit();
+            transaction.commit();
+        } catch (Exception ex) {
+            LoggerController.log(this.getClass(), ex);
+        }
         return null;
     }
 
     @Override
     public String saveAll(List<T> pT) {
-        pT.forEach((object) -> {
-            save(object);
-        });
+        try {
+            pT.forEach((object) -> {
+                save(object);
+            });
+        } catch (Exception ex) {
+            LoggerController.log(this.getClass(), ex);
+        }
         return null;
     }
 
     @Override
     public String delete(T pT) {
-        Transaction transaction = HibernateUtil.getBeginTransaction();
+        try {
+            Transaction transaction = HibernateUtil.getBeginTransaction();
 
-        HibernateUtil.getSession().delete(pT);
+            HibernateUtil.getSession().delete(pT);
 
-        transaction.commit();
+            transaction.commit();
+        } catch (Exception ex) {
+            LoggerController.log(this.getClass(), ex);
+        }
         return null;
     }
 
     @Override
     public String deleteAll(List<T> pT) {
-        pT.forEach((object) -> {
-            delete(object);
-        });
+        try {
+            pT.forEach((object) -> {
+                delete(object);
+            });
+        } catch (Exception ex) {
+            LoggerController.log(this.getClass(), ex);
+        }
         return null;
     }
 }
