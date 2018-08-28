@@ -34,7 +34,7 @@ public class Parametro {
     public static Integer NUM_DIAS_CHECKIN = 0;
     public static Integer NUM_DIAS_PGTO_RESERVA = 0;
     public static String DES_SENHA_DEFAULT = "";
-    public static Integer COD_USUARIO = 0;
+    public static Usuario USUARIO = null;
     public static boolean AUDITORIA_ATIVA = true;
     
     public Parametro() {
@@ -44,19 +44,13 @@ public class Parametro {
         DES_SENHA_DEFAULT = parametro.desSenhaDefault;
         NUM_DIAS_CHECKIN = parametro.numDiasCheckin;
         NUM_DIAS_PGTO_RESERVA = parametro.numDiasPgtoReserva;
-        COD_USUARIO = parametro.codUsuario;
         AUDITORIA_ATIVA = parametro.auditoriaAtiva;
     }
 
-    public Integer getCodUsuario() {
-        return codUsuario;
+    public static void setUser(Usuario usuario){
+        USUARIO = usuario;
     }
-
-    public void setCodUsuario(Integer codUsuario) {
-        this.codUsuario = codUsuario;
-        COD_USUARIO = codUsuario;
-    }
-
+    
     public boolean isAuditoriaAtiva() {
         return auditoriaAtiva;
     }

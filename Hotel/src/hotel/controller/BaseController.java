@@ -1,6 +1,7 @@
 package hotel.controller;
 
 import hotel.config.HibernateUtil;
+import hotel.model.Parametro;
 import org.hibernate.Transaction;
 import java.util.List;
 
@@ -10,7 +11,7 @@ public abstract class BaseController<T> implements IBaseController<T> {
     public String save(T pT) {
         try {
             Transaction transaction = HibernateUtil.getBeginTransaction();
-
+            new UsuarioController().setUserSession(Parametro.USUARIO);
             HibernateUtil.getSession().saveOrUpdate(pT);
 
             transaction.commit();

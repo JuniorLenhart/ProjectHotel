@@ -23,6 +23,8 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
         
         checaAuditoriaAtiva();
         
+        
+        
         auditoriaController.popularTabela(tblLista, 0, "");
     }
 
@@ -127,7 +129,7 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
         });
 
         lblPesquisa.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblPesquisa.setText("Descrição, código ou usuário nome:");
+        lblPesquisa.setText("Nome:");
 
         pnlOpcao.setBackground(new java.awt.Color(255, 255, 255));
         pnlOpcao.setBorder(javax.swing.BorderFactory.createTitledBorder(null, " Pesquisa Detalhada ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
@@ -135,6 +137,7 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
         rbNome.setBackground(new java.awt.Color(255, 255, 255));
         btgGroup.add(rbNome);
         rbNome.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        rbNome.setSelected(true);
         rbNome.setText("Por nome");
         rbNome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -152,6 +155,7 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
             }
         });
 
+        rbUsuarioLogin.setBackground(new java.awt.Color(255, 255, 255));
         btgGroup.add(rbUsuarioLogin);
         rbUsuarioLogin.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         rbUsuarioLogin.setText("Por usuário login");
@@ -194,8 +198,10 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
             }
         });
 
-        pnlOpcaoTipo.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Pesquisa por tipo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
+        pnlOpcaoTipo.setBackground(new java.awt.Color(255, 255, 255));
+        pnlOpcaoTipo.setBorder(javax.swing.BorderFactory.createTitledBorder(null, " Pesquisa por Tipo ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
 
+        cbxInsert.setBackground(new java.awt.Color(255, 255, 255));
         cbxInsert.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         cbxInsert.setText("INSERT");
         cbxInsert.addItemListener(new java.awt.event.ItemListener() {
@@ -204,6 +210,7 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
             }
         });
 
+        cbxUpdate.setBackground(new java.awt.Color(255, 255, 255));
         cbxUpdate.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         cbxUpdate.setText("UPDATE");
         cbxUpdate.addItemListener(new java.awt.event.ItemListener() {
@@ -212,6 +219,7 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
             }
         });
 
+        cbxDelete.setBackground(new java.awt.Color(255, 255, 255));
         cbxDelete.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         cbxDelete.setText("DELETE");
         cbxDelete.addItemListener(new java.awt.event.ItemListener() {

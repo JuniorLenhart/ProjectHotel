@@ -1,9 +1,14 @@
 package hotel.config;
 
+import hotel.model.Usuario;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
 import org.hibernate.Session;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.boot.registry.classloading.internal.ClassLoaderServiceImpl.Work;
 
 public class HibernateUtil {
 

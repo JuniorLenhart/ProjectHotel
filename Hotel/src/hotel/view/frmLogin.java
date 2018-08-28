@@ -1,10 +1,10 @@
 package hotel.view;
 
+import hotel.config.HibernateUtil;
 import hotel.controller.ParametroController;
 import hotel.controller.UsuarioController;
 import hotel.model.Parametro;
 import hotel.model.Usuario;
-import hotel.repository.ParametroRepository;
 import hotel.support.Criptografia;
 import hotel.support.Validacao;
 import java.awt.Color;
@@ -20,14 +20,12 @@ import javax.swing.JOptionPane;
 
 public class frmLogin extends javax.swing.JFrame {
 
-    Usuario usuario;
     UsuarioController usuarioController;
     ParametroController parametroController;
 
     public frmLogin() {
         initComponents();
         new ParametroController().loadClass();
-        usuario = new Usuario();
         usuarioController = new UsuarioController();
         parametroController = new ParametroController();
 
@@ -69,15 +67,13 @@ public class frmLogin extends javax.swing.JFrame {
             String senha = new Criptografia().criptografar(tfdSenha.getText());
             String login = tfdLogin.getText();
             if (usuarioController.validaLogin(login, senha) != null) {
-                Parametro parametro = ParametroRepository.read();
                 this.dispose();
-                Usuario usuarioLogado = usuarioController.getUserWithLogin(login);
-                parametro.setCodUsuario(usuarioController.getUserWithLogin(login).getCodUsuario());
-                parametroController.save(parametro);
+                Usuario usuario = usuarioController.getUserWithLogin(login);
+                Parametro.setUser(usuario);
                 if (senha.equals(Parametro.DES_SENHA_DEFAULT)) {
-                    new frmCadastrarNovaSenha(usuarioLogado).setVisible(true);
+                    new frmCadastrarNovaSenha(usuario).setVisible(true);
                 } else {
-                    new frmPrincipal(usuarioLogado).setVisible(true);
+                    new frmPrincipal(usuario).setVisible(true);
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "Login e/ou senha incorreto(s)!");

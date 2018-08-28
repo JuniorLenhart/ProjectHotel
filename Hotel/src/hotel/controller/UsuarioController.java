@@ -1,10 +1,14 @@
 package hotel.controller;
 
+import hotel.config.HibernateUtil;
 import hotel.model.Parametro;
 import hotel.model.Usuario;
 import hotel.repository.UsuarioRepository;
 import hotel.support.Formatacao;
 import java.awt.HeadlessException;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -12,6 +16,9 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.jdbc.Work;
 
 public class UsuarioController extends BaseController<Usuario> {
 
@@ -80,6 +87,17 @@ public class UsuarioController extends BaseController<Usuario> {
             LoggerController.log(this.getClass(), ex);
         }
         return null;
+    }
+
+    public void setUserSession(Usuario usuario) {
+
+        HibernateUtil.getSession().doWork(new Work() {
+            public void execute(Connection connection) throws SQLException {
+                CallableStatement call = connection.prepareCall("{ call setUserSession(?)}");
+                call.setInt(1, usuario.getCodUsuario()); // 1 é o 1º parametro, 10 é o valor
+                call.execute();
+            }
+        });
     }
 
     public void popularTabela(JTable pTabela, int pOption, String pParam) {
