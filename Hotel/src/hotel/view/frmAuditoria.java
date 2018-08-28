@@ -5,9 +5,12 @@ import hotel.controller.ParametroController;
 import hotel.model.Auditoria;
 import hotel.model.Parametro;
 import hotel.repository.ParametroRepository;
-import hotel.support.Formatacao;
 import java.awt.event.KeyEvent;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class frmAuditoria extends javax.swing.JInternalFrame {
 
@@ -20,11 +23,11 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
         auditoria = new Auditoria();
         auditoriaController = new AuditoriaController();
         parametroController = new ParametroController();
-        
+
         checaAuditoriaAtiva();
-        
-        
-        
+
+        criaEventoLista();
+
         auditoriaController.popularTabela(tblLista, 0, "");
     }
 
@@ -40,6 +43,16 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
         }
     }
 
+    private void criaEventoLista() {
+        tblLista.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
+            if (tblLista.getSelectedRow() != -1) {
+                btnDetalhe.setEnabled(true);
+            } else {
+                btnDetalhe.setEnabled(false);
+            }
+        });
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -48,6 +61,7 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
         pnlHeader = new javax.swing.JPanel();
         btnFechar = new javax.swing.JButton();
         btnAtivarAuditoria = new javax.swing.JToggleButton();
+        btnDetalhe = new javax.swing.JButton();
         tbpFormaPagamento = new javax.swing.JTabbedPane();
         pnlListagem = new javax.swing.JPanel();
         pnlDetalhe = new javax.swing.JPanel();
@@ -89,6 +103,19 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
             }
         });
 
+        btnDetalhe.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnDetalhe.setForeground(new java.awt.Color(12, 91, 160));
+        btnDetalhe.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/detalhe.png"))); // NOI18N
+        btnDetalhe.setText("Detalhe");
+        btnDetalhe.setEnabled(false);
+        btnDetalhe.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnDetalhe.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnDetalhe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDetalheActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlHeaderLayout = new javax.swing.GroupLayout(pnlHeader);
         pnlHeader.setLayout(pnlHeaderLayout);
         pnlHeaderLayout.setHorizontalGroup(
@@ -96,6 +123,8 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
             .addGroup(pnlHeaderLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnAtivarAuditoria)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnDetalhe)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnFechar)
                 .addContainerGap())
@@ -104,7 +133,9 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
             pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(btnAtivarAuditoria, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(pnlHeaderLayout.createSequentialGroup()
-                .addComponent(btnFechar)
+                .addGroup(pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnFechar)
+                    .addComponent(btnDetalhe))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -432,10 +463,16 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
         tfdPesquisa.setText("");
     }//GEN-LAST:event_rbUsuarioLoginActionPerformed
 
+    private void btnDetalheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetalheActionPerformed
+        auditoria = auditoriaController.getReadId(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString()));
+        new frmAuditoriaDetalhe((JFrame) SwingUtilities.getWindowAncestor(this), true, auditoria).setVisible(true);
+    }//GEN-LAST:event_btnDetalheActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup btgGroup;
     private javax.swing.JToggleButton btnAtivarAuditoria;
+    private javax.swing.JButton btnDetalhe;
     private javax.swing.JButton btnFechar;
     private javax.swing.JButton btnPesquisa;
     private javax.swing.JCheckBox cbxDelete;

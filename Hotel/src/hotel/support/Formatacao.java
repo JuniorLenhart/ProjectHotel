@@ -143,6 +143,23 @@ public class Formatacao {
 
         return lDataFormatada;
     }
+    
+    public static String ajustaDataHMS(String pData) {
+        String lDataFormatada = "";
+
+        if (pData != null) {
+            if (!pData.trim().isEmpty()) {
+                try {
+                    Date lDataAMD = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(pData);
+                    lDataFormatada = new SimpleDateFormat("HH:mm:ss").format(lDataAMD);
+                } catch (ParseException e) {
+                    System.err.println(e);
+                }
+            }
+        }
+
+        return lDataFormatada;
+    }
 
     public static String ajustaDataDMA(String pData) {
         String lDataFormatada = "";

@@ -25,9 +25,6 @@ public class Parametro {
     @Column(name = "des_senha_default")
     private String desSenhaDefault;
     
-    @Column(name = "cod_usuario")
-    private Integer codUsuario;
-    
     @Column(name = "auditoria_ativa")
     private boolean auditoriaAtiva;
 

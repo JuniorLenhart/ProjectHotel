@@ -41,6 +41,8 @@ public class frmLogin extends javax.swing.JFrame {
         definindoAperenciaButton();
 
         setShape(new RoundRectangle2D.Double(0, 0, 800, 550, 60, 60));
+        
+        tfdLogin.requestFocus();
     }
 
     public void definindoAperenciaButton() { //Deixando um JButton com cara de JLabel

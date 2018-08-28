@@ -72,6 +72,9 @@ public class frmQuarto extends javax.swing.JInternalFrame {
         quarto = new Quarto();
         LimpaCampos.LimparCampos(pnlCadastro);
         LimpaCampos.LimparCampos(pnlListagem);
+        for (int i = 0; i < lstTipoCama.getModel().getSize(); i++) {
+            lstTipoCama.getModel().getElementAt(i).setSelected(false);
+        }
     }
 
     private void habilitar() {
