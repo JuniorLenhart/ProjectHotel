@@ -93,7 +93,7 @@ public class UsuarioController extends BaseController<Usuario> {
 
         HibernateUtil.getSession().doWork(new Work() {
             public void execute(Connection connection) throws SQLException {
-                CallableStatement call = connection.prepareCall("{ call setUserSession(?)}");
+                CallableStatement call = connection.prepareCall("{ call set_user_session(?)}");
                 call.setInt(1, usuario.getCodUsuario()); // 1 é o 1º parametro, 10 é o valor
                 call.execute();
             }

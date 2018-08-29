@@ -92,7 +92,7 @@ public class frmAuditoriaDetalhe extends javax.swing.JDialog {
         pnlPanel.setBackground(new java.awt.Color(255, 255, 255));
 
         pnlDadosAntigos.setBackground(new java.awt.Color(255, 255, 255));
-        pnlDadosAntigos.setBorder(javax.swing.BorderFactory.createTitledBorder(null, " Dados antigos ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
+        pnlDadosAntigos.setBorder(javax.swing.BorderFactory.createTitledBorder(null, " Dados antigos ", 0, 0, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
         pnlDadosAntigos.setPreferredSize(new java.awt.Dimension(290, 117));
 
         tfaDadosAntigos.setColumns(20);
@@ -118,7 +118,7 @@ public class frmAuditoriaDetalhe extends javax.swing.JDialog {
         );
 
         pnlDadosNovos.setBackground(new java.awt.Color(255, 255, 255));
-        pnlDadosNovos.setBorder(javax.swing.BorderFactory.createTitledBorder(null, " Dados novos ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
+        pnlDadosNovos.setBorder(javax.swing.BorderFactory.createTitledBorder(null, " Dados novos ", 0, 0, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
         pnlDadosNovos.setPreferredSize(new java.awt.Dimension(290, 0));
 
         tfaDadosNovos.setColumns(20);
@@ -144,7 +144,7 @@ public class frmAuditoriaDetalhe extends javax.swing.JDialog {
         );
 
         pnlAuditoria.setBackground(new java.awt.Color(255, 255, 255));
-        pnlAuditoria.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Auditoria", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
+        pnlAuditoria.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Auditoria", 0, 0, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
 
         lblCodigo.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lblCodigo.setForeground(new java.awt.Color(102, 102, 102));
@@ -154,6 +154,7 @@ public class frmAuditoriaDetalhe extends javax.swing.JDialog {
 
         tfdCodigo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         tfdCodigo.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
+        tfdCodigo.setDisabledTextColor(new java.awt.Color(255, 255, 255));
 
         lblUsuario.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lblUsuario.setForeground(new java.awt.Color(102, 102, 102));
@@ -163,6 +164,7 @@ public class frmAuditoriaDetalhe extends javax.swing.JDialog {
 
         tfdUsuario.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         tfdUsuario.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
+        tfdUsuario.setDisabledTextColor(new java.awt.Color(255, 255, 255));
 
         lblTipoNovo.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lblTipoNovo.setForeground(new java.awt.Color(102, 102, 102));
@@ -172,6 +174,7 @@ public class frmAuditoriaDetalhe extends javax.swing.JDialog {
 
         tfdTipo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         tfdTipo.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
+        tfdTipo.setDisabledTextColor(new java.awt.Color(255, 255, 255));
 
         lblCodigo1.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lblCodigo1.setForeground(new java.awt.Color(102, 102, 102));
@@ -181,6 +184,7 @@ public class frmAuditoriaDetalhe extends javax.swing.JDialog {
 
         tfdData.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         tfdData.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
+        tfdData.setDisabledTextColor(new java.awt.Color(255, 255, 255));
 
         lblCodigo2.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lblCodigo2.setForeground(new java.awt.Color(102, 102, 102));
@@ -190,6 +194,7 @@ public class frmAuditoriaDetalhe extends javax.swing.JDialog {
 
         tfdHora.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         tfdHora.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
+        tfdHora.setDisabledTextColor(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout pnlAuditoriaLayout = new javax.swing.GroupLayout(pnlAuditoria);
         pnlAuditoria.setLayout(pnlAuditoriaLayout);
@@ -223,19 +228,21 @@ public class frmAuditoriaDetalhe extends javax.swing.JDialog {
         pnlAuditoriaLayout.setVerticalGroup(
             pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlAuditoriaLayout.createSequentialGroup()
-                .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCodigo)
-                    .addComponent(tfdCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblCodigo1)
-                        .addComponent(tfdData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(tfdData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblCodigo)
+                        .addComponent(tfdCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblUsuario)
-                    .addComponent(tfdUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblCodigo2)
-                        .addComponent(tfdHora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(tfdHora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblUsuario)
+                        .addComponent(tfdUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTipoNovo)
