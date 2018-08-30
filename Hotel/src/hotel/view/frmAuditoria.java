@@ -62,7 +62,6 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
         btnFechar = new javax.swing.JButton();
         btnAtivarAuditoria = new javax.swing.JToggleButton();
         btnDetalhe = new javax.swing.JButton();
-        tbpFormaPagamento = new javax.swing.JTabbedPane();
         pnlListagem = new javax.swing.JPanel();
         pnlDetalhe = new javax.swing.JPanel();
         tfdPesquisa = new javax.swing.JTextField();
@@ -139,15 +138,8 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        tbpFormaPagamento.setBackground(new java.awt.Color(255, 255, 255));
-        tbpFormaPagamento.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        tbpFormaPagamento.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                tbpFormaPagamentoStateChanged(evt);
-            }
-        });
-
         pnlListagem.setBackground(new java.awt.Color(255, 255, 255));
+        pnlListagem.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Auditoria", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
 
         pnlDetalhe.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -353,8 +345,6 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        tbpFormaPagamento.addTab("Listagem", pnlListagem);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -364,7 +354,7 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnlHeader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(tbpFormaPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(pnlListagem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -374,8 +364,8 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(pnlHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tbpFormaPagamento)
-                .addContainerGap())
+                .addComponent(pnlListagem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -415,10 +405,6 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
             auditoriaController.popularTabela(tblLista, 3, tfdPesquisa.getText());
         }
     }//GEN-LAST:event_btnPesquisaActionPerformed
-
-    private void tbpFormaPagamentoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tbpFormaPagamentoStateChanged
-        //habilitar();
-    }//GEN-LAST:event_tbpFormaPagamentoStateChanged
 
     private void btnAtivarAuditoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtivarAuditoriaActionPerformed
         Parametro parametro = ParametroRepository.read();
@@ -489,7 +475,6 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
     private javax.swing.JRadioButton rbNome;
     private javax.swing.JRadioButton rbUsuarioLogin;
     private javax.swing.JTable tblLista;
-    private javax.swing.JTabbedPane tbpFormaPagamento;
     private javax.swing.JTextField tfdPesquisa;
     // End of variables declaration//GEN-END:variables
 }
