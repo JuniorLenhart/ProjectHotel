@@ -3,6 +3,10 @@ package hotel.view;
 import hotel.model.Auditoria;
 import hotel.model.Usuario;
 import hotel.support.Unit;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
 import javax.swing.*;
 
 public class frmPrincipal extends javax.swing.JFrame {
@@ -27,7 +31,21 @@ public class frmPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        dkpSistema = new javax.swing.JDesktopPane(){
+        dkpSistema = dkpSistema = new javax.swing.JDesktopPane()
+        {
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            Double width = screenSize.getWidth();
+            Double height = screenSize.getHeight();
+            Image img = new ImageIcon(getClass().getResource("/hotel/images/background_desktoppane.png")).getImage();
+
+            Image newimage = img.getScaledInstance(width.intValue(), height.intValue(), Image.SCALE_SMOOTH);
+
+            @Override
+            protected void paintComponent(Graphics g)
+            {
+                super.paintComponent(g);
+                g.drawImage(newimage, 0, 0, this);
+            }
         };
         lblUsuarioLogado = new javax.swing.JLabel();
         mnbPrincipal = new javax.swing.JMenuBar();
@@ -57,6 +75,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         dkpSistema.setBackground(new java.awt.Color(255, 255, 255));
 
         lblUsuarioLogado.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblUsuarioLogado.setForeground(new java.awt.Color(255, 255, 255));
         lblUsuarioLogado.setText("Usuário: ");
 
         dkpSistema.setLayer(lblUsuarioLogado, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -73,12 +92,16 @@ public class frmPrincipal extends javax.swing.JFrame {
         dkpSistemaLayout.setVerticalGroup(
             dkpSistemaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dkpSistemaLayout.createSequentialGroup()
-                .addContainerGap(390, Short.MAX_VALUE)
+                .addContainerGap(389, Short.MAX_VALUE)
                 .addComponent(lblUsuarioLogado)
                 .addContainerGap())
         );
 
+        mnbPrincipal.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+
+        mnuCadastro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/add-file.png"))); // NOI18N
         mnuCadastro.setText("Cadastros");
+        mnuCadastro.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         mniPessoa.setText("Pessoa");
         mniPessoa.addActionListener(new java.awt.event.ActionListener() {
@@ -124,16 +147,24 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         mnbPrincipal.add(mnuCadastro);
 
+        mnuLocacao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/locacao.png"))); // NOI18N
+        mnuLocacao.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         mnuLocacao.setLabel("Locação");
         mnbPrincipal.add(mnuLocacao);
 
+        mnuReserva.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/reserva.png"))); // NOI18N
+        mnuReserva.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         mnuReserva.setLabel("Reserva");
         mnbPrincipal.add(mnuReserva);
 
+        mnuFinanceiro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/financeiro.png"))); // NOI18N
         mnuFinanceiro.setText("Financeiro");
+        mnuFinanceiro.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         mnbPrincipal.add(mnuFinanceiro);
 
+        mnuRelatorio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/report.png"))); // NOI18N
         mnuRelatorio.setText("Relatórios");
+        mnuRelatorio.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         mniReserva.setText("Reserva");
         mnuRelatorio.add(mniReserva);
@@ -143,7 +174,9 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         mnbPrincipal.add(mnuRelatorio);
 
+        mnuUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/man.png"))); // NOI18N
         mnuUsuario.setText("Usuário");
+        mnuUsuario.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         mniUsuario.setText("Cadastro");
         mniUsuario.addActionListener(new java.awt.event.ActionListener() {
@@ -166,7 +199,9 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         mnbPrincipal.add(mnuUsuario);
 
+        mnuAjuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/question.png"))); // NOI18N
         mnuAjuda.setText("Ajuda");
+        mnuAjuda.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         mniAplicacao.setText("Cadastro de Aplicação");
         mnuAjuda.add(mniAplicacao);
