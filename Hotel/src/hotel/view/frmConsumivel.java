@@ -510,7 +510,7 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnPesquisaActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        if (Validacao.validarCampos(pnlCadastro) == 0) {
+        if ((Validacao.validarCampos(pnlCadastro) == 0) && (!tfdDescricao.getText().equals("")) && (tfdPreco.getValue().intValue() != 0)) {
             boolean isNew = (consumivel.getCodConsumivel() == null);
 
             consumivel.setNomConsumivel(tfdNome.getText());
