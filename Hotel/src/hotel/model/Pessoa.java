@@ -51,11 +51,11 @@ public class Pessoa {
         this.codPessoa = codPessoa;
     }
 
-    public Pessoa(Integer codPessoa, String numCpf, String desEmail, String indSituacao) {
+    public Pessoa(Integer codPessoa, String nomPessoa, String numCpf, String desEmail) {
         this.codPessoa = codPessoa;
+        this.nomPessoa = nomPessoa;
         this.numCpf = numCpf;
         this.desEmail = desEmail;
-        this.indSituacao = indSituacao;
     }
 
     public Integer getCodPessoa() {
@@ -157,6 +157,6 @@ public class Pessoa {
     public String auditoriaFormat() {
         return "ID: " + codPessoa + " Nome: " + nomPessoa + " CPF: " + numCpf + " Data nascimento: " + dtaNasc
                 + " Endereço:" + desEndereco + " Email: " + desEmail + " Telefone: " + numTelefone + " Celular: " + numCelular
-                + " Situação:"  + indSituacao;
+                + " Situação:" + indSituacao;
     }
 }

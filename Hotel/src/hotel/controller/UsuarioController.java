@@ -16,8 +16,6 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.jdbc.Work;
 
 public class UsuarioController extends BaseController<Usuario> {
@@ -90,14 +88,17 @@ public class UsuarioController extends BaseController<Usuario> {
     }
 
     public void setUserSession(Usuario usuario) {
-
-        HibernateUtil.getSession().doWork(new Work() {
-            public void execute(Connection connection) throws SQLException {
-                CallableStatement call = connection.prepareCall("{ call set_user_session(?)}");
-                call.setInt(1, usuario.getCodUsuario()); // 1 é o 1º parametro, 10 é o valor
-                call.execute();
-            }
-        });
+        try {
+            HibernateUtil.getSession().doWork(new Work() {
+                public void execute(Connection connection) throws SQLException {
+                    CallableStatement call = connection.prepareCall("{ call set_user_session(?)}");
+                    call.setInt(1, usuario.getCodUsuario());
+                    call.execute();
+                }
+            });
+        } catch (Exception ex) {
+            LoggerController.log(this.getClass(), ex);
+        }
     }
 
     public void popularTabela(JTable pTabela, int pOption, String pParam) {

@@ -2,6 +2,7 @@ package hotel.repository;
 
 import hotel.config.HibernateUtil;
 import hotel.model.Pessoa;
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Query;
 
@@ -27,5 +28,9 @@ public class PessoaRepository {
         Query query = HibernateUtil.getSession().createQuery("FROM Pessoa WHERE indSituacao = :indSituacao");
         query.setParameter("indSituacao", pSituation);
         return query.list();
+    }
+
+    public static List<Pessoa> readProfileNotUser() {
+        return HibernateUtil.getSession().createSQLQuery("SELECT * FROM profile_not_user").addEntity(Pessoa.class).list();
     }
 }

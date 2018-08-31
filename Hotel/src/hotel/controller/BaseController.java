@@ -12,6 +12,7 @@ public abstract class BaseController<T> implements IBaseController<T> {
         try {
             Transaction transaction = HibernateUtil.getBeginTransaction();
             new UsuarioController().setUserSession(Parametro.USUARIO);
+            
             HibernateUtil.getSession().saveOrUpdate(pT);
 
             transaction.commit();
@@ -37,6 +38,7 @@ public abstract class BaseController<T> implements IBaseController<T> {
     public String delete(T pT) {
         try {
             Transaction transaction = HibernateUtil.getBeginTransaction();
+            new UsuarioController().setUserSession(Parametro.USUARIO);
 
             HibernateUtil.getSession().delete(pT);
 

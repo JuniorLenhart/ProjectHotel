@@ -1,12 +1,9 @@
 package hotel.view;
 
-import hotel.controller.AuditoriaController;
 import hotel.controller.PessoaController;
 import hotel.controller.UsuarioController;
-import hotel.model.Auditoria;
 import hotel.model.Pessoa;
 import hotel.model.Usuario;
-import hotel.support.Formatacao;
 import hotel.support.LimpaCampos;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
