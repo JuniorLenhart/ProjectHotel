@@ -19,14 +19,16 @@ public class frmAuditoriaDetalhe extends javax.swing.JDialog {
     }
 
     private void popularTelaAuditoria() {
-        tfdCodigo.setText(auditoria.getCodAuditoria().toString());
-        tfdUsuario.setText(auditoria.getCodUsuario().getDesLogin());
-        tfdTipo.setText(auditoria.getTipAuditoria());
+        lblCodigoValor.setText(auditoria.getCodAuditoria().toString());
+        lblUsuarioValor.setText(auditoria.getCodUsuario().getDesLogin());
+        lblTipoValor.setText(auditoria.getTipAuditoria());
         String data, hora, descricao;
+        descricao = auditoria.getDesAuditoria();
+        lblTabelaValor.setText(descricao.substring(descricao.indexOf(" ")+1, descricao.indexOf(" ", descricao.indexOf(" ") + 1)));
         data = Formatacao.ajustaDataDMA(auditoria.getDtaAuditoria().toString());
         hora = Formatacao.ajustaDataHMS(auditoria.getDtaAuditoria().toString());
-        tfdData.setText(data);
-        tfdHora.setText(hora);
+        lblDataValor.setText(data);
+        lblHoraValor.setText(hora);
         descricao = auditoria.getDesAuditoria();
         tfaDadosNovos.append(retornaDescricaoFormatada(descricao, 1));
         if (auditoria.getTipAuditoria().equals("UPDATE")) {
@@ -52,11 +54,6 @@ public class frmAuditoriaDetalhe extends javax.swing.JDialog {
     }
 
     private void setEditableFields(boolean pEditable) {
-        tfdCodigo.setEditable(pEditable);
-        tfdData.setEditable(pEditable);
-        tfdHora.setEditable(pEditable);
-        tfdTipo.setEditable(pEditable);
-        tfdUsuario.setEditable(pEditable);
         tfaDadosAntigos.setEditable(pEditable);
         tfaDadosNovos.setEditable(pEditable);
     }
@@ -74,15 +71,17 @@ public class frmAuditoriaDetalhe extends javax.swing.JDialog {
         tfaDadosNovos = new javax.swing.JTextArea();
         pnlAuditoria = new javax.swing.JPanel();
         lblCodigo = new javax.swing.JLabel();
-        tfdCodigo = new javax.swing.JTextField();
         lblUsuario = new javax.swing.JLabel();
-        tfdUsuario = new javax.swing.JTextField();
         lblTipoNovo = new javax.swing.JLabel();
-        tfdTipo = new javax.swing.JTextField();
-        lblCodigo1 = new javax.swing.JLabel();
-        tfdData = new javax.swing.JTextField();
-        lblCodigo2 = new javax.swing.JLabel();
-        tfdHora = new javax.swing.JTextField();
+        lblData = new javax.swing.JLabel();
+        lblHora = new javax.swing.JLabel();
+        lblTabela = new javax.swing.JLabel();
+        lblCodigoValor = new javax.swing.JLabel();
+        lblTipoValor = new javax.swing.JLabel();
+        lblUsuarioValor = new javax.swing.JLabel();
+        lblDataValor = new javax.swing.JLabel();
+        lblTabelaValor = new javax.swing.JLabel();
+        lblHoraValor = new javax.swing.JLabel();
         pnlHeader = new javax.swing.JPanel();
         btnFechar = new javax.swing.JButton();
 
@@ -92,7 +91,7 @@ public class frmAuditoriaDetalhe extends javax.swing.JDialog {
         pnlPanel.setBackground(new java.awt.Color(255, 255, 255));
 
         pnlDadosAntigos.setBackground(new java.awt.Color(255, 255, 255));
-        pnlDadosAntigos.setBorder(javax.swing.BorderFactory.createTitledBorder(null, " Dados antigos ", 0, 0, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
+        pnlDadosAntigos.setBorder(javax.swing.BorderFactory.createTitledBorder(null, " Dados antigos ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
         pnlDadosAntigos.setPreferredSize(new java.awt.Dimension(290, 117));
 
         tfaDadosAntigos.setColumns(20);
@@ -118,7 +117,7 @@ public class frmAuditoriaDetalhe extends javax.swing.JDialog {
         );
 
         pnlDadosNovos.setBackground(new java.awt.Color(255, 255, 255));
-        pnlDadosNovos.setBorder(javax.swing.BorderFactory.createTitledBorder(null, " Dados novos ", 0, 0, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
+        pnlDadosNovos.setBorder(javax.swing.BorderFactory.createTitledBorder(null, " Dados novos ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
         pnlDadosNovos.setPreferredSize(new java.awt.Dimension(290, 0));
 
         tfaDadosNovos.setColumns(20);
@@ -144,7 +143,7 @@ public class frmAuditoriaDetalhe extends javax.swing.JDialog {
         );
 
         pnlAuditoria.setBackground(new java.awt.Color(255, 255, 255));
-        pnlAuditoria.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Auditoria", 0, 0, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
+        pnlAuditoria.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Auditoria", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
 
         lblCodigo.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lblCodigo.setForeground(new java.awt.Color(102, 102, 102));
@@ -152,19 +151,11 @@ public class frmAuditoriaDetalhe extends javax.swing.JDialog {
         lblCodigo.setText("Código:");
         lblCodigo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        tfdCodigo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        tfdCodigo.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
-        tfdCodigo.setDisabledTextColor(new java.awt.Color(255, 255, 255));
-
         lblUsuario.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lblUsuario.setForeground(new java.awt.Color(102, 102, 102));
         lblUsuario.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblUsuario.setText("Usuário:");
         lblUsuario.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-
-        tfdUsuario.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        tfdUsuario.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
-        tfdUsuario.setDisabledTextColor(new java.awt.Color(255, 255, 255));
 
         lblTipoNovo.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lblTipoNovo.setForeground(new java.awt.Color(102, 102, 102));
@@ -172,29 +163,35 @@ public class frmAuditoriaDetalhe extends javax.swing.JDialog {
         lblTipoNovo.setText("Tipo:");
         lblTipoNovo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        tfdTipo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        tfdTipo.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
-        tfdTipo.setDisabledTextColor(new java.awt.Color(255, 255, 255));
+        lblData.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        lblData.setForeground(new java.awt.Color(102, 102, 102));
+        lblData.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblData.setText("Data:");
+        lblData.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        lblCodigo1.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        lblCodigo1.setForeground(new java.awt.Color(102, 102, 102));
-        lblCodigo1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblCodigo1.setText("Data:");
-        lblCodigo1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblHora.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        lblHora.setForeground(new java.awt.Color(102, 102, 102));
+        lblHora.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblHora.setText("Hora:");
+        lblHora.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        tfdData.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        tfdData.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
-        tfdData.setDisabledTextColor(new java.awt.Color(255, 255, 255));
+        lblTabela.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        lblTabela.setForeground(new java.awt.Color(102, 102, 102));
+        lblTabela.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblTabela.setText("Tabela:");
+        lblTabela.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        lblCodigo2.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        lblCodigo2.setForeground(new java.awt.Color(102, 102, 102));
-        lblCodigo2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblCodigo2.setText("Hora:");
-        lblCodigo2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblCodigoValor.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
 
-        tfdHora.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        tfdHora.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
-        tfdHora.setDisabledTextColor(new java.awt.Color(255, 255, 255));
+        lblTipoValor.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+
+        lblUsuarioValor.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+
+        lblDataValor.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+
+        lblTabelaValor.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+
+        lblHoraValor.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
 
         javax.swing.GroupLayout pnlAuditoriaLayout = new javax.swing.GroupLayout(pnlAuditoria);
         pnlAuditoria.setLayout(pnlAuditoriaLayout);
@@ -206,48 +203,58 @@ public class frmAuditoriaDetalhe extends javax.swing.JDialog {
                     .addGroup(pnlAuditoriaLayout.createSequentialGroup()
                         .addComponent(lblCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(tfdCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblCodigoValor, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(lblCodigo1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblData, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(tfdData, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(lblDataValor, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pnlAuditoriaLayout.createSequentialGroup()
                         .addComponent(lblUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(tfdUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(lblUsuarioValor, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(lblCodigo2, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblHora, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(tfdHora, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(lblHoraValor, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pnlAuditoriaLayout.createSequentialGroup()
                         .addComponent(lblTipoNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(tfdTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(lblTipoValor, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblTabela, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblTabelaValor, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlAuditoriaLayout.setVerticalGroup(
             pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlAuditoriaLayout.createSequentialGroup()
                 .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblCodigo1)
-                        .addComponent(tfdData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblData)
                     .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblCodigo)
-                        .addComponent(tfdCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblCodigo2)
-                        .addComponent(tfdHora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblUsuario)
-                        .addComponent(tfdUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTipoNovo)
-                    .addComponent(tfdTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 16, Short.MAX_VALUE))
+                        .addComponent(lblCodigoValor, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblDataValor, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
+                .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnlAuditoriaLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblHora)
+                            .addComponent(lblUsuario))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblTipoNovo)
+                            .addComponent(lblTabela)))
+                    .addGroup(pnlAuditoriaLayout.createSequentialGroup()
+                        .addComponent(lblUsuarioValor, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblTipoValor, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlAuditoriaLayout.createSequentialGroup()
+                        .addComponent(lblHoraValor, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblTabelaValor, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 20, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout pnlPanelLayout = new javax.swing.GroupLayout(pnlPanel);
@@ -333,10 +340,17 @@ public class frmAuditoriaDetalhe extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lblCodigo;
-    private javax.swing.JLabel lblCodigo1;
-    private javax.swing.JLabel lblCodigo2;
+    private javax.swing.JLabel lblCodigoValor;
+    private javax.swing.JLabel lblData;
+    private javax.swing.JLabel lblDataValor;
+    private javax.swing.JLabel lblHora;
+    private javax.swing.JLabel lblHoraValor;
+    private javax.swing.JLabel lblTabela;
+    private javax.swing.JLabel lblTabelaValor;
     private javax.swing.JLabel lblTipoNovo;
+    private javax.swing.JLabel lblTipoValor;
     private javax.swing.JLabel lblUsuario;
+    private javax.swing.JLabel lblUsuarioValor;
     private javax.swing.JPanel pnlAuditoria;
     private javax.swing.JPanel pnlDadosAntigos;
     private javax.swing.JPanel pnlDadosNovos;
@@ -344,10 +358,5 @@ public class frmAuditoriaDetalhe extends javax.swing.JDialog {
     private javax.swing.JPanel pnlPanel;
     private javax.swing.JTextArea tfaDadosAntigos;
     private javax.swing.JTextArea tfaDadosNovos;
-    private javax.swing.JTextField tfdCodigo;
-    private javax.swing.JTextField tfdData;
-    private javax.swing.JTextField tfdHora;
-    private javax.swing.JTextField tfdTipo;
-    private javax.swing.JTextField tfdUsuario;
     // End of variables declaration//GEN-END:variables
 }
