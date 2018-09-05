@@ -1,8 +1,7 @@
 package hotel.view;
 
-import hotel.controller.AuditoriaController;
 import hotel.controller.PessoaController;
-import hotel.model.Auditoria;
+import hotel.model.Locacao;
 import hotel.model.Pessoa;
 import hotel.support.DocumentoLimitado;
 import hotel.support.Formatacao;
@@ -20,12 +19,29 @@ public class frmPessoa extends javax.swing.JInternalFrame {
     PessoaController pessoaController;
 
     public frmPessoa() {
+        iniciaConstrutor();
+    }
+
+    public frmPessoa(Pessoa pessoaTitular, Locacao locacao) {
+        iniciaConstrutor();
+        
+        if (pessoaTitular != null) {
+            String[] enderecoSplitado = pessoaTitular.getDesEndereco().split(",");
+            tfdRua.setText(enderecoSplitado[0]);
+            tfdNumero.setText(enderecoSplitado[1]);
+            if (enderecoSplitado.length == 3) {
+                tfdComplemento.setText(enderecoSplitado[2]);
+            }
+        }
+    }
+    
+    private void iniciaConstrutor() {
         initComponents();
         pessoa = new Pessoa();
         pessoaController = new PessoaController();
         setVisibleCodigo(false);
-
-        pessoaController.popularTabela(tblLista, 0, "");
+        
+        pessoaController.popularTabela(tblLista, 0, "", -1);
 
         tfdNome.setDocument(new DocumentoLimitado(200));
         tfdRua.setDocument(new DocumentoLimitado(150));
@@ -638,7 +654,7 @@ public class frmPessoa extends javax.swing.JInternalFrame {
                             JOptionPane.showMessageDialog(this, "Cadastrado com sucesso!");
                         }
 
-                        pessoaController.popularTabela(tblLista, 0, "");
+                        pessoaController.popularTabela(tblLista, 0, "", -1);
 
                         limparCampos();
                         setAba(1);
@@ -669,7 +685,7 @@ public class frmPessoa extends javax.swing.JInternalFrame {
         if (escolha == 0) {
             pessoaController.changeSituation(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString()));
             JOptionPane.showMessageDialog(this, "Excluído com sucesso!");
-            pessoaController.popularTabela(tblLista, 0, "");
+            pessoaController.popularTabela(tblLista, 0, "", -1);
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
@@ -695,11 +711,11 @@ public class frmPessoa extends javax.swing.JInternalFrame {
 
     private void btnPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaActionPerformed
         if (tfdPesquisa.getText().trim().isEmpty()) {
-            pessoaController.popularTabela(tblLista, 0, "");
+            pessoaController.popularTabela(tblLista, 0, "", -1);
         } else if (rbNome.isSelected()) {
-            pessoaController.popularTabela(tblLista, 1, tfdPesquisa.getText());
+            pessoaController.popularTabela(tblLista, 1, tfdPesquisa.getText(), -1);
         } else if (rbCodigo.isSelected()) {
-            pessoaController.popularTabela(tblLista, 2, tfdPesquisa.getText());
+            pessoaController.popularTabela(tblLista, 2, tfdPesquisa.getText(), -1);
         }
     }//GEN-LAST:event_btnPesquisaActionPerformed
 

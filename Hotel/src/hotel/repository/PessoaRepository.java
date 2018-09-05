@@ -33,4 +33,9 @@ public class PessoaRepository {
     public static List<Pessoa> readProfileNotUser() {
         return HibernateUtil.getSession().createSQLQuery("SELECT * FROM profile_not_user").addEntity(Pessoa.class).list();
     }
+
+    public static Pessoa readCPF(String pCPF) {
+        Query query = HibernateUtil.getSession().createQuery("FROM Pessoa WHERE numCpf = '" + pCPF + "' AND indSituacao = 'A'");
+        return (Pessoa) query.uniqueResult();
+    }
 }

@@ -21,7 +21,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         lblUsuarioLogado.setText(lblUsuarioLogado.getText() + this.usuario.getPessoa().getNomPessoa());
     }
 
-    private void abrirTela(JInternalFrame pInternalFrame) {
+    public void abrirTela(JInternalFrame pInternalFrame) {
         dkpSistema.add(pInternalFrame);
         Unit.setPosition(pInternalFrame);
         pInternalFrame.setVisible(true);
@@ -56,6 +56,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         mniConsumivel = new javax.swing.JMenuItem();
         mniFormaPgto = new javax.swing.JMenuItem();
         mnuLocacao = new javax.swing.JMenu();
+        mniCadastroLocacao = new javax.swing.JMenuItem();
         mnuReserva = new javax.swing.JMenu();
         mnuFinanceiro = new javax.swing.JMenu();
         mnuRelatorio = new javax.swing.JMenu();
@@ -150,6 +151,15 @@ public class frmPrincipal extends javax.swing.JFrame {
         mnuLocacao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/locacao.png"))); // NOI18N
         mnuLocacao.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         mnuLocacao.setLabel("Locação");
+
+        mniCadastroLocacao.setText("Manter cadastro");
+        mniCadastroLocacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniCadastroLocacaoActionPerformed(evt);
+            }
+        });
+        mnuLocacao.add(mniCadastroLocacao);
+
         mnbPrincipal.add(mnuLocacao);
 
         mnuReserva.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/reserva.png"))); // NOI18N
@@ -264,6 +274,10 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void mniAuditoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniAuditoriaActionPerformed
         abrirTela(new frmAuditoria());
     }//GEN-LAST:event_mniAuditoriaActionPerformed
+
+    private void mniCadastroLocacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniCadastroLocacaoActionPerformed
+        abrirTela(new frmLocacao());
+    }//GEN-LAST:event_mniCadastroLocacaoActionPerformed
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -272,6 +286,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuBar mnbPrincipal;
     private javax.swing.JMenuItem mniAplicacao;
     private javax.swing.JMenuItem mniAuditoria;
+    private javax.swing.JMenuItem mniCadastroLocacao;
     private javax.swing.JMenuItem mniConsumivel;
     private javax.swing.JMenuItem mniFormaPgto;
     private javax.swing.JMenuItem mniLocacao;

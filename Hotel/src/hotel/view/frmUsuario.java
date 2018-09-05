@@ -22,7 +22,7 @@ public class frmUsuario extends javax.swing.JInternalFrame {
         usuarioController = new UsuarioController();
         pessoaController = new PessoaController();
 
-        pessoaController.popularTabela(tblPessoa, 3, "A");
+        pessoaController.popularTabela(tblPessoa, 3, "A", -1);
         usuarioController.popularTabela(tblLista, 0, "");
 
         tblPessoa.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -413,7 +413,7 @@ public class frmUsuario extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(this, "Cadastrado com sucesso!");
 
                 usuarioController.popularTabela(tblLista, 0, "");
-                pessoaController.popularTabela(tblPessoa, 3, "A");
+                pessoaController.popularTabela(tblPessoa, 3, "A", -1);
 
                 limparCampos();
                 setAba(1);
@@ -436,7 +436,7 @@ public class frmUsuario extends javax.swing.JInternalFrame {
             usuarioController.changeSituation(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString()));
             JOptionPane.showMessageDialog(this, "Excluído com sucesso!");
             usuarioController.popularTabela(tblLista, 0, "");
-            pessoaController.popularTabela(tblPessoa, 3, "A");
+            pessoaController.popularTabela(tblPessoa, 3, "A", -1);
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
