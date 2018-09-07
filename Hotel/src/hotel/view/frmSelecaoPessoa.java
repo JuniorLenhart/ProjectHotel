@@ -2,6 +2,7 @@ package hotel.view;
 
 import hotel.controller.PessoaController;
 import hotel.model.Pessoa;
+import hotel.repository.PessoaRepository;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,15 +14,17 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 
-public class frmSelecaoPessoa extends javax.swing.JInternalFrame {
+public class frmSelecaoPessoa extends javax.swing.JDialog {
 
     Pessoa pessoa, pessoaTitular;
     PessoaController pessoaController;
     List<Pessoa> listPessoas;
     JTable tblAcomp;
 
-    public frmSelecaoPessoa(JTable tblAcomp, List<Pessoa> listPessoas, Pessoa pessoaTitular) {
+    public frmSelecaoPessoa(java.awt.Frame parent, boolean modal, JTable tblAcomp, List<Pessoa> listPessoas, Pessoa pessoaTitular) {
+        super(parent, modal);
         initComponents();
+        setLocationRelativeTo(null);
         pessoa = new Pessoa();
         this.pessoaTitular = pessoaTitular;
         pessoaController = new PessoaController();
@@ -51,21 +54,57 @@ public class frmSelecaoPessoa extends javax.swing.JInternalFrame {
             }
         });
         if (tblAcomp.getModel().getRowCount() == -1) {
-            clearTabelaAcompanhante();
+            clearTabela(tblListaAcompanhante);
         } else {
             tblListaAcompanhante.setModel(this.tblAcomp.getModel());
         }
+    }
 
-        DefaultTableModel modelBusca = (DefaultTableModel) tblListaBusca.getModel();
-        modelBusca.setRowCount(0);
+    public frmSelecaoPessoa(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
+        initComponents();
+        setLocationRelativeTo(null);
+        pessoa = new Pessoa();
+        lblAcompanhantes.setText("Pessoa titular");
+        pessoaController = new PessoaController();
+        pessoaController.popularTabela(tblListaBusca, 3, "A", -1);
+        btnAdicionar.setEnabled(false);
+        btnRemover.setEnabled(false);
+
+        tfdPesquisa.requestFocus();
+
+        tblListaBusca.getSelectionModel().addListSelectionListener((ListSelectionEvent e) -> {
+            if ((tblListaBusca.getSelectedRow() != -1) && (tblListaAcompanhante.getModel().getRowCount() == 0)) {
+                btnAdicionar.setEnabled(true);
+                tblListaAcompanhante.clearSelection();
+            } else {
+                btnAdicionar.setEnabled(false);
+            }
+        });
+
+        tblListaAcompanhante.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
+            if (tblListaAcompanhante.getSelectedRow() != -1) {
+                btnAdicionar.setEnabled(false);
+                btnRemover.setEnabled(true);
+                tblListaBusca.clearSelection();
+            } else {
+                btnRemover.setEnabled(false);
+            }
+        });
+        
+        clearTabela(tblListaAcompanhante);
     }
 
     public List<Pessoa> getListPessoas() {
         return listPessoas;
     }
 
-    private void clearTabelaAcompanhante() {
-        DefaultTableModel modelAcompanhante = (DefaultTableModel) tblListaAcompanhante.getModel();
+    public Pessoa getPessoaTitular() {
+        return pessoaTitular;
+    }
+
+    private void clearTabela(JTable tblTable) {
+        DefaultTableModel modelAcompanhante = (DefaultTableModel) tblTable.getModel();
         modelAcompanhante.setRowCount(0);
     }
 
@@ -87,12 +126,12 @@ public class frmSelecaoPessoa extends javax.swing.JInternalFrame {
         rbNome = new javax.swing.JRadioButton();
         rbCPF = new javax.swing.JRadioButton();
         btnAdicionarPessoa = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
+        lblOU = new javax.swing.JLabel();
         btnPesquisa = new javax.swing.JButton();
         scpLista = new javax.swing.JScrollPane();
         tblListaBusca = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        lblBusca = new javax.swing.JLabel();
+        lblAcompanhantes = new javax.swing.JLabel();
         scpLista1 = new javax.swing.JScrollPane();
         tblListaAcompanhante = new javax.swing.JTable();
         pnlHeader = new javax.swing.JPanel();
@@ -100,6 +139,8 @@ public class frmSelecaoPessoa extends javax.swing.JInternalFrame {
         btnAdicionar = new javax.swing.JButton();
         btnRemover = new javax.swing.JButton();
         btnFechar = new javax.swing.JButton();
+
+        setBackground(new java.awt.Color(255, 255, 255));
 
         pnlListagem.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -170,8 +211,8 @@ public class frmSelecaoPessoa extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel3.setText("OU");
+        lblOU.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        lblOU.setText("OU");
 
         btnPesquisa.setBackground(new java.awt.Color(12, 91, 160));
         btnPesquisa.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -197,7 +238,7 @@ public class frmSelecaoPessoa extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnPesquisa)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel3)
+                .addComponent(lblOU)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnAdicionarPessoa)
                 .addGap(0, 0, Short.MAX_VALUE))
@@ -210,7 +251,7 @@ public class frmSelecaoPessoa extends javax.swing.JInternalFrame {
                     .addComponent(lblPesquisa)
                     .addComponent(tfdPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnPesquisa)
-                    .addComponent(jLabel3)
+                    .addComponent(lblOU)
                     .addComponent(btnAdicionarPessoa))
                 .addGap(44, 44, 44))
             .addGroup(pnlDetalheLayout.createSequentialGroup()
@@ -231,11 +272,11 @@ public class frmSelecaoPessoa extends javax.swing.JInternalFrame {
         ));
         scpLista.setViewportView(tblListaBusca);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel1.setText("Resultado busca");
+        lblBusca.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        lblBusca.setText("Resultado busca");
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jLabel2.setText("Acompanhantes");
+        lblAcompanhantes.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        lblAcompanhantes.setText("Acompanhantes");
 
         tblListaAcompanhante.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -263,12 +304,12 @@ public class frmSelecaoPessoa extends javax.swing.JInternalFrame {
                             .addComponent(scpLista, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(scpLista1, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(pnlListagemLayout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblAcompanhantes, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
             .addGroup(pnlListagemLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlListagemLayout.setVerticalGroup(
@@ -277,15 +318,17 @@ public class frmSelecaoPessoa extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(pnlDetalhe, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel1)
+                .addComponent(lblBusca)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(scpLista, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22)
-                .addComponent(jLabel2)
+                .addComponent(lblAcompanhantes)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(scpLista1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        pnlHeader.setBackground(new java.awt.Color(255, 255, 255));
 
         btnSalvar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnSalvar.setForeground(new java.awt.Color(12, 91, 160));
@@ -384,34 +427,57 @@ public class frmSelecaoPessoa extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        if (listPessoas.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "A lista de acompanhantes está vazia!");
+        if (listPessoas != null) {
+            if (listPessoas.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "A lista de acompanhantes está vazia!");
+            } else {
+                this.dispose();
+            }
         } else {
-            this.dispose();
+            if (this.pessoaTitular == null) {
+                JOptionPane.showMessageDialog(this, "Você não selecionou nenhuma pessoa como titular!");
+            } else {
+                this.dispose();
+            }
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
         pessoa = pessoaController.getReadId(Integer.parseInt(tblListaBusca.getModel().getValueAt(tblListaBusca.getSelectedRow(), 0).toString()));
-        boolean pessoaOnList = false;
-        for (Pessoa p : listPessoas) {
-            if (p.getCodPessoa() == pessoa.getCodPessoa()) {
-                JOptionPane.showMessageDialog(this, "Você já adicinou essa pessoa aos acompanhantes!");
-                pessoaOnList = true;
-            }
-        }
-        if (!pessoaOnList) {
-            listPessoas.add(pessoa);
-            clearTabelaAcompanhante();
-            DefaultTableModel model = (DefaultTableModel) tblListaAcompanhante.getModel();
+        if (listPessoas != null) {
+            boolean pessoaOnList = false;
             for (Pessoa p : listPessoas) {
-                model.addRow(new Object[]{p.getCodPessoa(), p.getNomPessoa(), p.getNumCpf(), p.getDesEmail()});
+                if (p.getCodPessoa() == pessoa.getCodPessoa()) {
+                    JOptionPane.showMessageDialog(this, "Você já adicinou essa pessoa aos acompanhantes!");
+                    pessoaOnList = true;
+                }
             }
+            if (!pessoaOnList) {
+                listPessoas.add(pessoa);
+                clearTabela(tblListaAcompanhante);
+                DefaultTableModel model = (DefaultTableModel) tblListaAcompanhante.getModel();
+                for (Pessoa p : listPessoas) {
+                    model.addRow(new Object[]{p.getCodPessoa(), p.getNomPessoa(), p.getNumCpf(), p.getDesEmail()});
+                }
+                tfdPesquisa.requestFocus();
+            }
+        } else {
+            clearTabela(tblListaAcompanhante);
+            DefaultTableModel model = (DefaultTableModel) tblListaAcompanhante.getModel();
+            model.addRow(new Object[]{pessoa.getCodPessoa(), pessoa.getNomPessoa(), pessoa.getNumCpf(), pessoa.getDesEmail()});
+            pessoaTitular = PessoaRepository.readId(pessoa.getCodPessoa());
             tfdPesquisa.requestFocus();
         }
+        tblListaBusca.clearSelection();
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
+        if(listPessoas != null) {
+            listPessoas = null;
+            clearTabela(tblAcomp);
+        } else {
+            pessoaTitular = null;
+        }
         this.dispose();
     }//GEN-LAST:event_btnFecharActionPerformed
 
@@ -445,26 +511,43 @@ public class frmSelecaoPessoa extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tfdPesquisaKeyTyped
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
-        DefaultTableModel model = (DefaultTableModel) tblListaAcompanhante.getModel();
-        pessoa = pessoaController.getReadId(Integer.parseInt(tblListaAcompanhante.getModel().getValueAt(tblListaAcompanhante.getSelectedRow(), 0).toString()));
-        clearTabelaAcompanhante();
-        if (listPessoas.contains(pessoa)) {
-            listPessoas.remove(pessoa);
-        }
+        if (listPessoas != null) {
+            DefaultTableModel model = (DefaultTableModel) tblListaAcompanhante.getModel();
+            pessoa = pessoaController.getReadId(Integer.parseInt(tblListaAcompanhante.getModel().getValueAt(tblListaAcompanhante.getSelectedRow(), 0).toString()));
+            clearTabela(tblListaAcompanhante);
+            if (listPessoas.contains(pessoa)) {
+                listPessoas.remove(pessoa);
+            }
 
-        for (Pessoa p : listPessoas) {
-            model.addRow(new Object[]{p.getCodPessoa(), p.getNomPessoa(), p.getNumCpf(), p.getDesEmail()});
+            for (Pessoa p : listPessoas) {
+                model.addRow(new Object[]{p.getCodPessoa(), p.getNomPessoa(), p.getNumCpf(), p.getDesEmail()});
+            }
+        } else {
+            DefaultTableModel model = (DefaultTableModel) tblListaAcompanhante.getModel();
+            this.pessoaTitular = null;
+            pessoa = pessoaController.getReadId(Integer.parseInt(tblListaAcompanhante.getModel().getValueAt(tblListaAcompanhante.getSelectedRow(), 0).toString()));
+            clearTabela(tblListaAcompanhante);
         }
         tfdPesquisa.requestFocus();
     }//GEN-LAST:event_btnRemoverActionPerformed
 
     private void btnPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaActionPerformed
-        if (tfdPesquisa.getText().trim().isEmpty()) {
-            pessoaController.popularTabela(tblListaBusca, 0, "", pessoaTitular.getCodPessoa());
-        } else if (rbNome.isSelected()) {
-            pessoaController.popularTabela(tblListaBusca, 1, tfdPesquisa.getText(), pessoaTitular.getCodPessoa());
-        } else if (rbCPF.isSelected()) {
-            pessoaController.popularTabela(tblListaBusca, 4, tfdPesquisa.getText(), pessoaTitular.getCodPessoa());
+        if (listPessoas != null) {
+            if (tfdPesquisa.getText().trim().isEmpty()) {
+                pessoaController.popularTabela(tblListaBusca, 0, "", pessoaTitular.getCodPessoa());
+            } else if (rbNome.isSelected()) {
+                pessoaController.popularTabela(tblListaBusca, 1, tfdPesquisa.getText(), pessoaTitular.getCodPessoa());
+            } else if (rbCPF.isSelected()) {
+                pessoaController.popularTabela(tblListaBusca, 4, tfdPesquisa.getText(), pessoaTitular.getCodPessoa());
+            }
+        } else {
+            if (tfdPesquisa.getText().trim().isEmpty()) {
+                pessoaController.popularTabela(tblListaBusca, 0, "", -1);
+            } else if (rbNome.isSelected()) {
+                pessoaController.popularTabela(tblListaBusca, 1, tfdPesquisa.getText(), -1);
+            } else if (rbCPF.isSelected()) {
+                pessoaController.popularTabela(tblListaBusca, 4, tfdPesquisa.getText(), -1);
+            }
         }
     }//GEN-LAST:event_btnPesquisaActionPerformed
 
@@ -477,9 +560,9 @@ public class frmSelecaoPessoa extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnPesquisa;
     private javax.swing.JButton btnRemover;
     private javax.swing.JButton btnSalvar;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel lblAcompanhantes;
+    private javax.swing.JLabel lblBusca;
+    private javax.swing.JLabel lblOU;
     private javax.swing.JLabel lblPesquisa;
     private javax.swing.JPanel pnlDetalhe;
     private javax.swing.JPanel pnlHeader;

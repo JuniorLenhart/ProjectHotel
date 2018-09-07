@@ -39,6 +39,9 @@ public class Reserva {
 
     @Column(name = "vlr_reserva")
     private BigDecimal vlrReserva;
+    
+    @Column(name = "vlr_pago")
+    private BigDecimal vlrPago;
 
     @Column(name = "ind_situacao")
     private String indSituacao;
@@ -118,6 +121,14 @@ public class Reserva {
 
     public void setVlrReserva(BigDecimal vlrReserva) {
         this.vlrReserva = vlrReserva;
+    }
+
+    public BigDecimal getVlrPago() {
+        return vlrPago;
+    }
+
+    public void setVlrPago(BigDecimal vlrPago) {
+        this.vlrPago = vlrPago;
     }
 
     public String getIndSituacao() {

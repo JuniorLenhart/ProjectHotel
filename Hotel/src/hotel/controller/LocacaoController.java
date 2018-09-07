@@ -4,6 +4,7 @@ import hotel.model.Locacao;
 import hotel.model.LocacaoHospede;
 import hotel.repository.LocacaoHospedeRepository;
 import hotel.repository.LocacaoRepository;
+import hotel.support.Formatacao;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -56,12 +57,12 @@ public class LocacaoController extends BaseController<Locacao> {
 
                         lTabela[lLinha][0] = l.getCodLocacao();
                         lTabela[lLinha][1] = l.getCodQuarto().getNumQuarto();
-                        for (LocacaoHospede lh : LocacaoHospedeRepository.readId(l.getCodLocacao())) {
+                        for (LocacaoHospede lh : LocacaoHospedeRepository.readLocacaoId(l.getCodLocacao())) {
                             if (lh.getIndResponsavel().equals("S")) {
                                 lTabela[lLinha][2] = lh.getCodPessoa().getNomPessoa();
                             }
                         }
-                        lTabela[lLinha][3] = l.getDtaLocacao();
+                        lTabela[lLinha][3] = Formatacao.ajustaDataDMAHS(l.getDtaLocacao().toString());
                         lTabela[lLinha][4] = l.getVlrLocacao();
                         lTabela[lLinha][5] = situacao;
                         lLinha++;
@@ -77,12 +78,12 @@ public class LocacaoController extends BaseController<Locacao> {
 
                         lTabela[lLinha][0] = l.getCodLocacao();
                         lTabela[lLinha][1] = l.getCodQuarto().getNumQuarto();
-                        for (LocacaoHospede lh : LocacaoHospedeRepository.readId(l.getCodLocacao())) {
+                        for (LocacaoHospede lh : LocacaoHospedeRepository.readLocacaoId(l.getCodLocacao())) {
                             if (lh.getIndResponsavel().equals("S")) {
                                 lTabela[lLinha][2] = lh.getCodPessoa().getNomPessoa();
                             }
                         }
-                        lTabela[lLinha][3] = l.getDtaLocacao();
+                        lTabela[lLinha][3] = Formatacao.ajustaDataDMAHS(l.getDtaLocacao().toString());
                         lTabela[lLinha][4] = l.getVlrLocacao();
                         lTabela[lLinha][5] = situacao;
                         lLinha++;
@@ -99,12 +100,12 @@ public class LocacaoController extends BaseController<Locacao> {
                         lTabela = new Object[1][6];
                         lTabela[lLinha][0] = l.getCodLocacao();
                         lTabela[lLinha][1] = l.getCodQuarto().getNumQuarto();
-                        for (LocacaoHospede lh : LocacaoHospedeRepository.readId(l.getCodLocacao())) {
+                        for (LocacaoHospede lh : LocacaoHospedeRepository.readLocacaoId(l.getCodLocacao())) {
                             if (lh.getIndResponsavel().equals("S")) {
                                 lTabela[lLinha][2] = lh.getCodPessoa().getNomPessoa();
                             }
                         }
-                        lTabela[lLinha][3] = l.getDtaLocacao();
+                        lTabela[lLinha][3] = Formatacao.ajustaDataDMAHS(l.getDtaLocacao().toString());
                         lTabela[lLinha][4] = l.getVlrLocacao();
                         lTabela[lLinha][5] = situacao;
                         lLinha++;
@@ -119,12 +120,12 @@ public class LocacaoController extends BaseController<Locacao> {
 
                         lTabela[lLinha][0] = l.getCodLocacao();
                         lTabela[lLinha][1] = l.getCodQuarto().getNumQuarto();
-                        for (LocacaoHospede lh : LocacaoHospedeRepository.readId(l.getCodLocacao())) {
+                        for (LocacaoHospede lh : LocacaoHospedeRepository.readLocacaoId(l.getCodLocacao())) {
                             if (lh.getIndResponsavel().equals("S")) {
                                 lTabela[lLinha][2] = lh.getCodPessoa().getNomPessoa();
                             }
                         }
-                        lTabela[lLinha][3] = l.getDtaLocacao();
+                        lTabela[lLinha][3] = Formatacao.ajustaDataDMAHS(l.getDtaLocacao().toString());
                         lTabela[lLinha][4] = l.getVlrLocacao();
                         lTabela[lLinha][5] = situacao;
                         lLinha++;
@@ -139,12 +140,12 @@ public class LocacaoController extends BaseController<Locacao> {
 
                         lTabela[lLinha][0] = l.getCodLocacao();
                         lTabela[lLinha][1] = l.getCodQuarto().getNumQuarto();
-                        for (LocacaoHospede lh : LocacaoHospedeRepository.readId(l.getCodLocacao())) {
+                        for (LocacaoHospede lh : LocacaoHospedeRepository.readLocacaoId(l.getCodLocacao())) {
                             if (lh.getIndResponsavel().equals("S")) {
                                 lTabela[lLinha][2] = lh.getCodPessoa().getNomPessoa();
                             }
                         }
-                        lTabela[lLinha][3] = l.getDtaLocacao();
+                        lTabela[lLinha][3] = Formatacao.ajustaDataDMAHS(l.getDtaLocacao().toString());
                         lTabela[lLinha][4] = l.getVlrLocacao();
                         lTabela[lLinha][5] = situacao;
                         lLinha++;
@@ -187,24 +188,24 @@ public class LocacaoController extends BaseController<Locacao> {
                             lColumn.setCellRenderer(lRight);
                             break;
                         case 1:
-                            lColumn.setPreferredWidth(200);
-                            lColumn.setCellRenderer(lLeft);
+                            lColumn.setPreferredWidth(20);
+                            lColumn.setCellRenderer(lCenter);
                             break;
                         case 2:
-                            lColumn.setPreferredWidth(75);
+                            lColumn.setPreferredWidth(300);
                             lColumn.setCellRenderer(lLeft);
                             break;
                         case 3:
-                            lColumn.setPreferredWidth(80);
-                            lColumn.setCellRenderer(lLeft);
+                            lColumn.setPreferredWidth(120);
+                            lColumn.setCellRenderer(lCenter);
                             break;
                         case 4:
-                            lColumn.setPreferredWidth(150);
+                            lColumn.setPreferredWidth(60);
                             lColumn.setCellRenderer(lCenter);
                             break;
                         case 5:
-                            lColumn.setPreferredWidth(70);
-                            lColumn.setCellRenderer(lLeft);
+                            lColumn.setPreferredWidth(60);
+                            lColumn.setCellRenderer(lCenter);
                             break;
                         case 6:
                             lColumn.setPreferredWidth(30);

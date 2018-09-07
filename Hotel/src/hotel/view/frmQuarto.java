@@ -1,16 +1,13 @@
 package hotel.view;
 
-import hotel.controller.AuditoriaController;
 import hotel.controller.QuartoController;
 import hotel.controller.TipoCamaController;
-import hotel.model.Auditoria;
 import hotel.support.DocumentoLimitado;
 import hotel.support.JCheckBoxList;
 import hotel.support.LimpaCampos;
 import hotel.support.Validacao;
 import hotel.model.Quarto;
 import hotel.model.TipoCama;
-import hotel.support.Formatacao;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

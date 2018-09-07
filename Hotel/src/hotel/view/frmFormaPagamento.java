@@ -74,6 +74,7 @@ public class frmFormaPagamento extends javax.swing.JInternalFrame {
             btnSalvar.setEnabled(false);
             btnEditar.setEnabled(lSituacao.equals("Ativo"));
             btnExcluir.setEnabled(lSituacao.equals("Ativo"));
+            limparCampos();
         }
     }
 

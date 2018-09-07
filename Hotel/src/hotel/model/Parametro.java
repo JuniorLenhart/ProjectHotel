@@ -25,8 +25,8 @@ public class Parametro {
     @Column(name = "des_senha_default")
     private String desSenhaDefault;
     
-    @Column(name = "auditoria_ativa")
-    private boolean auditoriaAtiva;
+    @Column(name = "ind_auditoria")
+    private boolean indAuditoria;
 
     public static Integer NUM_DIAS_CHECKIN = 0;
     public static Integer NUM_DIAS_PGTO_RESERVA = 0;
@@ -41,7 +41,7 @@ public class Parametro {
         DES_SENHA_DEFAULT = parametro.desSenhaDefault;
         NUM_DIAS_CHECKIN = parametro.numDiasCheckin;
         NUM_DIAS_PGTO_RESERVA = parametro.numDiasPgtoReserva;
-        AUDITORIA_ATIVA = parametro.auditoriaAtiva;
+        AUDITORIA_ATIVA = parametro.indAuditoria;
     }
 
     public static void setUser(Usuario usuario){
@@ -49,12 +49,12 @@ public class Parametro {
     }
     
     public boolean isAuditoriaAtiva() {
-        return auditoriaAtiva;
+        return indAuditoria;
     }
 
-    public void setAuditoriaAtiva(boolean auditoriaAtiva) {
-        this.auditoriaAtiva = auditoriaAtiva;
-        AUDITORIA_ATIVA = auditoriaAtiva;
+    public void setAuditoriaAtiva(boolean indAuditoria) {
+        this.indAuditoria = indAuditoria;
+        AUDITORIA_ATIVA = indAuditoria;
     }
 
     @Override

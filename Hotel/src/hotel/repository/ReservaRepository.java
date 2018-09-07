@@ -11,11 +11,32 @@ public class ReservaRepository {
         Query query = HibernateUtil.getSession().createQuery("FROM Reserva");
         return query.list();
     }
+    
+    public static List<Reserva> readAllPayed() {
+        Query query = HibernateUtil.getSession().createQuery("FROM Reserva WHERE indSituacao = 'C'");
+        return query.list();
+    }
+    
+    public static List<Reserva> readAllNotPayedYet() {
+        Query query = HibernateUtil.getSession().createQuery("FROM Reserva WHERE indSituacao = 'E'");
+        return query.list();
+    }
+    
+    public static List<Reserva> readAllCanceled() {
+        Query query = HibernateUtil.getSession().createQuery("FROM Reserva WHERE indSituacao = 'I'");
+        return query.list();
+    }
 
-    public static List<Reserva> read(String pParam) {
-        Query query = HibernateUtil.getSession().createQuery("FROM Reserva WHERE codPessoa.nomPessoa LIKE :pessoaID");
+    public static List<Reserva> readPerPersonNamePayed(String pParam) {
+        Query query = HibernateUtil.getSession().createQuery("FROM Reserva WHERE LOWER(codPessoa.nomPessoa) LIKE :pessoaID AND indSituacao = 'C'");
         query.setParameter("pessoaID", "%" + pParam.toLowerCase() + "%");
         return query.list();
+    }
+    
+    public static Reserva readPerPersonCPFPayed(String pParam) {
+        Query query = HibernateUtil.getSession().createQuery("FROM Reserva WHERE codPessoa.numCpf LIKE :cpf AND indSituacao = 'C'");
+        query.setParameter("cpf", "%" + pParam.toLowerCase() + "%");
+        return (Reserva) query.uniqueResult();
     }
 
     public static Reserva readId(int pCodigo) {
