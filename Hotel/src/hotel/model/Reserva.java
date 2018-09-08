@@ -39,7 +39,7 @@ public class Reserva {
 
     @Column(name = "vlr_reserva")
     private BigDecimal vlrReserva;
-    
+
     @Column(name = "vlr_pago")
     private BigDecimal vlrPago;
 
@@ -48,15 +48,15 @@ public class Reserva {
 
     @JoinColumn(name = "cod_pessoa", referencedColumnName = "cod_pessoa")
     @ManyToOne(optional = false)
-    private Pessoa codPessoa;
+    private Pessoa pessoa;
 
     @JoinColumn(name = "cod_quarto", referencedColumnName = "cod_quarto")
     @ManyToOne(optional = false)
-    private Quarto codQuarto;
+    private Quarto quarto;
 
     @JoinColumn(name = "cod_usuario", referencedColumnName = "cod_usuario")
     @ManyToOne(optional = false)
-    private Usuario codUsuario;
+    private Usuario usuario;
 
     public Reserva() {
     }
@@ -139,28 +139,28 @@ public class Reserva {
         this.indSituacao = indSituacao;
     }
 
-    public Pessoa getCodPessoa() {
-        return codPessoa;
+    public Pessoa getPessoa() {
+        return pessoa;
     }
 
-    public void setCodPessoa(Pessoa codPessoa) {
-        this.codPessoa = codPessoa;
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 
-    public Quarto getCodQuarto() {
-        return codQuarto;
+    public Quarto getQuarto() {
+        return quarto;
     }
 
-    public void setCodQuarto(Quarto codQuarto) {
-        this.codQuarto = codQuarto;
+    public void setQuarto(Quarto quarto) {
+        this.quarto = quarto;
     }
 
-    public Usuario getCodUsuario() {
-        return codUsuario;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setCodUsuario(Usuario codUsuario) {
-        this.codUsuario = codUsuario;
+    public void setUsuario(Usuario Usuario) {
+        this.usuario = Usuario;
     }
 
     @Override
@@ -188,7 +188,7 @@ public class Reserva {
     }
 
     public String auditoriaFormat() {
-        return "ID: " + codReserva + " ID Pessoa: " + codPessoa.getCodPessoa() + " ID Usuário: " + codUsuario.getCodUsuario() + " ID Quarto: " + codQuarto.getCodQuarto()
+        return "ID: " + codReserva + " ID Pessoa: " + pessoa.getCodPessoa() + " ID Usuário: " + usuario.getCodUsuario() + " ID Quarto: " + quarto.getCodQuarto()
                 + " Data reserva: " + dtaReserva + " Data entrada: " + dtaEntrada + " Data saida: " + dtaSaida + " Valor locação: " + vlrReserva
                 + " Quantidade lugares:" + qtdLugar + " Situação: " + indSituacao;
     }

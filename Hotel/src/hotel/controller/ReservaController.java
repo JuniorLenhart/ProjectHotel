@@ -11,10 +11,10 @@ import javax.swing.table.TableColumn;
 
 public class ReservaController extends BaseController<Reserva> {
 
-    public String changeSituation(int pCodigo) {
+    public String cancelReserve(int pCodigo) {
         try {
             Reserva reserva = ReservaRepository.readId(pCodigo);
-            reserva.setIndSituacao("E");
+            reserva.setIndSituacao("I");
             save(reserva);
         } catch (Exception ex) {
             LoggerController.log(this.getClass(), ex);
@@ -55,8 +55,8 @@ public class ReservaController extends BaseController<Reserva> {
                         String situacao = (r.getIndSituacao().equals("E") ? "Efetuada" : (r.getIndSituacao().equals("C") ? "Confirmada" : "Cancelada"));
  
                         lTabela[lLinha][0] = r.getCodReserva();
-                        lTabela[lLinha][1] = r.getCodPessoa().getNomPessoa();
-                        lTabela[lLinha][2] = r.getCodQuarto().getNumQuarto();
+                        lTabela[lLinha][1] = r.getPessoa().getNomPessoa();
+                        lTabela[lLinha][2] = r.getQuarto().getNumQuarto();
                         lTabela[lLinha][3] = Formatacao.ajustaDataDMA(r.getDtaReserva().toString());
                         lTabela[lLinha][4] = Formatacao.ajustaDataDMA(r.getDtaEntrada().toString());
                         lTabela[lLinha][5] = Formatacao.ajustaDataDMA(r.getDtaSaida().toString());
@@ -74,8 +74,8 @@ public class ReservaController extends BaseController<Reserva> {
                         String situacao = (r.getIndSituacao().equals("E") ? "Efetuada" : (r.getIndSituacao().equals("C") ? "Confirmada" : "Cancelada"));
 
                         lTabela[lLinha][0] = r.getCodReserva();
-                        lTabela[lLinha][1] = r.getCodPessoa().getNomPessoa();
-                        lTabela[lLinha][2] = r.getCodQuarto().getNumQuarto();
+                        lTabela[lLinha][1] = r.getPessoa().getNomPessoa();
+                        lTabela[lLinha][2] = r.getQuarto().getNumQuarto();
                         lTabela[lLinha][3] = Formatacao.ajustaDataDMA(r.getDtaReserva().toString());
                         lTabela[lLinha][4] = Formatacao.ajustaDataDMA(r.getDtaEntrada().toString());
                         lTabela[lLinha][5] = Formatacao.ajustaDataDMA(r.getDtaSaida().toString());
@@ -95,8 +95,8 @@ public class ReservaController extends BaseController<Reserva> {
 
                         lTabela = new Object[1][9];
                         lTabela[lLinha][0] = reserva.getCodReserva();
-                        lTabela[lLinha][1] = reserva.getCodPessoa().getNomPessoa();
-                        lTabela[lLinha][2] = reserva.getCodQuarto().getNumQuarto();
+                        lTabela[lLinha][1] = reserva.getPessoa().getNomPessoa();
+                        lTabela[lLinha][2] = reserva.getQuarto().getNumQuarto();
                         lTabela[lLinha][3] = Formatacao.ajustaDataDMA(reserva.getDtaReserva().toString());
                         lTabela[lLinha][4] = Formatacao.ajustaDataDMA(reserva.getDtaEntrada().toString());
                         lTabela[lLinha][5] = Formatacao.ajustaDataDMA(reserva.getDtaSaida().toString());
@@ -114,8 +114,8 @@ public class ReservaController extends BaseController<Reserva> {
                         String situacao = (r.getIndSituacao().equals("E") ? "Efetuada" : (r.getIndSituacao().equals("C") ? "Confirmada" : "Cancelada"));
 
                         lTabela[lLinha][0] = r.getCodReserva();
-                        lTabela[lLinha][1] = r.getCodPessoa().getNomPessoa();
-                        lTabela[lLinha][2] = r.getCodQuarto().getNumQuarto();
+                        lTabela[lLinha][1] = r.getPessoa().getNomPessoa();
+                        lTabela[lLinha][2] = r.getQuarto().getNumQuarto();
                         lTabela[lLinha][3] = Formatacao.ajustaDataDMA(r.getDtaReserva().toString());
                         lTabela[lLinha][4] = Formatacao.ajustaDataDMA(r.getDtaEntrada().toString());
                         lTabela[lLinha][5] = Formatacao.ajustaDataDMA(r.getDtaSaida().toString());
@@ -133,8 +133,8 @@ public class ReservaController extends BaseController<Reserva> {
                         String situacao = (r.getIndSituacao().equals("E") ? "Efetuada" : (r.getIndSituacao().equals("C") ? "Confirmada" : "Cancelada"));
 
                         lTabela[lLinha][0] = r.getCodReserva();
-                        lTabela[lLinha][1] = r.getCodPessoa().getNomPessoa();
-                        lTabela[lLinha][2] = r.getCodQuarto().getNumQuarto();
+                        lTabela[lLinha][1] = r.getPessoa().getNomPessoa();
+                        lTabela[lLinha][2] = r.getQuarto().getNumQuarto();
                         lTabela[lLinha][3] = Formatacao.ajustaDataDMA(r.getDtaReserva().toString());
                         lTabela[lLinha][4] = Formatacao.ajustaDataDMA(r.getDtaEntrada().toString());
                         lTabela[lLinha][5] = Formatacao.ajustaDataDMA(r.getDtaSaida().toString());

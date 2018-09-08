@@ -32,9 +32,9 @@ public class frmSelecaoReserva extends javax.swing.JDialog {
         if (field.getName().equals("tfdCodigo")) {
             field.setText(reserva.getCodReserva().toString());
         } else if (field.getName().equals("tfdQuarto")) {
-            field.setText(reserva.getCodQuarto().getCodQuarto().toString());
+            field.setText(reserva.getQuarto().getCodQuarto().toString());
         } else if (field.getName().equals("tfdNomeTitular")) {
-            field.setText(reserva.getCodPessoa().getNomPessoa());
+            field.setText(reserva.getPessoa().getNomPessoa());
         } else if (field.getName().equals("tfdDataEntrada")) {
             field.setText(Formatacao.ajustaDataDMAH(reserva.getDtaEntrada().toString()));
         } else if (field.getName().equals("tfdDataSaida")) {
@@ -42,9 +42,9 @@ public class frmSelecaoReserva extends javax.swing.JDialog {
         } else if (field.getName().equals("tfdValor")) {
             field.setText(reserva.getVlrReserva().toString());
         } else if (field.getName().equals("tfdCelular")) {
-            field.setText(reserva.getCodPessoa().getNumCelular());
+            field.setText(reserva.getPessoa().getNumCelular());
         } else if (field.getName().equals("tfdPessoaCodigo")) {
-            field.setText(reserva.getCodPessoa().getCodPessoa().toString());
+            field.setText(reserva.getPessoa().getCodPessoa().toString());
         }
     }
 

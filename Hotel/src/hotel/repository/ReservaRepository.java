@@ -28,14 +28,14 @@ public class ReservaRepository {
     }
 
     public static List<Reserva> readPerPersonNamePayed(String pParam) {
-        Query query = HibernateUtil.getSession().createQuery("FROM Reserva WHERE LOWER(codPessoa.nomPessoa) LIKE :pessoaID AND indSituacao = 'C'");
-        query.setParameter("pessoaID", "%" + pParam.toLowerCase() + "%");
+        Query query = HibernateUtil.getSession().createQuery("FROM Reserva WHERE LOWER(codPessoa.nomPessoa) LIKE :nomPessoa AND indSituacao = 'C'");
+        query.setParameter("nomPessoa", "%" + pParam.toLowerCase() + "%");
         return query.list();
     }
     
     public static Reserva readPerPersonCPFPayed(String pParam) {
-        Query query = HibernateUtil.getSession().createQuery("FROM Reserva WHERE codPessoa.numCpf LIKE :cpf AND indSituacao = 'C'");
-        query.setParameter("cpf", "%" + pParam.toLowerCase() + "%");
+        Query query = HibernateUtil.getSession().createQuery("FROM Reserva WHERE codPessoa.numCpf LIKE :numCpf AND indSituacao = 'C'");
+        query.setParameter("numCpf", "%" + pParam.toLowerCase() + "%");
         return (Reserva) query.uniqueResult();
     }
 

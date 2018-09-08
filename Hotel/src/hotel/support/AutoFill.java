@@ -1,9 +1,6 @@
 package hotel.support;
 
-import hotel.model.Pessoa;
 import hotel.model.Reserva;
-import hotel.repository.LocacaoHospedeRepository;
-import hotel.repository.PessoaRepository;
 import hotel.repository.ReservaRepository;
 import java.awt.*;
 import java.awt.event.*;
@@ -42,7 +39,7 @@ public class AutoFill {
         };
         setAdjusting(cbInput, false);
         for (Reserva r : items) {
-            model.addElement(r.getCodReserva() + " " + r.getCodPessoa().getNomPessoa());
+            model.addElement(r.getCodReserva() + " " + r.getPessoa().getNomPessoa());
         }
         cbInput.setSelectedItem(null);
         cbInput.addActionListener(new ActionListener() {
@@ -81,21 +78,21 @@ public class AutoFill {
                     cbInput.dispatchEvent(e);
                     if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                         //if (!isAdjusting(cbInput)) {
-                            if (cbInput.getSelectedItem() != null) {
-                                String[] text = cbInput.getSelectedItem().toString().split(" ", 2);
-                                txtInput.setText(text[1]);
-                                Reserva reserva = ReservaRepository.readId(Integer.parseInt(text[0]));
-                                pnlFields.setVisible(true);
-                                pnlAcompanhante.setVisible(true);
-                                Component[] component = pnlFields.getComponents();
-                                for (int i = 0; i < component.length; i++) {
-                                    if (component[i] instanceof JTextField) {
-                                        JTextField field = (JTextField) component[i];
-                                        fazComparacoes(reserva, field);
-                                    }
+                        if (cbInput.getSelectedItem() != null) {
+                            String[] text = cbInput.getSelectedItem().toString().split(" ", 2);
+                            txtInput.setText(text[1]);
+                            Reserva reserva = ReservaRepository.readId(Integer.parseInt(text[0]));
+                            pnlFields.setVisible(true);
+                            pnlAcompanhante.setVisible(true);
+                            Component[] component = pnlFields.getComponents();
+                            for (int i = 0; i < component.length; i++) {
+                                if (component[i] instanceof JTextField) {
+                                    JTextField field = (JTextField) component[i];
+                                    fazComparacoes(reserva, field);
                                 }
-                                cbInput.setPopupVisible(false);
                             }
+                            cbInput.setPopupVisible(false);
+                        }
                         //}
                     }
                 }
@@ -126,15 +123,15 @@ public class AutoFill {
                 String input = txtInput.getText();
                 if (!input.isEmpty()) {
                     for (Reserva r : items) {
-                        if (r.getCodPessoa().getNomPessoa().toLowerCase().startsWith(input.toLowerCase()) || r.getCodPessoa().getNumCpf().toLowerCase().startsWith(input.toLowerCase())) {
-                            model.addElement(r.getCodReserva() + " " + r.getCodPessoa().getNomPessoa());
+                        if (r.getPessoa().getNomPessoa().toLowerCase().startsWith(input.toLowerCase()) || r.getPessoa().getNumCpf().toLowerCase().startsWith(input.toLowerCase())) {
+                            model.addElement(r.getCodReserva() + " " + r.getPessoa().getNomPessoa());
                         }
 
                     }
                 }
                 boolean pessoaTrue = false;
                 for (Reserva r : ReservaRepository.readAll()) {
-                    if (r.getCodPessoa().getNomPessoa().equals(txtInput.getText()) || r.getCodPessoa().getNumCpf().equals(txtInput.getText())) {
+                    if (r.getPessoa().getNomPessoa().equals(txtInput.getText()) || r.getPessoa().getNumCpf().equals(txtInput.getText())) {
                         pessoaTrue = true;
                     }
                 }
@@ -154,9 +151,9 @@ public class AutoFill {
         if (field.getName().equals("tfdCodigo")) {
             field.setText(reserva.getCodReserva().toString());
         } else if (field.getName().equals("tfdQuarto")) {
-            field.setText(reserva.getCodQuarto().getCodQuarto().toString());
+            field.setText(reserva.getQuarto().getCodQuarto().toString());
         } else if (field.getName().equals("tfdNomeTitular")) {
-            field.setText(reserva.getCodPessoa().getNomPessoa());
+            field.setText(reserva.getPessoa().getNomPessoa());
         } else if (field.getName().equals("tfdDataEntrada")) {
             field.setText(Formatacao.ajustaDataDMAH(reserva.getDtaEntrada().toString()));
         } else if (field.getName().equals("tfdDataSaida")) {
@@ -165,9 +162,9 @@ public class AutoFill {
             System.out.println(Validacao.getDifferenceDays(reserva.getDtaEntrada(), reserva.getDtaSaida()));
             field.setText(reserva.getVlrReserva().toString());
         } else if (field.getName().equals("tfdCelular")) {
-            field.setText(reserva.getCodPessoa().getNumCelular());
+            field.setText(reserva.getPessoa().getNumCelular());
         } else if (field.getName().equals("tfdPessoaCodigo")) {
-            field.setText(reserva.getCodPessoa().getCodPessoa().toString());
+            field.setText(reserva.getPessoa().getCodPessoa().toString());
         }
     }
 }
