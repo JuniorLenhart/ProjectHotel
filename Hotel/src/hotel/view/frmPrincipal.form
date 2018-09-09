@@ -95,6 +95,9 @@
             </Property>
             <Property name="label" type="java.lang.String" value="Reserva"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="mnuReservaMouseClicked"/>
+          </Events>
         </Menu>
         <Menu class="javax.swing.JMenu" name="mnuFinanceiro">
           <Properties>

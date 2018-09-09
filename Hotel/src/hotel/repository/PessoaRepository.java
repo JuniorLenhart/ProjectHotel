@@ -2,7 +2,6 @@ package hotel.repository;
 
 import hotel.config.HibernateUtil;
 import hotel.model.Pessoa;
-import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Query;
 
@@ -13,9 +12,9 @@ public class PessoaRepository {
         return query.list();
     }
 
-    public static List<Pessoa> read(String pParam) {
+    public static List<Pessoa> read(String pNome) {
         Query query = HibernateUtil.getSession().createQuery("FROM Pessoa WHERE LOWER(nomPessoa) LIKE :nomPessoa");
-        query.setParameter("nomPessoa", "%" + pParam.toLowerCase() + "%");
+        query.setParameter("nomPessoa", "%" + pNome.toLowerCase() + "%");
         return query.list();
     }
 
@@ -35,7 +34,25 @@ public class PessoaRepository {
     }
 
     public static Pessoa readCPF(String pCPF) {
-        Query query = HibernateUtil.getSession().createQuery("FROM Pessoa WHERE numCpf = '" + pCPF + "' AND indSituacao = 'A'");
+        Query query = HibernateUtil.getSession().createQuery("FROM Pessoa WHERE numCpf LIKE :numCpf AND indSituacao = 'A'");
+        query.setParameter("numCpf", pCPF);
+        return (Pessoa) query.uniqueResult();
+    }
+
+    public static List<Pessoa> readListCPF(String pCPF) {
+        Query query = HibernateUtil.getSession().createQuery("FROM Pessoa WHERE numCpf LIKE :numCpf AND indSituacao = 'A'");
+        query.setParameter("numCpf", "%" + pCPF + "%");
+        return query.list();
+    }
+
+    public static List<Pessoa> readActive(String pNome) {
+        Query query = HibernateUtil.getSession().createQuery("FROM Pessoa WHERE LOWER(nomPessoa) LIKE :nomPessoa AND indSituacao = 'A'");
+        query.setParameter("nomPessoa", "%" + pNome.toLowerCase() + "%");
+        return query.list();
+    }
+
+    public static Pessoa readIdActive(int pCodigo) {
+        Query query = HibernateUtil.getSession().createQuery("FROM Pessoa WHERE codPessoa = " + pCodigo + " AND indSituacao = 'A'");
         return (Pessoa) query.uniqueResult();
     }
 }

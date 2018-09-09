@@ -91,7 +91,6 @@ public class Validacao {
             if ((lComponent[i].isVisible())) {
                 if (lComponent[i] instanceof JFormattedTextField) {
                     JFormattedTextField lField = (JFormattedTextField) lComponent[i];
-                    System.out.println(Formatacao.removerFormatacao(lField.getText()));
                     if (Formatacao.removerFormatacao(lField.getText()).equals("")) {
                         return 1;
                     }
@@ -113,6 +112,11 @@ public class Validacao {
                 } else if (lComponent[i] instanceof JSpinner) {
                     JSpinner lField = (JSpinner) lComponent[i];
                     if ((int) lField.getValue() <= 0) {
+                        return 1;
+                    }
+                } else if (lComponent[i] instanceof JDateChooserComboLayout) {
+                    JDateChooserComboLayout lField = (JDateChooserComboLayout) lComponent[i];
+                    if (lField.getText().equals("")) {
                         return 1;
                     }
                 }

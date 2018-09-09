@@ -5,9 +5,9 @@ import java.awt.Color;
 import java.awt.Component;
 import javax.swing.JFormattedTextField;
 
-public class DateChooserComboLayout extends DateChooserCombo {
+public class JDateChooserComboLayout extends DateChooserCombo {
     
-    public DateChooserComboLayout() {
+    public JDateChooserComboLayout() {
         super();
         
         Component lComponent[] = this.getComponents();

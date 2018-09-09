@@ -6,6 +6,8 @@ import hotel.support.Formatacao;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -37,8 +39,8 @@ public class ReservaController extends BaseController<Reserva> {
 
             Object[] lTabelaTitulo = new Object[9];
             lTabelaTitulo[0] = "Código";
-            lTabelaTitulo[1] = "Nome";
-            lTabelaTitulo[2] = "Quarto";
+            lTabelaTitulo[1] = "CPF";
+            lTabelaTitulo[2] = "Nº Quarto";
             lTabelaTitulo[3] = "Data Reserva";
             lTabelaTitulo[4] = "Data Entrada";
             lTabelaTitulo[5] = "Data Saída";
@@ -46,37 +48,49 @@ public class ReservaController extends BaseController<Reserva> {
             lTabelaTitulo[7] = "Valor";
             lTabelaTitulo[8] = "Situação";
 
+            List<Reserva> listReserva = null;
+            Reserva reserva = null;
+
+            switch (pOption) {
+                case 0:
+                    listReserva = ReservaRepository.readAll();
+                    break;
+                case 1:
+                    listReserva = ReservaRepository.readPersonNamePayed(pParam);
+                    break;
+                case 2:
+                    listReserva = ReservaRepository.readPersonCPFPayed(pParam);
+                    break;
+                case 3:
+                    listReserva = ReservaRepository.readAllPayed();
+                    break;
+                case 4:
+                    listReserva = ReservaRepository.readPersonCPF(pParam);
+                    break;
+                case 5:
+                    reserva = ReservaRepository.readId(Integer.parseInt(pParam));
+                    break;
+                case 6:
+                    listReserva = ReservaRepository.readNumberRoom(pParam);
+                    break;
+            }
+
             int lLinha = 0;
             switch (pOption) {
-                case 0: {
-                    List<Reserva> listConsumivel = ReservaRepository.readAll();
-                    lTabela = new Object[listConsumivel.size()][9];
-                    for (Reserva r : listConsumivel) {
-                        String situacao = (r.getIndSituacao().equals("E") ? "Efetuada" : (r.getIndSituacao().equals("C") ? "Confirmada" : "Cancelada"));
- 
-                        lTabela[lLinha][0] = r.getCodReserva();
-                        lTabela[lLinha][1] = r.getPessoa().getNomPessoa();
-                        lTabela[lLinha][2] = r.getQuarto().getNumQuarto();
-                        lTabela[lLinha][3] = Formatacao.ajustaDataDMA(r.getDtaReserva().toString());
-                        lTabela[lLinha][4] = Formatacao.ajustaDataDMA(r.getDtaEntrada().toString());
-                        lTabela[lLinha][5] = Formatacao.ajustaDataDMA(r.getDtaSaida().toString());
-                        lTabela[lLinha][6] = r.getQtdLugar();
-                        lTabela[lLinha][7] = r.getVlrReserva();
-                        lTabela[lLinha][8] = situacao;
-                        lLinha++;
-                    }
-                    break;
-                }
-                case 1: {
-                    List<Reserva> listConsumivel = ReservaRepository.readPerPersonNamePayed(pParam);
-                    lTabela = new Object[listConsumivel.size()][6];
-                    for (Reserva r : listConsumivel) {
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 6: {
+                    lTabela = new Object[listReserva.size()][9];
+                    for (Reserva r : listReserva) {
                         String situacao = (r.getIndSituacao().equals("E") ? "Efetuada" : (r.getIndSituacao().equals("C") ? "Confirmada" : "Cancelada"));
 
                         lTabela[lLinha][0] = r.getCodReserva();
-                        lTabela[lLinha][1] = r.getPessoa().getNomPessoa();
+                        lTabela[lLinha][1] = Formatacao.formatarCPF(r.getPessoa().getNumCpf());
                         lTabela[lLinha][2] = r.getQuarto().getNumQuarto();
-                        lTabela[lLinha][3] = Formatacao.ajustaDataDMA(r.getDtaReserva().toString());
+                        lTabela[lLinha][3] = Formatacao.ajustaDataDMAHS(r.getDtaReserva().toString());
                         lTabela[lLinha][4] = Formatacao.ajustaDataDMA(r.getDtaEntrada().toString());
                         lTabela[lLinha][5] = Formatacao.ajustaDataDMA(r.getDtaSaida().toString());
                         lTabela[lLinha][6] = r.getQtdLugar();
@@ -86,18 +100,15 @@ public class ReservaController extends BaseController<Reserva> {
                     }
                     break;
                 }
-                case 2: {
-                    Reserva reserva = ReservaRepository.readPerPersonCPFPayed(pParam);
-                    if (reserva == null) {
-                        JOptionPane.showMessageDialog(null, "Reserva não encontrada pelo CPF: " + pParam);
-                    } else {
+                case 5: {
+                    if (reserva != null) {
                         String situacao = (reserva.getIndSituacao().equals("E") ? "Efetuada" : (reserva.getIndSituacao().equals("C") ? "Confirmada" : "Cancelada"));
 
                         lTabela = new Object[1][9];
                         lTabela[lLinha][0] = reserva.getCodReserva();
-                        lTabela[lLinha][1] = reserva.getPessoa().getNomPessoa();
+                        lTabela[lLinha][1] = Formatacao.formatarCPF(reserva.getPessoa().getNumCpf());
                         lTabela[lLinha][2] = reserva.getQuarto().getNumQuarto();
-                        lTabela[lLinha][3] = Formatacao.ajustaDataDMA(reserva.getDtaReserva().toString());
+                        lTabela[lLinha][3] = Formatacao.ajustaDataDMAHS(reserva.getDtaReserva().toString());
                         lTabela[lLinha][4] = Formatacao.ajustaDataDMA(reserva.getDtaEntrada().toString());
                         lTabela[lLinha][5] = Formatacao.ajustaDataDMA(reserva.getDtaSaida().toString());
                         lTabela[lLinha][6] = reserva.getQtdLugar();
@@ -107,43 +118,6 @@ public class ReservaController extends BaseController<Reserva> {
                     }
                     break;
                 }
-                case 3: {
-                    List<Reserva> listConsumivel = ReservaRepository.readAllPayed();
-                    lTabela = new Object[listConsumivel.size()][9];
-                    for (Reserva r : listConsumivel) {
-                        String situacao = (r.getIndSituacao().equals("E") ? "Efetuada" : (r.getIndSituacao().equals("C") ? "Confirmada" : "Cancelada"));
-
-                        lTabela[lLinha][0] = r.getCodReserva();
-                        lTabela[lLinha][1] = r.getPessoa().getNomPessoa();
-                        lTabela[lLinha][2] = r.getQuarto().getNumQuarto();
-                        lTabela[lLinha][3] = Formatacao.ajustaDataDMA(r.getDtaReserva().toString());
-                        lTabela[lLinha][4] = Formatacao.ajustaDataDMA(r.getDtaEntrada().toString());
-                        lTabela[lLinha][5] = Formatacao.ajustaDataDMA(r.getDtaSaida().toString());
-                        lTabela[lLinha][6] = r.getQtdLugar();
-                        lTabela[lLinha][7] = r.getVlrReserva();
-                        lTabela[lLinha][8] = situacao;
-                        lLinha++;
-                    }
-                    break;
-                }
-                default:
-                    List<Reserva> listConsumivel = ReservaRepository.readAll();
-                    lTabela = new Object[listConsumivel.size()][9];
-                    for (Reserva r : listConsumivel) {
-                        String situacao = (r.getIndSituacao().equals("E") ? "Efetuada" : (r.getIndSituacao().equals("C") ? "Confirmada" : "Cancelada"));
-
-                        lTabela[lLinha][0] = r.getCodReserva();
-                        lTabela[lLinha][1] = r.getPessoa().getNomPessoa();
-                        lTabela[lLinha][2] = r.getQuarto().getNumQuarto();
-                        lTabela[lLinha][3] = Formatacao.ajustaDataDMA(r.getDtaReserva().toString());
-                        lTabela[lLinha][4] = Formatacao.ajustaDataDMA(r.getDtaEntrada().toString());
-                        lTabela[lLinha][5] = Formatacao.ajustaDataDMA(r.getDtaSaida().toString());
-                        lTabela[lLinha][6] = r.getQtdLugar();
-                        lTabela[lLinha][7] = r.getVlrReserva();
-                        lTabela[lLinha][8] = situacao;
-                        lLinha++;
-                    }
-                    break;
             }
 
             pTabela.setModel(new DefaultTableModel(lTabela, lTabelaTitulo) {
@@ -163,14 +137,53 @@ public class ReservaController extends BaseController<Reserva> {
             pTabela.setSelectionMode(0);
 
             TableColumn lColumn = null;
+
+            DefaultTableCellRenderer lLeft = new DefaultTableCellRenderer();
+            DefaultTableCellRenderer lCenter = new DefaultTableCellRenderer();
+            DefaultTableCellRenderer lRight = new DefaultTableCellRenderer();
+
+            lLeft.setHorizontalAlignment(SwingConstants.LEFT);
+            lCenter.setHorizontalAlignment(SwingConstants.CENTER);
+            lRight.setHorizontalAlignment(SwingConstants.RIGHT);
+
             for (int i = 0; i < pTabela.getColumnCount(); i++) {
                 lColumn = pTabela.getColumnModel().getColumn(i);
                 switch (i) {
                     case 0:
-                        lColumn.setPreferredWidth(17);
+                        lColumn.setPreferredWidth(20);
+                        lColumn.setCellRenderer(lRight);
                         break;
                     case 1:
-                        lColumn.setPreferredWidth(140);
+                        lColumn.setPreferredWidth(75);
+                        lColumn.setCellRenderer(lLeft);
+                        break;
+                    case 2:
+                        lColumn.setPreferredWidth(40);
+                        lColumn.setCellRenderer(lLeft);
+                        break;
+                    case 3:
+                        lColumn.setPreferredWidth(90);
+                        lColumn.setCellRenderer(lCenter);
+                        break;
+                    case 4:
+                        lColumn.setPreferredWidth(50);
+                        lColumn.setCellRenderer(lCenter);
+                        break;
+                    case 5:
+                        lColumn.setPreferredWidth(50);
+                        lColumn.setCellRenderer(lCenter);
+                        break;
+                    case 6:
+                        lColumn.setPreferredWidth(30);
+                        lColumn.setCellRenderer(lCenter);
+                        break;
+                    case 7:
+                        lColumn.setPreferredWidth(30);
+                        lColumn.setCellRenderer(lRight);
+                        break;
+                    case 8:
+                        lColumn.setPreferredWidth(50);
+                        lColumn.setCellRenderer(lCenter);
                         break;
                 }
             }

@@ -83,7 +83,7 @@ public class Unit {
     }
 
     public static String getDataHoraAtual() {
-        DateFormat lDataFormatada = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        DateFormat lDataFormatada = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         return lDataFormatada.format(new Date());
     }
 

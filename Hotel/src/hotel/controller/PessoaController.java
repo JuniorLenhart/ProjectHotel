@@ -33,7 +33,16 @@ public class PessoaController extends BaseController<Pessoa> {
         return null;
     }
 
-    public void popularTabela(JTable pTabela, int pOption, String pParam, int codigoPessoa) {
+    public Pessoa getReadCPF(String pCPF) {
+        try {
+            return PessoaRepository.readCPF(pCPF);
+        } catch (Exception ex) {
+            LoggerController.log(this.getClass(), ex);
+        }
+        return null;
+    }
+
+    public void popularTabela(JTable pTabela, int pOption, String pParam, int codPessoa) {
         try {
             Object[][] lTabela = null;
 
@@ -46,17 +55,59 @@ public class PessoaController extends BaseController<Pessoa> {
             lTabelaTitulo[5] = "Celular";
             lTabelaTitulo[6] = "Situação";
 
-            int lLinha = 0;
+            List<Pessoa> listPessoa = null;
+            Pessoa pessoa = null;
+
             switch (pOption) {
                 case 0: {
-                    List<Pessoa> listPessoa = PessoaRepository.readAll();
-                    if (codigoPessoa != -1) {
+                    listPessoa = PessoaRepository.readAll();
+                    break;
+                }
+                case 1: {
+                    listPessoa = PessoaRepository.read(pParam);
+                    break;
+                }
+                case 2: {
+                    pessoa = PessoaRepository.readId(Integer.parseInt(pParam));
+                    break;
+                }
+                case 3: {
+                    listPessoa = PessoaRepository.readProfileNotUser();
+                    break;
+                }
+                case 4: {
+                    pessoa = PessoaRepository.readCPF(pParam);
+                    break;
+                }
+                case 5: {
+                    listPessoa = PessoaRepository.readSituation("A");
+                    break;
+                }
+                case 6: {
+                    listPessoa = PessoaRepository.readActive(pParam);
+                    break;
+                }
+                case 7: {
+                    pessoa = PessoaRepository.readIdActive(Integer.parseInt(pParam));
+                    break;
+                }
+                case 8: {
+                    listPessoa = PessoaRepository.readListCPF(pParam);
+                    break;
+                }
+            }
+
+            int lLinha = 0;
+            switch (pOption) {
+                case 0:
+                case 1:
+                    if (codPessoa != -1) {
                         lTabela = new Object[listPessoa.size() - 1][7];
                     } else {
                         lTabela = new Object[listPessoa.size()][7];
                     }
                     for (Pessoa p : listPessoa) {
-                        if (p.getCodPessoa() != codigoPessoa) {
+                        if (p.getCodPessoa() != codPessoa) {
                             String situacao = (p.getIndSituacao().equals("A") ? "Ativo" : "Excluído");
 
                             lTabela[lLinha][0] = p.getCodPessoa();
@@ -72,94 +123,88 @@ public class PessoaController extends BaseController<Pessoa> {
                         }
                     }
                     break;
-                }
-                case 1: {
-                    List<Pessoa> listPessoa = PessoaRepository.read(pParam);
-                    if (codigoPessoa != -1) {
-                        lTabela = new Object[listPessoa.size() - 1][7];
-                    } else {
-                        lTabela = new Object[listPessoa.size()][7];
-                    }
-                    for (Pessoa p : listPessoa) {
-                        if (p.getCodPessoa() != codigoPessoa) {
-                            String situacao = (p.getIndSituacao().equals("A") ? "Ativo" : "Excluído");
-
-                            lTabela[lLinha][0] = p.getCodPessoa();
-                            lTabela[lLinha][1] = p.getNomPessoa();
-                            lTabela[lLinha][2] = Formatacao.formatarCPF(p.getNumCpf());
-                            lTabela[lLinha][3] = Formatacao.ajustaDataDMA(p.getDtaNasc().toString());
-                            lTabela[lLinha][4] = p.getDesEmail();
-                            lTabela[lLinha][5] = p.getNumCelular();
-                            lTabela[lLinha][6] = situacao;
-                            lLinha++;
-                        }
-                    }
-                    break;
-                }
-                case 2: {
-                    Pessoa p = PessoaRepository.readId(Integer.parseInt(pParam));
-                    if (p == null) {
+                case 2:
+                    if (pessoa == null) {
                         JOptionPane.showMessageDialog(null, "Pessoa não encontrado pelo código: " + pParam);
                     } else {
-                        if (p.getCodPessoa() != codigoPessoa) {
-                            String situacao = (p.getIndSituacao().equals("A") ? "Ativo" : "Excluído");
+                        if (pessoa.getCodPessoa() != codPessoa) {
+                            String situacao = (pessoa.getIndSituacao().equals("A") ? "Ativo" : "Excluído");
 
                             lTabela = new Object[1][7];
-                            lTabela[lLinha][0] = p.getCodPessoa();
-                            lTabela[lLinha][1] = p.getNomPessoa();
-                            lTabela[lLinha][2] = Formatacao.formatarCPF(p.getNumCpf());
-                            lTabela[lLinha][3] = Formatacao.ajustaDataDMA(p.getDtaNasc().toString());
-                            lTabela[lLinha][4] = p.getDesEmail();
-                            lTabela[lLinha][5] = p.getNumCelular();
+                            lTabela[lLinha][0] = pessoa.getCodPessoa();
+                            lTabela[lLinha][1] = pessoa.getNomPessoa();
+                            lTabela[lLinha][2] = Formatacao.formatarCPF(pessoa.getNumCpf());
+                            if (pessoa.getDtaNasc() != null) {
+                                lTabela[lLinha][3] = Formatacao.ajustaDataDMA(pessoa.getDtaNasc().toString());
+                            }
+                            lTabela[lLinha][4] = pessoa.getDesEmail();
+                            lTabela[lLinha][5] = pessoa.getNumCelular();
                             lTabela[lLinha][6] = situacao;
                             lLinha++;
                         }
                     }
                     break;
-                }
-                case 4: {
-                    Pessoa p = PessoaRepository.readCPF(pParam);
-                    if (p == null) {
-                        JOptionPane.showMessageDialog(null, "Pessoa não encontrado pelo CPF: " + pParam);
-                    } else {
-                        if (p.getCodPessoa() != codigoPessoa) {
-                            String situacao = (p.getIndSituacao().equals("A") ? "Ativo" : "Excluído");
-
-                            lTabelaTitulo = new Object[4];
-                            lTabelaTitulo[0] = "Código";
-                            lTabelaTitulo[1] = "Nome";
-                            lTabelaTitulo[2] = "CPF";
-                            lTabelaTitulo[3] = "E-mail";
-
-                            lTabela = new Object[1][4];
-                            lTabela[lLinha][0] = p.getCodPessoa();
-                            lTabela[lLinha][1] = p.getNomPessoa();
-                            lTabela[lLinha][2] = Formatacao.formatarCPF(p.getNumCpf());
-                            lTabela[lLinha][3] = p.getDesEmail();
-                            lLinha++;
-                        }
-                    }
-                    break;
-                }
-                default:
+                case 3:
+                case 5:
+                case 6:
+                case 8:
                     lTabelaTitulo = new Object[4];
                     lTabelaTitulo[0] = "Código";
                     lTabelaTitulo[1] = "Nome";
                     lTabelaTitulo[2] = "CPF";
                     lTabelaTitulo[3] = "E-mail";
 
-                    List<Pessoa> listPessoa = PessoaRepository.readProfileNotUser();
-                    if (codigoPessoa != -1) {
-                        lTabela = new Object[listPessoa.size()-1][4];
+                    if (codPessoa != -1) {
+                        lTabela = new Object[listPessoa.size() - 1][4];
                     } else {
                         lTabela = new Object[listPessoa.size()][4];
                     }
                     for (Pessoa p : listPessoa) {
-                        if (p.getCodPessoa() != codigoPessoa) {
+                        if (p.getCodPessoa() != codPessoa) {
                             lTabela[lLinha][0] = p.getCodPessoa();
                             lTabela[lLinha][1] = p.getNomPessoa();
                             lTabela[lLinha][2] = Formatacao.formatarCPF(p.getNumCpf());
                             lTabela[lLinha][3] = p.getDesEmail();
+                            lLinha++;
+                        }
+                    }
+                    break;
+                case 4:
+                    lTabelaTitulo = new Object[4];
+                    lTabelaTitulo[0] = "Código";
+                    lTabelaTitulo[1] = "Nome";
+                    lTabelaTitulo[2] = "CPF";
+                    lTabelaTitulo[3] = "E-mail";
+
+                    if (pessoa == null) {
+                        JOptionPane.showMessageDialog(null, "Pessoa não encontrado pelo CPF: " + pParam);
+                    } else {
+                        if (pessoa.getCodPessoa() != codPessoa) {
+                            lTabela = new Object[1][4];
+                            lTabela[lLinha][0] = pessoa.getCodPessoa();
+                            lTabela[lLinha][1] = pessoa.getNomPessoa();
+                            lTabela[lLinha][2] = Formatacao.formatarCPF(pessoa.getNumCpf());
+                            lTabela[lLinha][3] = pessoa.getDesEmail();
+                            lLinha++;
+                        }
+                    }
+                    break;
+                case 7:
+                    lTabelaTitulo = new Object[4];
+                    lTabelaTitulo[0] = "Código";
+                    lTabelaTitulo[1] = "Nome";
+                    lTabelaTitulo[2] = "CPF";
+                    lTabelaTitulo[3] = "E-mail";
+
+                    if (pessoa == null) {
+                        JOptionPane.showMessageDialog(null, "Pessoa não encontrado pelo código: " + pParam);
+                    } else {
+                        if (pessoa.getCodPessoa() != codPessoa) {
+                            lTabela = new Object[1][4];
+                            lTabela[lLinha][0] = pessoa.getCodPessoa();
+                            lTabela[lLinha][1] = pessoa.getNomPessoa();
+                            lTabela[lLinha][2] = Formatacao.formatarCPF(pessoa.getNumCpf());
+                            lTabela[lLinha][3] = pessoa.getDesEmail();
                             lLinha++;
                         }
                     }
@@ -194,7 +239,7 @@ public class PessoaController extends BaseController<Pessoa> {
 
             for (int i = 0; i < pTabela.getColumnCount(); i++) {
                 lColumn = pTabela.getColumnModel().getColumn(i);
-                if (pOption != 3) {
+                if (pOption != 3 && pOption != 4 && pOption != 5 && pOption != 6 && pOption != 7 && pOption != 8) {
                     switch (i) {
                         case 0:
                             lColumn.setPreferredWidth(20);

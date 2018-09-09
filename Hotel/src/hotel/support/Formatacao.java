@@ -143,7 +143,7 @@ public class Formatacao {
 
         return lDataFormatada;
     }
-    
+
     public static String ajustaDataDMAHS(String pData) {
         String lDataFormatada = "";
 
@@ -160,7 +160,7 @@ public class Formatacao {
 
         return lDataFormatada;
     }
-    
+
     public static String ajustaDataHMS(String pData) {
         String lDataFormatada = "";
 
@@ -211,7 +211,7 @@ public class Formatacao {
 
         return lDataFormatada;
     }
-    
+
     public static String ajustaDataAMDHMS(String pData) {
         String lDataFormatada = "";
 
@@ -257,13 +257,13 @@ public class Formatacao {
             }
         });
     }
-    
+
     public static String formatacaoAuditoria(String tabelaNome, String descricaoNova, String descricaoAntiga) {
         String retorno = "";
-        if(!descricaoAntiga.equals("")) {
-            retorno = "| Tabela "+tabelaNome+" | Dados antigos: ["+descricaoAntiga+"], Dados novos: ["+descricaoNova+"]";
+        if (!descricaoAntiga.equals("")) {
+            retorno = "| Tabela " + tabelaNome + " | Dados antigos: [" + descricaoAntiga + "], Dados novos: [" + descricaoNova + "]";
         } else {
-            retorno = "| Tabela "+tabelaNome+" | Dados: ["+descricaoNova+"]";
+            retorno = "| Tabela " + tabelaNome + " | Dados: [" + descricaoNova + "]";
         }
         return retorno;
     }

@@ -165,6 +165,11 @@ public class frmPrincipal extends javax.swing.JFrame {
         mnuReserva.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/reserva.png"))); // NOI18N
         mnuReserva.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         mnuReserva.setLabel("Reserva");
+        mnuReserva.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                mnuReservaMouseClicked(evt);
+            }
+        });
         mnbPrincipal.add(mnuReserva);
 
         mnuFinanceiro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/financeiro.png"))); // NOI18N
@@ -278,6 +283,10 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void mniCadastroLocacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniCadastroLocacaoActionPerformed
         abrirTela(new frmLocacao());
     }//GEN-LAST:event_mniCadastroLocacaoActionPerformed
+
+    private void mnuReservaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mnuReservaMouseClicked
+        abrirTela(new frmReserva());
+    }//GEN-LAST:event_mnuReservaMouseClicked
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
