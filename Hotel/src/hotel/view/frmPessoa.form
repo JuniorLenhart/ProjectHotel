@@ -402,7 +402,7 @@
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder title="&lt;html&gt;Endere&#xe7;o&lt;font color=&apos;red&apos;&gt;&lt;b&gt;*&lt;/b&gt;&lt;/font&gt;:&lt;/html&gt;">
+                    <TitledBorder title="&lt;html&gt; Endere&#xe7;o&lt;font color=&apos;red&apos;&gt;&lt;b&gt;* &lt;/b&gt;&lt;/font&gt;&lt;/html&gt;">
                       <Font PropertyName="font" name="SansSerif" size="14" style="1"/>
                     </TitledBorder>
                   </Border>

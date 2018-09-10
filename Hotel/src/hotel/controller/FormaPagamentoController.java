@@ -98,14 +98,29 @@ public class FormaPagamentoController extends BaseController<FormaPagamento> {
             pTabela.setSelectionMode(0);
 
             TableColumn lColumn = null;
+
+            DefaultTableCellRenderer lLeft = new DefaultTableCellRenderer();
+            DefaultTableCellRenderer lCenter = new DefaultTableCellRenderer();
+            DefaultTableCellRenderer lRight = new DefaultTableCellRenderer();
+
+            lLeft.setHorizontalAlignment(SwingConstants.LEFT);
+            lCenter.setHorizontalAlignment(SwingConstants.CENTER);
+            lRight.setHorizontalAlignment(SwingConstants.RIGHT);
+
             for (int i = 0; i < pTabela.getColumnCount(); i++) {
                 lColumn = pTabela.getColumnModel().getColumn(i);
                 switch (i) {
                     case 0:
-                        lColumn.setPreferredWidth(17);
+                        lColumn.setPreferredWidth(30);
+                        lColumn.setCellRenderer(lRight);
                         break;
                     case 1:
-                        lColumn.setPreferredWidth(140);
+                        lColumn.setPreferredWidth(180);
+                        lColumn.setCellRenderer(lLeft);
+                        break;
+                    case 2:
+                        lColumn.setPreferredWidth(60);
+                        lColumn.setCellRenderer(lCenter);
                         break;
                 }
             }

@@ -298,7 +298,7 @@ public class frmPessoa extends javax.swing.JInternalFrame {
         tfdDataNasc.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
 
         pnlEndereco.setBackground(new java.awt.Color(255, 255, 255));
-        pnlEndereco.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "<html>Endereço<font color='red'><b>*</b></font>:</html>", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("SansSerif", 1, 14))); // NOI18N
+        pnlEndereco.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "<html> Endereço<font color='red'><b>* </b></font></html>", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("SansSerif", 1, 14))); // NOI18N
 
         lblRua.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
         lblRua.setForeground(new java.awt.Color(102, 102, 102));

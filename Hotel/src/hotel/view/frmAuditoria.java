@@ -10,7 +10,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 public class frmAuditoria extends javax.swing.JInternalFrame {
 
@@ -34,11 +33,11 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
     private void checaAuditoriaAtiva() {
         if (Parametro.AUDITORIA_ATIVA) {
             btnAtivarAuditoria.setSelected(Parametro.AUDITORIA_ATIVA);
-            btnAtivarAuditoria.setText("Desativar Auditoria");
+            btnAtivarAuditoria.setText("Desativar");
             btnAtivarAuditoria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/lampoff.png")));
         } else {
             btnAtivarAuditoria.setSelected(Parametro.AUDITORIA_ATIVA);
-            btnAtivarAuditoria.setText("Ativar Auditoria");
+            btnAtivarAuditoria.setText("Ativar");
             btnAtivarAuditoria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/lampon.png")));
         }
     }
@@ -60,8 +59,8 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
         btgGroup = new javax.swing.ButtonGroup();
         pnlHeader = new javax.swing.JPanel();
         btnFechar = new javax.swing.JButton();
-        btnAtivarAuditoria = new javax.swing.JToggleButton();
         btnDetalhe = new javax.swing.JButton();
+        btnAtivarAuditoria = new javax.swing.JToggleButton();
         pnlListagem = new javax.swing.JPanel();
         pnlDetalhe = new javax.swing.JPanel();
         tfdPesquisa = new javax.swing.JTextField();
@@ -90,18 +89,6 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
             }
         });
 
-        btnAtivarAuditoria.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnAtivarAuditoria.setForeground(new java.awt.Color(12, 91, 160));
-        btnAtivarAuditoria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/lampon.png"))); // NOI18N
-        btnAtivarAuditoria.setText("Ativar Auditoria");
-        btnAtivarAuditoria.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnAtivarAuditoria.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnAtivarAuditoria.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAtivarAuditoriaActionPerformed(evt);
-            }
-        });
-
         btnDetalhe.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnDetalhe.setForeground(new java.awt.Color(12, 91, 160));
         btnDetalhe.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/detalhe.png"))); // NOI18N
@@ -115,13 +102,25 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
             }
         });
 
+        btnAtivarAuditoria.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnAtivarAuditoria.setForeground(new java.awt.Color(12, 91, 160));
+        btnAtivarAuditoria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/lampon.png"))); // NOI18N
+        btnAtivarAuditoria.setText("Ativar");
+        btnAtivarAuditoria.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAtivarAuditoria.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAtivarAuditoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAtivarAuditoriaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlHeaderLayout = new javax.swing.GroupLayout(pnlHeader);
         pnlHeader.setLayout(pnlHeaderLayout);
         pnlHeaderLayout.setHorizontalGroup(
             pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlHeaderLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnAtivarAuditoria)
+                .addComponent(btnAtivarAuditoria, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnDetalhe)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -130,12 +129,9 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
         );
         pnlHeaderLayout.setVerticalGroup(
             pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnAtivarAuditoria, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(pnlHeaderLayout.createSequentialGroup()
-                .addGroup(pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnFechar)
-                    .addComponent(btnDetalhe))
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(btnFechar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnDetalhe, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnAtivarAuditoria, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pnlListagem.setBackground(new java.awt.Color(255, 255, 255));
@@ -181,7 +177,7 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
         rbUsuarioLogin.setBackground(new java.awt.Color(255, 255, 255));
         btgGroup.add(rbUsuarioLogin);
         rbUsuarioLogin.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        rbUsuarioLogin.setText("Por usuário login");
+        rbUsuarioLogin.setText("Por usuário");
         rbUsuarioLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rbUsuarioLoginActionPerformed(evt);
@@ -284,15 +280,14 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
                     .addGroup(pnlDetalheLayout.createSequentialGroup()
                         .addComponent(pnlOpcao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pnlOpcaoTipo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(pnlOpcaoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pnlDetalheLayout.createSequentialGroup()
                         .addGroup(pnlDetalheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblPesquisa)
                             .addComponent(tfdPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addComponent(btnPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(btnPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(170, Short.MAX_VALUE))
         );
         pnlDetalheLayout.setVerticalGroup(
             pnlDetalheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -332,7 +327,7 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
                     .addComponent(pnlDetalhe, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(pnlListagemLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(pnlLista, javax.swing.GroupLayout.DEFAULT_SIZE, 645, Short.MAX_VALUE)))
+                        .addComponent(pnlLista, javax.swing.GroupLayout.DEFAULT_SIZE, 732, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnlListagemLayout.setVerticalGroup(
@@ -351,19 +346,17 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnlHeader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(pnlListagem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(pnlListagem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlHeader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pnlHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(6, 6, 6)
                 .addComponent(pnlListagem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -410,12 +403,12 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
         Parametro parametro = ParametroRepository.read();
         if (btnAtivarAuditoria.isSelected()) {
             parametro.setAuditoriaAtiva(true);
-            btnAtivarAuditoria.setText("Desativar Auditoria");
+            btnAtivarAuditoria.setText("Desativar");
             btnAtivarAuditoria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/lampoff.png")));
             JOptionPane.showMessageDialog(null, "Auditoria agora está ativada!");
         } else if (!btnAtivarAuditoria.isSelected()) {
             parametro.setAuditoriaAtiva(false);
-            btnAtivarAuditoria.setText("Ativar Auditoria");
+            btnAtivarAuditoria.setText("Ativar");
             btnAtivarAuditoria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/lampon.png")));
             JOptionPane.showMessageDialog(null, "Auditoria agora está desativada!");
         }
@@ -445,7 +438,7 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cbxInsertItemStateChanged
 
     private void rbUsuarioLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbUsuarioLoginActionPerformed
-        lblPesquisa.setText("Usuário login:");
+        lblPesquisa.setText("Usuário:");
         tfdPesquisa.setText("");
     }//GEN-LAST:event_rbUsuarioLoginActionPerformed
 

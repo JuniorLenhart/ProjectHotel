@@ -255,11 +255,11 @@ public class PessoaController extends BaseController<Pessoa> {
                             break;
                         case 3:
                             lColumn.setPreferredWidth(80);
-                            lColumn.setCellRenderer(lLeft);
+                            lColumn.setCellRenderer(lCenter);
                             break;
                         case 4:
                             lColumn.setPreferredWidth(150);
-                            lColumn.setCellRenderer(lCenter);
+                            lColumn.setCellRenderer(lLeft);
                             break;
                         case 5:
                             lColumn.setPreferredWidth(70);
@@ -294,7 +294,7 @@ public class PessoaController extends BaseController<Pessoa> {
                             break;
                         case 3:
                             lColumn.setPreferredWidth(200);
-                            lColumn.setCellRenderer(lCenter);
+                            lColumn.setCellRenderer(lLeft);
                             break;
                     }
                 }
