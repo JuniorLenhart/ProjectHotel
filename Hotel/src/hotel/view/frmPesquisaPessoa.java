@@ -15,8 +15,7 @@ public class frmPesquisaPessoa extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
-
-        pessoa = new Pessoa();
+        
         pessoaController = new PessoaController();
 
         pessoaController.popularTabela(tblLista, 5, "", -1);

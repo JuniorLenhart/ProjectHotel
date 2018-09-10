@@ -25,7 +25,7 @@ public class frmSelecaoReserva extends javax.swing.JDialog {
         this.reserva = new Reserva();
         this.reservaController = new ReservaController();
         this.pnlFields = fields;
-        reservaController.popularTabela(tblListaBusca, 3, "");
+        reservaController.popularTabela(tblListaBusca, 0, "");
     }
 
     private void comparaFields(JTextField field) {
@@ -309,7 +309,7 @@ public class frmSelecaoReserva extends javax.swing.JDialog {
 
     private void btnPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaActionPerformed
         if (tfdPesquisaReserva.getText().trim().isEmpty()) {
-            reservaController.popularTabela(tblListaBusca, 3, "");
+            reservaController.popularTabela(tblListaBusca, 0, "");
         } else if (rbnPesquisaReservaNome.isSelected()) {
             reservaController.popularTabela(tblListaBusca, 1, tfdPesquisaReserva.getText());
         } else if (rbnPesquisaReservaCPF.isSelected()) {

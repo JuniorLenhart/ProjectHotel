@@ -18,8 +18,7 @@ public class frmPesquisaQuarto extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
-
-        quarto = new Quarto();
+        
         quartoController = new QuartoController();
 
         this.dataEntrada = dataEntrada;

@@ -19,17 +19,17 @@ public class frmSelecaoPessoa extends javax.swing.JDialog {
     Pessoa pessoa, pessoaTitular;
     PessoaController pessoaController;
     List<Pessoa> listPessoas;
-    JTable tblAcomp;
+    int qntLugares;
 
-    public frmSelecaoPessoa(java.awt.Frame parent, boolean modal, JTable tblAcomp, List<Pessoa> listPessoas, Pessoa pessoaTitular) {
+    public frmSelecaoPessoa(java.awt.Frame parent, boolean modal, List<Pessoa> listAcompanhantes, Pessoa pessoaTitular, int qntLugares) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
         pessoa = new Pessoa();
+        this.qntLugares = qntLugares;
         this.pessoaTitular = pessoaTitular;
         pessoaController = new PessoaController();
-        this.listPessoas = listPessoas;
-        this.tblAcomp = tblAcomp;
+        listPessoas = listAcompanhantes;
         pessoaController.popularTabela(tblListaBusca, 3, "A", this.pessoaTitular.getCodPessoa());
         btnAdicionar.setEnabled(false);
         btnRemover.setEnabled(false);
@@ -37,7 +37,7 @@ public class frmSelecaoPessoa extends javax.swing.JDialog {
         tfdPesquisa.requestFocus();
 
         tblListaBusca.getSelectionModel().addListSelectionListener((ListSelectionEvent e) -> {
-            if (tblListaBusca.getSelectedRow() != -1) {
+            if ((tblListaBusca.getSelectedRow() != -1) && ((this.qntLugares - 1) > tblListaAcompanhante.getModel().getRowCount())) {
                 btnAdicionar.setEnabled(true);
                 tblListaAcompanhante.clearSelection();
             } else {
@@ -53,46 +53,13 @@ public class frmSelecaoPessoa extends javax.swing.JDialog {
                 btnRemover.setEnabled(false);
             }
         });
-        if (tblAcomp.getModel().getRowCount() == -1) {
-            clearTabela(tblListaAcompanhante);
-        } else {
-            tblListaAcompanhante.setModel(this.tblAcomp.getModel());
-        }
-    }
-
-    public frmSelecaoPessoa(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
-        initComponents();
-        setLocationRelativeTo(null);
-        pessoa = new Pessoa();
-        lblAcompanhantes.setText("Pessoa titular");
-        pessoaController = new PessoaController();
-        pessoaController.popularTabela(tblListaBusca, 3, "A", -1);
-        btnAdicionar.setEnabled(false);
-        btnRemover.setEnabled(false);
-
-        tfdPesquisa.requestFocus();
-
-        tblListaBusca.getSelectionModel().addListSelectionListener((ListSelectionEvent e) -> {
-            if ((tblListaBusca.getSelectedRow() != -1) && (tblListaAcompanhante.getModel().getRowCount() == 0)) {
-                btnAdicionar.setEnabled(true);
-                tblListaAcompanhante.clearSelection();
-            } else {
-                btnAdicionar.setEnabled(false);
-            }
-        });
-
-        tblListaAcompanhante.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
-            if (tblListaAcompanhante.getSelectedRow() != -1) {
-                btnAdicionar.setEnabled(false);
-                btnRemover.setEnabled(true);
-                tblListaBusca.clearSelection();
-            } else {
-                btnRemover.setEnabled(false);
-            }
-        });
-        
         clearTabela(tblListaAcompanhante);
+        if (!listPessoas.isEmpty()) {
+            DefaultTableModel model = (DefaultTableModel) tblListaAcompanhante.getModel();
+            for (Pessoa p : listPessoas) {
+                model.addRow(new Object[]{p.getCodPessoa(), p.getNomPessoa(), p.getNumCpf(), p.getDesEmail()});
+            }
+        }
     }
 
     public List<Pessoa> getListPessoas() {
@@ -427,24 +394,16 @@ public class frmSelecaoPessoa extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        if (listPessoas != null) {
-            if (listPessoas.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "A lista de acompanhantes está vazia!");
-            } else {
-                this.dispose();
-            }
+        if (listPessoas.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "A lista de acompanhantes está vazia!");
         } else {
-            if (this.pessoaTitular == null) {
-                JOptionPane.showMessageDialog(this, "Você não selecionou nenhuma pessoa como titular!");
-            } else {
-                this.dispose();
-            }
+            this.dispose();
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
         pessoa = pessoaController.getReadId(Integer.parseInt(tblListaBusca.getModel().getValueAt(tblListaBusca.getSelectedRow(), 0).toString()));
-        if (listPessoas != null) {
+        if (tblListaAcompanhante.getModel().getRowCount() < qntLugares) {
             boolean pessoaOnList = false;
             for (Pessoa p : listPessoas) {
                 if (p.getCodPessoa() == pessoa.getCodPessoa()) {
@@ -461,23 +420,13 @@ public class frmSelecaoPessoa extends javax.swing.JDialog {
                 }
                 tfdPesquisa.requestFocus();
             }
+            tblListaBusca.clearSelection();
         } else {
-            clearTabela(tblListaAcompanhante);
-            DefaultTableModel model = (DefaultTableModel) tblListaAcompanhante.getModel();
-            model.addRow(new Object[]{pessoa.getCodPessoa(), pessoa.getNomPessoa(), pessoa.getNumCpf(), pessoa.getDesEmail()});
-            pessoaTitular = PessoaRepository.readId(pessoa.getCodPessoa());
-            tfdPesquisa.requestFocus();
+            JOptionPane.showMessageDialog(this, "Lugares esgotados!");
         }
-        tblListaBusca.clearSelection();
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
-        if(listPessoas != null) {
-            listPessoas = null;
-            clearTabela(tblAcomp);
-        } else {
-            pessoaTitular = null;
-        }
         this.dispose();
     }//GEN-LAST:event_btnFecharActionPerformed
 
@@ -511,43 +460,26 @@ public class frmSelecaoPessoa extends javax.swing.JDialog {
     }//GEN-LAST:event_tfdPesquisaKeyTyped
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
-        if (listPessoas != null) {
-            DefaultTableModel model = (DefaultTableModel) tblListaAcompanhante.getModel();
-            pessoa = pessoaController.getReadId(Integer.parseInt(tblListaAcompanhante.getModel().getValueAt(tblListaAcompanhante.getSelectedRow(), 0).toString()));
-            clearTabela(tblListaAcompanhante);
-            if (listPessoas.contains(pessoa)) {
-                listPessoas.remove(pessoa);
-            }
+        DefaultTableModel model = (DefaultTableModel) tblListaAcompanhante.getModel();
+        pessoa = pessoaController.getReadId(Integer.parseInt(tblListaAcompanhante.getModel().getValueAt(tblListaAcompanhante.getSelectedRow(), 0).toString()));
+        clearTabela(tblListaAcompanhante);
+        if (listPessoas.contains(pessoa)) {
+            listPessoas.remove(pessoa);
+        }
 
-            for (Pessoa p : listPessoas) {
-                model.addRow(new Object[]{p.getCodPessoa(), p.getNomPessoa(), p.getNumCpf(), p.getDesEmail()});
-            }
-        } else {
-            DefaultTableModel model = (DefaultTableModel) tblListaAcompanhante.getModel();
-            this.pessoaTitular = null;
-            pessoa = pessoaController.getReadId(Integer.parseInt(tblListaAcompanhante.getModel().getValueAt(tblListaAcompanhante.getSelectedRow(), 0).toString()));
-            clearTabela(tblListaAcompanhante);
+        for (Pessoa p : listPessoas) {
+            model.addRow(new Object[]{p.getCodPessoa(), p.getNomPessoa(), p.getNumCpf(), p.getDesEmail()});
         }
         tfdPesquisa.requestFocus();
     }//GEN-LAST:event_btnRemoverActionPerformed
 
     private void btnPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaActionPerformed
-        if (listPessoas != null) {
-            if (tfdPesquisa.getText().trim().isEmpty()) {
-                pessoaController.popularTabela(tblListaBusca, 0, "", pessoaTitular.getCodPessoa());
-            } else if (rbNome.isSelected()) {
-                pessoaController.popularTabela(tblListaBusca, 1, tfdPesquisa.getText(), pessoaTitular.getCodPessoa());
-            } else if (rbCPF.isSelected()) {
-                pessoaController.popularTabela(tblListaBusca, 4, tfdPesquisa.getText(), pessoaTitular.getCodPessoa());
-            }
-        } else {
-            if (tfdPesquisa.getText().trim().isEmpty()) {
-                pessoaController.popularTabela(tblListaBusca, 0, "", -1);
-            } else if (rbNome.isSelected()) {
-                pessoaController.popularTabela(tblListaBusca, 1, tfdPesquisa.getText(), -1);
-            } else if (rbCPF.isSelected()) {
-                pessoaController.popularTabela(tblListaBusca, 4, tfdPesquisa.getText(), -1);
-            }
+        if (tfdPesquisa.getText().trim().isEmpty()) {
+            pessoaController.popularTabela(tblListaBusca, 0, "", pessoaTitular.getCodPessoa());
+        } else if (rbNome.isSelected()) {
+            pessoaController.popularTabela(tblListaBusca, 1, tfdPesquisa.getText(), pessoaTitular.getCodPessoa());
+        } else if (rbCPF.isSelected()) {
+            pessoaController.popularTabela(tblListaBusca, 4, tfdPesquisa.getText(), pessoaTitular.getCodPessoa());
         }
     }//GEN-LAST:event_btnPesquisaActionPerformed
 

@@ -9,20 +9,26 @@ import hotel.model.Quarto;
 import hotel.model.Reserva;
 import hotel.repository.LocacaoHospedeRepository;
 import hotel.repository.PessoaRepository;
-import hotel.repository.QuartoRepository;
 import java.awt.event.KeyEvent;
 import java.util.List;
 import javax.swing.JFrame;
 import hotel.support.*;
+import static java.lang.Math.toIntExact;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.time.Instant;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -43,8 +49,6 @@ public class frmLocacao extends javax.swing.JInternalFrame {
 
     public frmLocacao() {
         initComponents();
-        tfdDataEntradaPrevista.setEditable(false);
-        tfdDataSaidaPrevista.setEnabled(true);
         tfdPessoaCodigo.setVisible(false);
         btnSelecaoPessoa.setEnabled(false);
         locacao = new Locacao();
@@ -53,7 +57,7 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         locacaoHospede = new ArrayList<>();
         locacaoController.popularTabela(tblLista, 0, "");
         setFieldsEditable(true);
-        setMinDateChooser();
+        setMinDateCombo();
         criaEventoTextFieldPessoaCodigo();
         criaEventoTextFieldValorRestante();
         habilitar();
@@ -64,13 +68,9 @@ public class frmLocacao extends javax.swing.JInternalFrame {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 habilitar();
-                if ((tfdPessoaCodigo.getText().equals(""))||(((tbListaAcompanhante.getRowCount()+1) - Integer.parseInt(tfdQuantidadeLugares.getValue().toString()))==0)) {
-                    btnSelecaoPessoa.setEnabled(false);
-                } else {
-                    btnSelecaoPessoa.setEnabled(true);
-                }
             }
         });
+        tfdDataEntradaPrevista.setLocked(true);
         //new AutoFill(new ArrayList<Reserva>(ReservaRepository.readAll()), tfdPesquisaReserva, pnlFields, pnlAcompanhante1);
     }
 
@@ -83,12 +83,17 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         tfdNomeTitular.setEditable(!editable);
     }
 
-    private void setMinDateChooser() {
-        DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now();
-        tfdDataSaidaPrevista.setMinSelectableDate(Date.valueOf(now.toLocalDate().plusDays(1)));
-        java.util.Date convertedDatetime = Date.from(now.plusDays(1).atZone(ZoneId.systemDefault()).toInstant());
-        tfdDataSaidaPrevista.setDate(convertedDatetime);
+    private void setMinDateCombo() {
+        tfdDataEntradaPrevista.setLocked(false);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDateTime now = LocalDateTime.now().plusDays(1);
+        Calendar minSelectableDate = Calendar.getInstance();
+        minSelectableDate.setTime(Date.valueOf(now.toLocalDate()));
+        tfdDataSaidaPrevista.setMinDate(minSelectableDate);
+        tfdDataSaidaPrevista.setText(dateTimeFormatter.format(now));
+        tfdDataEntradaPrevista.setText(dateTimeFormatter.format(now.minusDays(1)));
+        tfdDataEntradaPrevista.setLocked(true);
+        //tfdDataSaidaPrevista.setCurrent(minSelectableDate);
     }
 
     private void setVisibleCodigo(boolean isVisible) {
@@ -120,7 +125,6 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         tfdDataEntrada.setText(dtf.format(now));
-        tfdDataEntradaPrevista.setText(dtf.format(now));
     }
 
     private void habilitar() {
@@ -149,7 +153,7 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         locacao = new Locacao();
         LimpaCampos.LimparCampos(pnlFields);
         LimpaCampos.LimparCampos(pnlField2);
-        setMinDateChooser();
+        setMinDateCombo();
         tfdPessoaCodigo.setText("");
         lblValorRestante.setText("R$ 0,00");
         DefaultTableModel dm = (DefaultTableModel) tbListaAcompanhante.getModel();
@@ -181,7 +185,9 @@ public class frmLocacao extends javax.swing.JInternalFrame {
             tfdQuantidadeLugares.setValue(contadorPessoas);
             tfdCodigo.setText(locacao.getCodLocacao().toString());
             tfdDataEntradaPrevista.setText(Formatacao.ajustaDataDMAHS(locacao.getDtaEntradaPrevista().toString()));
-            tfdDataSaidaPrevista.setDate(locacao.getDtaSaidaPrevista());
+            Calendar dataSaidaPrevista = Calendar.getInstance();
+            dataSaidaPrevista.setTime(locacao.getDtaSaidaPrevista());
+            tfdDataSaidaPrevista.setCurrent(dataSaidaPrevista);
             tfdQuarto.setText(locacao.getCodQuarto().getNumQuarto());
             tfdDataEntrada.setText(Formatacao.ajustaDataDMAHS(locacao.getDtaEntrada().toString()));
             if (locacao.getDtaSaida() != null) {
@@ -190,14 +196,17 @@ public class frmLocacao extends javax.swing.JInternalFrame {
             tfdValorPago.setValue(locacao.getVlrLocacao());
             setVisibleCodigo(true);
         } else {
-            tfdNomeTitular.setText(reserva.getCodPessoa().getNomPessoa());
+            pessoaTitular = reserva.getPessoa();
+            quarto = reserva.getQuarto();
+            tfdNomeTitular.setText(pessoaTitular.getNomPessoa());
             tfdQuantidadeLugares.setValue(reserva.getQtdLugar());
             tfdValorPago.setValue(reserva.getVlrPago());
-            tfdPessoaCodigo.setText(reserva.getCodPessoa().getCodPessoa() + "");
-            tfdQuarto.setText(reserva.getCodQuarto().getNumQuarto());
-            tfdDataEntradaPrevista.setText(Formatacao.ajustaDataDMAHS(reserva.getDtaEntrada().toString()));
-            tfdDataSaidaPrevista.setDate(reserva.getDtaSaida());
+            tfdPessoaCodigo.setText(pessoaTitular.getCodPessoa().toString());
+            tfdQuarto.setText(quarto.getNumQuarto());
+            tfdDataEntradaPrevista.setText(Formatacao.ajustaDataDMAShort(reserva.getDtaEntrada().toString()));
+            tfdDataSaidaPrevista.setText(Formatacao.ajustaDataDMAShort(reserva.getDtaSaida().toString()));
             setVisibleDatasPrevistas(true);
+            tfdDataEntradaPrevista.setLocked(true);
         }
     }
 
@@ -216,11 +225,7 @@ public class frmLocacao extends javax.swing.JInternalFrame {
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                if ((tfdPessoaCodigo.getText().equals(""))||(((tbListaAcompanhante.getRowCount()+1) - Integer.parseInt(tfdQuantidadeLugares.getValue().toString()))==0)) {
-                    btnSelecaoPessoa.setEnabled(false);
-                } else {
-                    btnSelecaoPessoa.setEnabled(true);
-                }
+                habilitarSelecaoAcompanhante();
             }
         };
         tfdPessoaCodigo.getDocument().addDocumentListener(dl);
@@ -248,6 +253,66 @@ public class frmLocacao extends javax.swing.JInternalFrame {
             }
         };
         tfdValorPago.getDocument().addDocumentListener(dl);
+    }
+
+    private void habilitarSelecaoAcompanhante() {
+        if ((tfdPessoaCodigo.getText().equals("")) || (((tbListaAcompanhante.getRowCount() + 1) - Integer.parseInt(tfdQuantidadeLugares.getValue().toString())) == 0)) {
+            btnSelecaoPessoa.setEnabled(false);
+        } else {
+            btnSelecaoPessoa.setEnabled(true);
+        }
+    }
+
+    private void setInfoPessoa(Pessoa pessoa) {
+        if (pessoa != null) {
+            tfdNomeTitular.setText(pessoa.getNomPessoa());
+            tfdPessoaCodigo.setText(pessoa.getCodPessoa().toString());
+            pessoaTitular = pessoa;
+        } else {
+            tfdNomeTitular.setText("");
+            tfdPessoaCodigo.setText("");
+            pessoaTitular = null;
+        }
+
+    }
+
+    private void setInfoQuarto(Quarto quarto) {
+        if (quarto != null) {
+            tfdQuarto.setText(quarto.getNumQuarto());
+            locacao.setCodQuarto(quarto);
+            this.quarto = quarto;
+            calculaValorLocacao();
+        } else {
+            tfdQuarto.setText("");
+            this.quarto = null;
+        }
+    }
+
+    private void calculaValorLocacao() {
+        long days = calculaDiasEntreDatas();
+        double valorTotal;
+        if (reserva != null) {
+            valorTotal = (days * reserva.getQuarto().getVlrQuarto().doubleValue()) - reserva.getVlrPago().doubleValue();
+        } else {
+            valorTotal = days * quarto.getVlrQuarto().doubleValue();
+        }
+        lblValorRestante.setText("R$ " + String.valueOf(valorTotal).replace(".", ","));
+    }
+
+    private long calculaDiasEntreDatas() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yy");
+        LocalDate dateEntrada = LocalDate.parse(tfdDataEntradaPrevista.getText(), dtf);
+        LocalDate dateSaida = LocalDate.parse(tfdDataSaidaPrevista.getText(), dtf);
+        return ChronoUnit.DAYS.between(dateEntrada, dateSaida);
+    }
+
+    private void habilitarQuarto() {
+        if (tfdDataEntrada.getText().isEmpty() || tfdDataSaidaPrevista.getText().isEmpty() || Integer.parseInt(tfdQuantidadeLugares.getValue().toString()) <= 0) {
+            btnSelecaoQuarto.setEnabled(false);
+        } else {
+            btnSelecaoQuarto.setEnabled(true);
+        }
+        //setInfoQuarto(null);
     }
 
     /**
@@ -291,9 +356,9 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         lblDataEntradaPrevista = new javax.swing.JLabel();
         lblCodigo = new javax.swing.JLabel();
         tfdCodigo = new javax.swing.JTextField();
-        tfdDataEntradaPrevista = new javax.swing.JTextField();
         lblSaidaPrevista = new javax.swing.JLabel();
-        tfdDataSaidaPrevista = new com.toedter.calendar.JDateChooser();
+        tfdDataEntradaPrevista = new hotel.support.JDateChooserComboLayout();
+        tfdDataSaidaPrevista = new hotel.support.JDateChooserComboLayout();
         tfdNomeTitular = new javax.swing.JTextField();
         pnlValorTotal = new javax.swing.JPanel();
         lblValorRestante = new javax.swing.JLabel();
@@ -554,19 +619,31 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         tfdCodigo.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
         tfdCodigo.setName("tfdCodigo"); // NOI18N
 
-        tfdDataEntradaPrevista.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        tfdDataEntradaPrevista.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
-        tfdDataEntradaPrevista.setName("tfdDataEntrada"); // NOI18N
-
         lblSaidaPrevista.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lblSaidaPrevista.setForeground(new java.awt.Color(102, 102, 102));
         lblSaidaPrevista.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblSaidaPrevista.setText("<html>Data saída prevista<font color='red'>*<b></b></font>:</html>");
         lblSaidaPrevista.setToolTipText("");
 
-        tfdDataSaidaPrevista.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
-        tfdDataSaidaPrevista.setDateFormatString("dd/MM/yyyy HH:mm:ss");
-        tfdDataSaidaPrevista.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        tfdDataEntradaPrevista.setCalendarBackground(new java.awt.Color(255, 255, 255));
+        tfdDataEntradaPrevista.setNothingAllowed(false);
+        tfdDataEntradaPrevista.setNavigateFont(new java.awt.Font("SansSerif", java.awt.Font.PLAIN, 14));
+        tfdDataEntradaPrevista.setBehavior(datechooser.model.multiple.MultyModelBehavior.SELECT_SINGLE);
+        tfdDataEntradaPrevista.addCommitListener(new datechooser.events.CommitListener() {
+            public void onCommit(datechooser.events.CommitEvent evt) {
+                tfdDataEntradaPrevistaOnCommit(evt);
+            }
+        });
+
+        tfdDataSaidaPrevista.setCalendarBackground(new java.awt.Color(255, 255, 255));
+        tfdDataSaidaPrevista.setNothingAllowed(false);
+        tfdDataSaidaPrevista.setNavigateFont(new java.awt.Font("SansSerif", java.awt.Font.PLAIN, 14));
+        tfdDataSaidaPrevista.setBehavior(datechooser.model.multiple.MultyModelBehavior.SELECT_SINGLE);
+        tfdDataSaidaPrevista.addCommitListener(new datechooser.events.CommitListener() {
+            public void onCommit(datechooser.events.CommitEvent evt) {
+                tfdDataSaidaPrevistaOnCommit(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlField2Layout = new javax.swing.GroupLayout(pnlField2);
         pnlField2.setLayout(pnlField2Layout);
@@ -579,11 +656,12 @@ public class frmLocacao extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlField2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlField2Layout.createSequentialGroup()
-                        .addComponent(tfdDataEntradaPrevista, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tfdDataEntradaPrevista, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(50, 50, 50)
                         .addComponent(lblSaidaPrevista, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(tfdDataSaidaPrevista, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(tfdDataSaidaPrevista, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(40, 40, 40))
                     .addComponent(tfdCodigo)))
         );
         pnlField2Layout.setVerticalGroup(
@@ -593,13 +671,16 @@ public class frmLocacao extends javax.swing.JInternalFrame {
                 .addGroup(pnlField2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tfdCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(9, 9, 9)
                 .addGroup(pnlField2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(pnlField2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblDataEntradaPrevista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(tfdDataEntradaPrevista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblSaidaPrevista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(tfdDataSaidaPrevista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(tfdDataEntradaPrevista, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(pnlField2Layout.createSequentialGroup()
+                        .addGroup(pnlField2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(pnlField2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(lblDataEntradaPrevista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblSaidaPrevista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tfdDataSaidaPrevista, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(2, 2, 2))))
         );
 
         tfdNomeTitular.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
@@ -638,6 +719,11 @@ public class frmLocacao extends javax.swing.JInternalFrame {
 
         tfdQuantidadeLugares.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         tfdQuantidadeLugares.setModel(new javax.swing.SpinnerNumberModel(1, 1, 6, 1));
+        tfdQuantidadeLugares.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                tfdQuantidadeLugaresStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlFieldsLayout = new javax.swing.GroupLayout(pnlFields);
         pnlFields.setLayout(pnlFieldsLayout);
@@ -683,8 +769,8 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         pnlFieldsLayout.setVerticalGroup(
             pnlFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFieldsLayout.createSequentialGroup()
-                .addComponent(pnlField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(pnlField2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnlFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblNomeTitular, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -899,18 +985,15 @@ public class frmLocacao extends javax.swing.JInternalFrame {
             if (tbListaAcompanhante.getModel().getRowCount() + 1 == Integer.parseInt(tfdQuantidadeLugares.getValue().toString())) {
                 boolean isNew = (locacao.getCodLocacao() == null);
 
-                if (reserva != null) {
-                    locacao.setCodQuarto(reserva.getCodQuarto());
-                } else {
-                    /// fazer dps
-                }
                 locacao.setCodUsuario(frmPrincipal.usuario);
-                Timestamp dataEntrada = Timestamp.valueOf(Formatacao.ajustaDataAMDHMS(tfdDataEntrada.getText()));
-                Timestamp dataEntradaPrevista = Timestamp.valueOf(Formatacao.ajustaDataAMDHMS(tfdDataEntradaPrevista.getText()));
-                locacao.setDtaEntrada(dataEntrada);
-                locacao.setDtaEntradaPrevista(dataEntradaPrevista);
-                locacao.setDtaLocacao(dataEntrada);
-                locacao.setDtaSaidaPrevista(tfdDataSaidaPrevista.getDate());
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+                LocalDate dateEntrada = LocalDate.parse(tfdDataEntrada.getText(), dtf);
+                Date dtaEntrada = Date.valueOf(dateEntrada);
+                Date dtaEntradaPrevista = Date.valueOf(Formatacao.ajustaDataAMD(tfdDataEntradaPrevista.getText()));
+                locacao.setDtaEntrada(dtaEntrada);
+                locacao.setDtaEntradaPrevista(dtaEntradaPrevista);
+                locacao.setDtaLocacao(dtaEntrada);
+                locacao.setDtaSaidaPrevista(tfdDataSaidaPrevista.getCurrent().getTime());
                 locacao.setIndSituacao("A");
                 double bd = Double.parseDouble(lblValorRestante.getText().replace(",", ".").replace("R$ ", ""));
                 locacao.setVlrLocacao(BigDecimal.valueOf(bd));
@@ -931,6 +1014,7 @@ public class frmLocacao extends javax.swing.JInternalFrame {
                     locacaoHospedes.add(lh);
                 }
                 locacaoHospedeController.saveAll(locacaoHospedes);
+                
 
                 if (!isNew) {
                     JOptionPane.showMessageDialog(this, "Atualizado com sucesso!");
@@ -1011,32 +1095,63 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         selecaoReserva.setVisible(true);
         reserva = selecaoReserva.getReserva();
         if (reserva != null) {
+            tfdDataEntradaPrevista.setLocked(false);
             popularTelaCadastro(2);
+            calculaValorLocacao();
         }
     }//GEN-LAST:event_btnProcurarReservaActionPerformed
 
     private void btnSelecaoPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecaoPessoaActionPerformed
         pessoaTitular = PessoaRepository.readId(Integer.parseInt(tfdPessoaCodigo.getText()));
-        frmSelecaoPessoa pessoa = new frmSelecaoPessoa((JFrame) SwingUtilities.getWindowAncestor(this), true, tbListaAcompanhante, listAcompanhante, pessoaTitular);
+        frmSelecaoPessoa pessoa = new frmSelecaoPessoa((JFrame) SwingUtilities.getWindowAncestor(this), true, listAcompanhante, pessoaTitular, Integer.parseInt(tfdQuantidadeLugares.getValue().toString()));
         pessoa.setVisible(true);
+        listAcompanhante = pessoa.getListPessoas();
+        populaTableAcompanhantes(listAcompanhante);
     }//GEN-LAST:event_btnSelecaoPessoaActionPerformed
 
     private void btnSelecaoTitularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecaoTitularActionPerformed
-        limparCampos();
-        frmSelecaoPessoa pessoa = new frmSelecaoPessoa((JFrame) SwingUtilities.getWindowAncestor(this), true);
-        pessoa.setVisible(true);
-        pessoaTitular = pessoa.getPessoaTitular();
-        if (pessoaTitular != null) {
-            tfdPessoaCodigo.setText(pessoaTitular.getCodPessoa().toString());
-            tfdNomeTitular.setText(pessoaTitular.getNomPessoa());
-        }
+        frmPesquisaPessoa pesquisaPessoa = new frmPesquisaPessoa((JFrame) SwingUtilities.getWindowAncestor(this), true);
+        pesquisaPessoa.setVisible(true);
+        setInfoPessoa(pesquisaPessoa.getPessoa());
     }//GEN-LAST:event_btnSelecaoTitularActionPerformed
 
     private void btnSelecaoQuartoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecaoQuartoActionPerformed
-        limparCampos();
+        frmPesquisaQuarto pesquisaQuarto = new frmPesquisaQuarto(null, true, tfdDataEntrada.getText(), tfdDataSaidaPrevista.getText(), Integer.parseInt(tfdQuantidadeLugares.getValue().toString()));
+        pesquisaQuarto.setVisible(true);
+        setInfoQuarto(pesquisaQuarto.getQuarto());
     }//GEN-LAST:event_btnSelecaoQuartoActionPerformed
 
+    private void tfdDataEntradaPrevistaOnCommit(datechooser.events.CommitEvent evt) {//GEN-FIRST:event_tfdDataEntradaPrevistaOnCommit
+        habilitarQuarto();
+    }//GEN-LAST:event_tfdDataEntradaPrevistaOnCommit
 
+    private void tfdQuantidadeLugaresStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tfdQuantidadeLugaresStateChanged
+        if (tbpLocacao.getSelectedIndex() == 0) {
+            if (tbListaAcompanhante.getModel().getRowCount() < (Integer.parseInt(tfdQuantidadeLugares.getValue().toString()))) {
+                habilitarSelecaoAcompanhante();
+            } else {
+                JOptionPane.showMessageDialog(this, "Precisa remover acompanhantes antes de diminuir a quantidade de lugares!");
+                tfdQuantidadeLugares.setValue(tfdQuantidadeLugares.getModel().getPreviousValue());
+            }
+        }
+    }//GEN-LAST:event_tfdQuantidadeLugaresStateChanged
+
+    private void tfdDataSaidaPrevistaOnCommit(datechooser.events.CommitEvent evt) {//GEN-FIRST:event_tfdDataSaidaPrevistaOnCommit
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfdDataSaidaPrevistaOnCommit
+
+    private void populaTableAcompanhantes(List<Pessoa> list) {
+        clearTabela(tbListaAcompanhante);
+        DefaultTableModel model = (DefaultTableModel) tbListaAcompanhante.getModel();
+        for (Pessoa p : list) {
+            model.addRow(new Object[]{p.getCodPessoa(), p.getNomPessoa(), p.getNumCpf(), p.getDesEmail()});
+        }
+    }
+
+    private void clearTabela(JTable tblTable) {
+        DefaultTableModel modelAcompanhante = (DefaultTableModel) tblTable.getModel();
+        modelAcompanhante.setRowCount(0);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup btgCadastro;
     private javax.swing.ButtonGroup btgPesquisa;
@@ -1079,9 +1194,9 @@ public class frmLocacao extends javax.swing.JInternalFrame {
     private javax.swing.JTabbedPane tbpLocacao;
     private javax.swing.JTextField tfdCodigo;
     private javax.swing.JTextField tfdDataEntrada;
-    private javax.swing.JTextField tfdDataEntradaPrevista;
+    private hotel.support.JDateChooserComboLayout tfdDataEntradaPrevista;
     private javax.swing.JTextField tfdDataSaida;
-    private com.toedter.calendar.JDateChooser tfdDataSaidaPrevista;
+    private hotel.support.JDateChooserComboLayout tfdDataSaidaPrevista;
     private javax.swing.JTextField tfdNomeTitular;
     private javax.swing.JTextField tfdPesquisa;
     private javax.swing.JTextField tfdPessoaCodigo;

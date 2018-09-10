@@ -194,6 +194,23 @@ public class Formatacao {
 
         return lDataFormatada;
     }
+    
+    public static String ajustaDataDMAShort(String pData) {
+        String lDataFormatada = "";
+
+        if (pData != null) {
+            if (!pData.trim().isEmpty()) {
+                try {
+                    Date lDataAMD = new SimpleDateFormat("yyyy-MM-dd").parse(pData);
+                    lDataFormatada = new SimpleDateFormat("dd/MM/yy").format(lDataAMD);
+                } catch (ParseException e) {
+                    System.err.println(e);
+                }
+            }
+        }
+
+        return lDataFormatada;
+    }
 
     public static String ajustaDataAMD(String pData) {
         String lDataFormatada = "";
@@ -211,6 +228,25 @@ public class Formatacao {
 
         return lDataFormatada;
     }
+    
+    public static String ajustaDataAMDShort(String pData) {
+        String lDataFormatada = "";
+
+        if (pData != null) {
+            if (!pData.trim().isEmpty()) {
+                try {
+                    Date lDataDMA = new SimpleDateFormat("dd/MM/yy").parse(pData);
+                    lDataFormatada = new SimpleDateFormat("yyyy-MM-dd").format(lDataDMA);
+                } catch (ParseException e) {
+                    System.err.println(e);
+                }
+            }
+        }
+
+        return lDataFormatada;
+    }
+    
+    
 
     public static String ajustaDataAMDHMS(String pData) {
         String lDataFormatada = "";
