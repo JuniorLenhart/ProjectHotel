@@ -94,7 +94,7 @@ public class frmQuarto extends javax.swing.JInternalFrame {
     private void populaListTipoQuarto() {
         DefaultListModel<JCheckBox> model = new DefaultListModel();
 
-        List<TipoCama> listTipoCama = tipoCamaController.getReadAll();
+        List<TipoCama> listTipoCama = tipoCamaController.getReadAllAtivos();
         for (TipoCama tc : listTipoCama) {
             JCheckBox checkBox = new JCheckBox(tc.getDesTipoCama() + " - Lugares: " + tc.getQtdLugarTipoCama(), false);
             checkBox.setName(tc.getCodTipoCama().toString());
@@ -199,6 +199,11 @@ public class frmQuarto extends javax.swing.JInternalFrame {
 
         tfdNumero.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
         tfdNumero.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        tfdNumero.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfdNumeroKeyTyped(evt);
+            }
+        });
 
         tfdValor.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
         tfdValor.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
@@ -573,6 +578,13 @@ public class frmQuarto extends javax.swing.JInternalFrame {
         lblPesquisa.setText("Código:");
         tfdPesquisa.setText("");
     }//GEN-LAST:event_rbCodigoActionPerformed
+
+    private void tfdNumeroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfdNumeroKeyTyped
+        char vChar = evt.getKeyChar();
+        if (!(Character.isDigit(vChar) || (vChar == KeyEvent.VK_BACK_SPACE) || (vChar == KeyEvent.VK_DELETE))) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_tfdNumeroKeyTyped
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {

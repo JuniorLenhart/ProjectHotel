@@ -66,19 +66,20 @@ public class LocacaoController extends BaseController<Locacao> {
         try {
             Object[][] lTabela = null;
 
-            Object[] lTabelaTitulo = new Object[6];
+            Object[] lTabelaTitulo = new Object[7];
             lTabelaTitulo[0] = "Código";
             lTabelaTitulo[1] = "Quarto";
             lTabelaTitulo[2] = "Nome titular";
-            lTabelaTitulo[3] = "Data locação";
-            lTabelaTitulo[4] = "Valor";
-            lTabelaTitulo[5] = "Situação";
+            lTabelaTitulo[3] = "Data entrada";
+            lTabelaTitulo[4] = "Data saída";
+            lTabelaTitulo[5] = "Valor";
+            lTabelaTitulo[6] = "Situação";
 
             int lLinha = 0;
             switch (pOption) {
                 case 0: {
                     List<Locacao> listLocacao = LocacaoRepository.readAll();
-                    lTabela = new Object[listLocacao.size()][6];
+                    lTabela = new Object[listLocacao.size()][7];
                     for (Locacao l : listLocacao) {
                         String situacao = (l.getIndSituacao().equals("F") ? "Finalizada" : (l.getIndSituacao().equals("C") ? "Cancelada" : "Em aberto"));
 
@@ -89,9 +90,14 @@ public class LocacaoController extends BaseController<Locacao> {
                                 lTabela[lLinha][2] = lh.getCodPessoa().getNomPessoa();
                             }
                         }
-                        lTabela[lLinha][3] = Formatacao.ajustaDataDMAHS(l.getDtaLocacao().toString());
-                        lTabela[lLinha][4] = l.getVlrLocacao();
-                        lTabela[lLinha][5] = situacao;
+                        lTabela[lLinha][3] = Formatacao.ajustaDataDMAHS(l.getDtaEntrada().toString());
+                        if (l.getDtaSaida() != null) {
+                            lTabela[lLinha][4] = Formatacao.ajustaDataDMAHS(l.getDtaSaida().toString());
+                        } else {
+                            lTabela[lLinha][4] = null;
+                        }
+                        lTabela[lLinha][5] = l.getVlrLocacao();
+                        lTabela[lLinha][6] = situacao;
                         lLinha++;
                     }
                     break;
@@ -110,9 +116,12 @@ public class LocacaoController extends BaseController<Locacao> {
                                 lTabela[lLinha][2] = lh.getCodPessoa().getNomPessoa();
                             }
                         }
-                        lTabela[lLinha][3] = Formatacao.ajustaDataDMAHS(l.getDtaLocacao().toString());
-                        lTabela[lLinha][4] = l.getVlrLocacao();
-                        lTabela[lLinha][5] = situacao;
+                        lTabela[lLinha][3] = Formatacao.ajustaDataDMAHS(l.getDtaEntrada().toString());
+                        if (l.getDtaEntrada() != null) {
+                            lTabela[lLinha][4] = Formatacao.ajustaDataDMAHS(l.getDtaSaida().toString());
+                        }
+                        lTabela[lLinha][5] = l.getVlrLocacao();
+                        lTabela[lLinha][6] = situacao;
                         lLinha++;
                     }
                     break;
@@ -132,9 +141,12 @@ public class LocacaoController extends BaseController<Locacao> {
                                 lTabela[lLinha][2] = lh.getCodPessoa().getNomPessoa();
                             }
                         }
-                        lTabela[lLinha][3] = Formatacao.ajustaDataDMAHS(l.getDtaLocacao().toString());
-                        lTabela[lLinha][4] = l.getVlrLocacao();
-                        lTabela[lLinha][5] = situacao;
+                        lTabela[lLinha][3] = Formatacao.ajustaDataDMAHS(l.getDtaEntrada().toString());
+                        if (l.getDtaEntrada() != null) {
+                            lTabela[lLinha][4] = Formatacao.ajustaDataDMAHS(l.getDtaSaida().toString());
+                        }
+                        lTabela[lLinha][5] = l.getVlrLocacao();
+                        lTabela[lLinha][6] = situacao;
                         lLinha++;
                     }
                     break;
@@ -152,9 +164,12 @@ public class LocacaoController extends BaseController<Locacao> {
                                 lTabela[lLinha][2] = lh.getCodPessoa().getNomPessoa();
                             }
                         }
-                        lTabela[lLinha][3] = Formatacao.ajustaDataDMAHS(l.getDtaLocacao().toString());
-                        lTabela[lLinha][4] = l.getVlrLocacao();
-                        lTabela[lLinha][5] = situacao;
+                        lTabela[lLinha][3] = Formatacao.ajustaDataDMAHS(l.getDtaEntrada().toString());
+                        if (l.getDtaEntrada() != null) {
+                            lTabela[lLinha][4] = Formatacao.ajustaDataDMAHS(l.getDtaSaida().toString());
+                        }
+                        lTabela[lLinha][5] = l.getVlrLocacao();
+                        lTabela[lLinha][6] = situacao;
                         lLinha++;
                     }
                     break;
@@ -172,9 +187,12 @@ public class LocacaoController extends BaseController<Locacao> {
                                 lTabela[lLinha][2] = lh.getCodPessoa().getNomPessoa();
                             }
                         }
-                        lTabela[lLinha][3] = Formatacao.ajustaDataDMAHS(l.getDtaLocacao().toString());
-                        lTabela[lLinha][4] = l.getVlrLocacao();
-                        lTabela[lLinha][5] = situacao;
+                        lTabela[lLinha][3] = Formatacao.ajustaDataDMAHS(l.getDtaEntrada().toString());
+                        if (l.getDtaEntrada() != null) {
+                            lTabela[lLinha][4] = Formatacao.ajustaDataDMAHS(l.getDtaSaida().toString());
+                        }
+                        lTabela[lLinha][5] = l.getVlrLocacao();
+                        lTabela[lLinha][6] = situacao;
                         lLinha++;
                     }
                     break;
@@ -219,7 +237,7 @@ public class LocacaoController extends BaseController<Locacao> {
                             lColumn.setCellRenderer(lCenter);
                             break;
                         case 2:
-                            lColumn.setPreferredWidth(300);
+                            lColumn.setPreferredWidth(230);
                             lColumn.setCellRenderer(lLeft);
                             break;
                         case 3:
@@ -227,7 +245,7 @@ public class LocacaoController extends BaseController<Locacao> {
                             lColumn.setCellRenderer(lCenter);
                             break;
                         case 4:
-                            lColumn.setPreferredWidth(60);
+                            lColumn.setPreferredWidth(120);
                             lColumn.setCellRenderer(lCenter);
                             break;
                         case 5:
@@ -235,7 +253,7 @@ public class LocacaoController extends BaseController<Locacao> {
                             lColumn.setCellRenderer(lCenter);
                             break;
                         case 6:
-                            lColumn.setPreferredWidth(30);
+                            lColumn.setPreferredWidth(60);
                             lColumn.setCellRenderer(lCenter);
                             break;
                         case 7:

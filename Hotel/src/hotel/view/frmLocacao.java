@@ -7,32 +7,26 @@ import hotel.model.LocacaoHospede;
 import hotel.model.Pessoa;
 import hotel.model.Quarto;
 import hotel.model.Reserva;
-import hotel.repository.LocacaoHospedeRepository;
 import hotel.repository.PessoaRepository;
 import java.awt.event.KeyEvent;
 import java.util.List;
 import javax.swing.JFrame;
 import hotel.support.*;
-import static java.lang.Math.toIntExact;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
+import javax.swing.JSpinner.DefaultEditor;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
@@ -52,7 +46,6 @@ public class frmLocacao extends javax.swing.JInternalFrame {
 
     public frmLocacao() {
         initComponents();
-        tfdPessoaCodigo.setVisible(false);
         btnSelecaoPessoa.setEnabled(false);
         locacao = new Locacao();
         locacaoHospedeController = new LocacaoHospedeController();
@@ -61,7 +54,6 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         locacaoController.popularTabela(tblLista, 0, "");
         setFieldsEditable(true);
         setMinDateCombo();
-        criaEventoTextFieldPessoaCodigo();
         criaEventoTextFieldValorRestante();
         habilitar();
         setAba(0);
@@ -73,48 +65,43 @@ public class frmLocacao extends javax.swing.JInternalFrame {
                 habilitar();
             }
         });
-        tfdDataEntradaPrevista.setLocked(true);
     }
 
     private void setFieldsEditable(boolean editable) {
         tfdValorPago.setEditable(!editable);
         tfdCodigo.setEditable(!editable);
-        tfdDataEntrada.setEditable(!editable);
-        tfdDataSaida.setEditable(!editable);
+        tfdDataEntrada.setLocked(editable);
+        tfdValorTotal.setEditable(!editable);
         tfdQuarto.setEditable(!editable);
         tfdNomeTitular.setEditable(!editable);
     }
 
     private void setMinDateCombo() {
-        tfdDataEntradaPrevista.setLocked(false);
+        tfdDataEntrada.setLocked(false);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDateTime now = LocalDateTime.now().plusDays(1);
         Calendar minSelectableDate = Calendar.getInstance();
         minSelectableDate.setTime(Date.valueOf(now.toLocalDate()));
         tfdDataSaidaPrevista.setMinDate(minSelectableDate);
         tfdDataSaidaPrevista.setText(dateTimeFormatter.format(now));
-        tfdDataEntradaPrevista.setText(dateTimeFormatter.format(now.minusDays(1)));
-        tfdDataEntradaPrevista.setLocked(true);
+        tfdDataEntrada.setText(dateTimeFormatter.format(now.minusDays(1)));
+        tfdDataEntrada.setLocked(true);
         //tfdDataSaidaPrevista.setCurrent(minSelectableDate);
     }
 
     private void setVisibleCodigo(boolean isVisible) {
         lblCodigo.setVisible(isVisible);
         tfdCodigo.setVisible(isVisible);
-        lblDataSaida.setVisible(isVisible);
-        tfdDataSaida.setVisible(isVisible);
 
         if (isVisible) {
             lblCodigo.setEnabled(!isVisible);
             tfdCodigo.setEnabled(!isVisible);
-            lblDataSaida.setEnabled(!isVisible);
-            tfdDataSaida.setEnabled(!isVisible);
         }
     }
 
     private void setVisibleDatasPrevistas(boolean isVisible) {
-        lblDataEntradaPrevista.setVisible(isVisible);
-        tfdDataEntradaPrevista.setVisible(isVisible);
+        lblDataEntrada.setVisible(isVisible);
+        tfdDataEntrada.setVisible(isVisible);
         lblSaidaPrevista.setVisible(isVisible);
         tfdDataSaidaPrevista.setVisible(isVisible);
 
@@ -139,7 +126,7 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         } else {
             String lSituacao = "";
             if (tblLista.getSelectedRow() != -1) {
-                lSituacao = String.valueOf(tblLista.getValueAt(tblLista.getSelectedRow(), 5));
+                lSituacao = String.valueOf(tblLista.getValueAt(tblLista.getSelectedRow(), 6));
             }
 
             btnCheckIn.setEnabled(false);
@@ -148,7 +135,6 @@ public class frmLocacao extends javax.swing.JInternalFrame {
             btnCancelar.setEnabled(lSituacao.equals("Em aberto"));
             limparCampos();
         }
-        setDataTimeNow();
     }
 
     private void limparCampos() {
@@ -156,12 +142,12 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         LimpaCampos.LimparCampos(pnlFields);
         LimpaCampos.LimparCampos(pnlField2);
         setMinDateCombo();
-        tfdPessoaCodigo.setText("");
         lblValorRestante.setText("R$ 0,00");
         DefaultTableModel dm = (DefaultTableModel) tbListaAcompanhante.getModel();
         dm.getDataVector().removeAllElements();
         dm.fireTableDataChanged();
         setDataTimeNow();
+        setJSpinnerEditable(true);
     }
 
     private void setAba(int pIndex) {
@@ -170,67 +156,28 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         habilitar();
     }
 
-    public void popularTelaCadastro(int pOption) {
-        if (pOption == 1) {
-            locacaoHospede = LocacaoHospedeRepository.readLocacaoId(locacao.getCodLocacao());
-            DefaultTableModel model = (DefaultTableModel) tbListaAcompanhante.getModel();
-            int contadorPessoas = 0;
-            for (LocacaoHospede lh : locacaoHospede) {
-                if (lh.getIndResponsavel().equals("S")) {
-                    tfdNomeTitular.setText(lh.getCodPessoa().getNomPessoa());
-                    tfdPessoaCodigo.setText(lh.getCodPessoa().getCodPessoa().toString());
-                } else {
-                    model.addRow(new Object[]{lh.getCodPessoa().getCodPessoa(), lh.getCodPessoa().getNomPessoa(), lh.getCodPessoa().getNumCpf(), lh.getCodPessoa().getDesEmail()});
-                }
-                contadorPessoas++;
-            }
-            tfdQuantidadeLugares.setValue(contadorPessoas);
-            tfdCodigo.setText(locacao.getCodLocacao().toString());
-            tfdDataEntradaPrevista.setText(Formatacao.ajustaDataDMAHS(locacao.getDtaEntradaPrevista().toString()));
-            Calendar dataSaidaPrevista = Calendar.getInstance();
-            dataSaidaPrevista.setTime(locacao.getDtaSaidaPrevista());
-            tfdDataSaidaPrevista.setCurrent(dataSaidaPrevista);
-            tfdQuarto.setText(locacao.getCodQuarto().getNumQuarto());
-            tfdDataEntrada.setText(Formatacao.ajustaDataDMAHS(locacao.getDtaEntrada().toString()));
-            if (locacao.getDtaSaida() != null) {
-                tfdDataSaida.setText(Formatacao.ajustaDataDMAHS(locacao.getDtaSaida().toString()));
-            }
-            tfdValorPago.setValue(locacao.getVlrLocacao());
-            setVisibleCodigo(true);
-        } else {
-            pessoaTitular = reserva.getPessoa();
-            quarto = reserva.getQuarto();
-            tfdNomeTitular.setText(pessoaTitular.getNomPessoa());
-            tfdQuantidadeLugares.setValue(reserva.getQtdLugar());
-            tfdValorPago.setValue(reserva.getVlrPago());
-            tfdPessoaCodigo.setText(pessoaTitular.getCodPessoa().toString());
-            tfdQuarto.setText(quarto.getNumQuarto());
-            tfdDataEntradaPrevista.setText(Formatacao.ajustaDataDMAShort(reserva.getDtaEntrada().toString()));
-            tfdDataSaidaPrevista.setText(Formatacao.ajustaDataDMAShort(reserva.getDtaSaida().toString()));
-            setVisibleDatasPrevistas(true);
-            tfdDataEntradaPrevista.setLocked(true);
+    private void setJSpinnerEditable(boolean pEditable) {
+        tfdQuantidadeLugares.setEnabled(pEditable);
+        if (tfdQuantidadeLugares.getEditor() instanceof JSpinner.DefaultEditor) {
+            JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) tfdQuantidadeLugares.getEditor();
+            editor.getTextField().setEnabled(!pEditable);
+            editor.getTextField().setEditable(pEditable);
         }
     }
 
-    private void criaEventoTextFieldPessoaCodigo() {
-        DocumentListener dl = new DocumentListener() {
-
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                changedUpdate(e);
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                changedUpdate(e);
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                habilitarSelecaoAcompanhante();
-            }
-        };
-        tfdPessoaCodigo.getDocument().addDocumentListener(dl);
+    public void popularTelaCadastro(int pOption) {
+        pessoaTitular = reserva.getPessoa();
+        quarto = reserva.getQuarto();
+        tfdValorTotal.setText(title);
+        tfdNomeTitular.setText(pessoaTitular.getNomPessoa());
+        tfdQuantidadeLugares.setValue(reserva.getQtdLugar());
+        tfdValorPago.setValue(reserva.getVlrPago());
+        tfdQuarto.setText(quarto.getNumQuarto());
+        tfdDataEntrada.setText(Formatacao.ajustaDataDMAShort(reserva.getDtaEntrada().toString()));
+        tfdDataSaidaPrevista.setText(Formatacao.ajustaDataDMAShort(reserva.getDtaSaida().toString()));
+        setVisibleDatasPrevistas(true);
+        tfdDataEntrada.setLocked(true);
+        setJSpinnerEditable(false);
     }
 
     private void criaEventoTextFieldValorRestante() {
@@ -268,11 +215,9 @@ public class frmLocacao extends javax.swing.JInternalFrame {
     private void setInfoPessoa(Pessoa pessoa) {
         if (pessoa != null) {
             tfdNomeTitular.setText(pessoa.getNomPessoa());
-            tfdPessoaCodigo.setText(pessoa.getCodPessoa().toString());
             pessoaTitular = pessoa;
         } else {
             tfdNomeTitular.setText("");
-            tfdPessoaCodigo.setText("");
             pessoaTitular = null;
         }
 
@@ -293,12 +238,15 @@ public class frmLocacao extends javax.swing.JInternalFrame {
 
     private void calculaValorLocacao() {
         if (quarto != null) {
-            long days = calculaDiasEntreDatas();
+            long days = calculaDiasEntreDatas() + 1;
             double valorTotal;
             if (reserva != null) {
-                valorTotal = (days * reserva.getQuarto().getVlrQuarto().doubleValue()) - reserva.getVlrPago().doubleValue();
+                valorTotal = (days * reserva.getQuarto().getVlrQuarto().doubleValue());
+                tfdValorTotal.setValue((BigDecimal.valueOf(valorTotal)));
+                valorTotal = valorTotal - reserva.getVlrPago().doubleValue();
             } else {
                 valorTotal = days * quarto.getVlrQuarto().doubleValue();
+                tfdValorTotal.setValue((BigDecimal.valueOf(valorTotal)));
             }
             lblValorRestante.setText("R$ " + String.valueOf(valorTotal).replace(".", ","));
         }
@@ -306,7 +254,7 @@ public class frmLocacao extends javax.swing.JInternalFrame {
 
     private long calculaDiasEntreDatas() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yy");
-        LocalDate dateEntrada = LocalDate.parse(tfdDataEntradaPrevista.getText(), dtf);
+        LocalDate dateEntrada = LocalDate.parse(tfdDataEntrada.getText(), dtf);
         LocalDate dateSaida = LocalDate.parse(tfdDataSaidaPrevista.getText(), dtf);
         return ChronoUnit.DAYS.between(dateEntrada, dateSaida);
     }
@@ -315,9 +263,15 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         if (tfdDataEntrada.getText().isEmpty() || tfdDataSaidaPrevista.getText().isEmpty() || Integer.parseInt(tfdQuantidadeLugares.getValue().toString()) <= 0) {
             btnSelecaoQuarto.setEnabled(false);
         } else {
-            btnSelecaoQuarto.setEnabled(true);
+            if (reserva == null) {
+                btnSelecaoQuarto.setEnabled(true);
+            }
+
         }
-        //setInfoQuarto(null);
+        if (reserva == null) {
+            setInfoQuarto(null);
+        }
+
     }
 
     /**
@@ -338,7 +292,6 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         btnCancelar = new javax.swing.JButton();
         btnFechar = new javax.swing.JButton();
         btnProcurarReserva = new javax.swing.JButton();
-        tfdPessoaCodigo = new javax.swing.JTextField();
         tbpLocacao = new javax.swing.JTabbedPane();
         pnlCadastro = new javax.swing.JPanel();
         pnlAcompanhante = new javax.swing.JPanel();
@@ -348,27 +301,25 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         pnlFields = new javax.swing.JPanel();
         lblNomeTitular = new javax.swing.JLabel();
         lblQuarto = new javax.swing.JLabel();
-        lblDataEntrada = new javax.swing.JLabel();
-        lblDataSaida = new javax.swing.JLabel();
         lblValorPago = new javax.swing.JLabel();
         tfdQuarto = new javax.swing.JTextField();
-        tfdDataEntrada = new javax.swing.JTextField();
-        tfdDataSaida = new javax.swing.JTextField();
         tfdValorPago = new hotel.support.JNumberFormatField();
         btnSelecaoTitular = new javax.swing.JButton();
         btnSelecaoQuarto = new javax.swing.JButton();
         pnlField2 = new javax.swing.JPanel();
-        lblDataEntradaPrevista = new javax.swing.JLabel();
+        lblDataEntrada = new javax.swing.JLabel();
         lblCodigo = new javax.swing.JLabel();
         tfdCodigo = new javax.swing.JTextField();
         lblSaidaPrevista = new javax.swing.JLabel();
-        tfdDataEntradaPrevista = new hotel.support.JDateChooserComboLayout();
+        tfdDataEntrada = new hotel.support.JDateChooserComboLayout();
         tfdDataSaidaPrevista = new hotel.support.JDateChooserComboLayout();
         tfdNomeTitular = new javax.swing.JTextField();
         pnlValorTotal = new javax.swing.JPanel();
         lblValorRestante = new javax.swing.JLabel();
         lblQuantidadeLugares = new javax.swing.JLabel();
         tfdQuantidadeLugares = new javax.swing.JSpinner();
+        lblValorTotal = new javax.swing.JLabel();
+        tfdValorTotal = new hotel.support.JNumberFormatField();
         pnlListagem = new javax.swing.JPanel();
         pnlDetalhe = new javax.swing.JPanel();
         tfdPesquisa = new javax.swing.JTextField();
@@ -440,8 +391,6 @@ public class frmLocacao extends javax.swing.JInternalFrame {
             }
         });
 
-        tfdPessoaCodigo.setName("tfdPessoaCodigo"); // NOI18N
-
         javax.swing.GroupLayout pnlHeaderLayout = new javax.swing.GroupLayout(pnlHeader);
         pnlHeader.setLayout(pnlHeaderLayout);
         pnlHeaderLayout.setHorizontalGroup(
@@ -455,8 +404,6 @@ public class frmLocacao extends javax.swing.JInternalFrame {
                 .addComponent(btnCancelar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnProcurarReserva)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tfdPessoaCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnFechar)
                 .addContainerGap())
@@ -468,10 +415,6 @@ public class frmLocacao extends javax.swing.JInternalFrame {
             .addComponent(btnCancelar)
             .addComponent(btnFechar)
             .addComponent(btnProcurarReserva)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlHeaderLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(tfdPessoaCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
         );
 
         tbpLocacao.setBackground(new java.awt.Color(255, 255, 255));
@@ -555,17 +498,6 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         lblQuarto.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblQuarto.setText("<html>Quarto<font color='red'><b>*</b></font>:</html>");
 
-        lblDataEntrada.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        lblDataEntrada.setForeground(new java.awt.Color(102, 102, 102));
-        lblDataEntrada.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblDataEntrada.setText("<html>Data entrada<font color='red'><b>*</b></font>:</html>");
-        lblDataEntrada.setToolTipText("");
-
-        lblDataSaida.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        lblDataSaida.setForeground(new java.awt.Color(102, 102, 102));
-        lblDataSaida.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblDataSaida.setText("<html>Data saída<font color='red'>*<b></b></font>:</html>");
-
         lblValorPago.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lblValorPago.setForeground(new java.awt.Color(102, 102, 102));
         lblValorPago.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -574,14 +506,6 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         tfdQuarto.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         tfdQuarto.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
         tfdQuarto.setName("tfdQuarto"); // NOI18N
-
-        tfdDataEntrada.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        tfdDataEntrada.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
-        tfdDataEntrada.setName("tfdDataEntrada"); // NOI18N
-
-        tfdDataSaida.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        tfdDataSaida.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
-        tfdDataSaida.setName("tfdDataSaida"); // NOI18N
 
         tfdValorPago.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
         tfdValorPago.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -604,11 +528,11 @@ public class frmLocacao extends javax.swing.JInternalFrame {
 
         pnlField2.setBackground(new java.awt.Color(255, 255, 255));
 
-        lblDataEntradaPrevista.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        lblDataEntradaPrevista.setForeground(new java.awt.Color(102, 102, 102));
-        lblDataEntradaPrevista.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblDataEntradaPrevista.setText("<html>Data entrada prevista<font color='red'><b>*</b></font>:</html>");
-        lblDataEntradaPrevista.setToolTipText("");
+        lblDataEntrada.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        lblDataEntrada.setForeground(new java.awt.Color(102, 102, 102));
+        lblDataEntrada.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblDataEntrada.setText("<html>Data entrada<font color='red'><b>*</b></font>:</html>");
+        lblDataEntrada.setToolTipText("");
 
         lblCodigo.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lblCodigo.setForeground(new java.awt.Color(102, 102, 102));
@@ -626,13 +550,13 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         lblSaidaPrevista.setText("<html>Data saída prevista<font color='red'>*<b></b></font>:</html>");
         lblSaidaPrevista.setToolTipText("");
 
-        tfdDataEntradaPrevista.setCalendarBackground(new java.awt.Color(255, 255, 255));
-        tfdDataEntradaPrevista.setNothingAllowed(false);
-        tfdDataEntradaPrevista.setNavigateFont(new java.awt.Font("SansSerif", java.awt.Font.PLAIN, 14));
-        tfdDataEntradaPrevista.setBehavior(datechooser.model.multiple.MultyModelBehavior.SELECT_SINGLE);
-        tfdDataEntradaPrevista.addCommitListener(new datechooser.events.CommitListener() {
+        tfdDataEntrada.setCalendarBackground(new java.awt.Color(255, 255, 255));
+        tfdDataEntrada.setNothingAllowed(false);
+        tfdDataEntrada.setNavigateFont(new java.awt.Font("SansSerif", java.awt.Font.PLAIN, 14));
+        tfdDataEntrada.setBehavior(datechooser.model.multiple.MultyModelBehavior.SELECT_SINGLE);
+        tfdDataEntrada.addCommitListener(new datechooser.events.CommitListener() {
             public void onCommit(datechooser.events.CommitEvent evt) {
-                tfdDataEntradaPrevistaOnCommit(evt);
+                tfdDataEntradaOnCommit(evt);
             }
         });
 
@@ -652,17 +576,17 @@ public class frmLocacao extends javax.swing.JInternalFrame {
             pnlField2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlField2Layout.createSequentialGroup()
                 .addGroup(pnlField2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblDataEntradaPrevista, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
+                    .addComponent(lblDataEntrada, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
                     .addComponent(lblCodigo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlField2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlField2Layout.createSequentialGroup()
-                        .addComponent(tfdDataEntradaPrevista, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(50, 50, 50)
+                        .addComponent(tfdDataEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(15, 15, 15)
                         .addComponent(lblSaidaPrevista, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(tfdDataSaidaPrevista, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(40, 40, 40))
+                        .addComponent(tfdDataSaidaPrevista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(5, 5, 5))
                     .addComponent(tfdCodigo)))
         );
         pnlField2Layout.setVerticalGroup(
@@ -674,11 +598,11 @@ public class frmLocacao extends javax.swing.JInternalFrame {
                     .addComponent(tfdCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(9, 9, 9)
                 .addGroup(pnlField2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(tfdDataEntradaPrevista, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfdDataEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnlField2Layout.createSequentialGroup()
                         .addGroup(pnlField2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(pnlField2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(lblDataEntradaPrevista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblDataEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(lblSaidaPrevista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(tfdDataSaidaPrevista, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(2, 2, 2))))
@@ -689,7 +613,7 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         tfdNomeTitular.setName("tfdNomeTitular"); // NOI18N
 
         pnlValorTotal.setBackground(new java.awt.Color(255, 255, 255));
-        pnlValorTotal.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Valor Total", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 15))); // NOI18N
+        pnlValorTotal.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Valor Devedor", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 15))); // NOI18N
 
         lblValorRestante.setBackground(new java.awt.Color(255, 255, 255));
         lblValorRestante.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -707,10 +631,7 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         );
         pnlValorTotalLayout.setVerticalGroup(
             pnlValorTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlValorTotalLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblValorRestante)
-                .addContainerGap(21, Short.MAX_VALUE))
+            .addComponent(lblValorRestante)
         );
 
         lblQuantidadeLugares.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
@@ -726,6 +647,16 @@ public class frmLocacao extends javax.swing.JInternalFrame {
             }
         });
 
+        lblValorTotal.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        lblValorTotal.setForeground(new java.awt.Color(102, 102, 102));
+        lblValorTotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblValorTotal.setText("<html>Valor total<font color='red'><b>*</b></font>:</html>");
+
+        tfdValorTotal.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
+        tfdValorTotal.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        tfdValorTotal.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        tfdValorTotal.setName("tfdValorPago"); // NOI18N
+
         javax.swing.GroupLayout pnlFieldsLayout = new javax.swing.GroupLayout(pnlFields);
         pnlFields.setLayout(pnlFieldsLayout);
         pnlFieldsLayout.setHorizontalGroup(
@@ -736,36 +667,29 @@ public class frmLocacao extends javax.swing.JInternalFrame {
             .addGroup(pnlFieldsLayout.createSequentialGroup()
                 .addGroup(pnlFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(lblQuarto, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblDataEntrada, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblNomeTitular, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblValorPago, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblValorPago, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblQuantidadeLugares, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlFieldsLayout.createSequentialGroup()
-                        .addComponent(lblQuantidadeLugares, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(tfdQuantidadeLugares, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(pnlValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlFieldsLayout.createSequentialGroup()
-                        .addGroup(pnlFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfdValorPago, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(tfdQuarto)
-                            .addGroup(pnlFieldsLayout.createSequentialGroup()
-                                .addComponent(tfdDataEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSelecaoQuarto))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFieldsLayout.createSequentialGroup()
-                        .addGroup(pnlFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlFieldsLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(lblDataSaida, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(tfdDataSaida, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(tfdNomeTitular))
+                        .addComponent(tfdNomeTitular)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSelecaoTitular, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(btnSelecaoTitular, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlFieldsLayout.createSequentialGroup()
+                        .addComponent(tfdQuantidadeLugares, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFieldsLayout.createSequentialGroup()
+                        .addGroup(pnlFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(tfdValorTotal, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tfdValorPago, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tfdQuarto, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSelecaoQuarto))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFieldsLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(pnlValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         pnlFieldsLayout.setVerticalGroup(
             pnlFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -777,29 +701,26 @@ public class frmLocacao extends javax.swing.JInternalFrame {
                         .addComponent(lblNomeTitular, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(tfdNomeTitular, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnSelecaoTitular))
-                .addGap(10, 10, 10)
-                .addGroup(pnlFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblDataEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfdDataEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfdDataSaida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblDataSaida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnlFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(pnlFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblQuarto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(tfdQuarto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnSelecaoQuarto))
+                .addGroup(pnlFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblQuantidadeLugares, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfdQuantidadeLugares, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(tfdQuarto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSelecaoQuarto))
+                    .addComponent(lblQuarto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(14, 14, 14)
                 .addGroup(pnlFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblValorPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tfdValorPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnlFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnlValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblQuantidadeLugares, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(tfdQuantidadeLugares, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(60, 60, 60))
+                .addGroup(pnlFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfdValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(17, 17, 17)
+                .addComponent(pnlValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout pnlCadastroLayout = new javax.swing.GroupLayout(pnlCadastro);
@@ -816,8 +737,8 @@ public class frmLocacao extends javax.swing.JInternalFrame {
             pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlCadastroLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnlFields, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(pnlFields, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlAcompanhante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -987,14 +908,10 @@ public class frmLocacao extends javax.swing.JInternalFrame {
                 boolean isNew = (locacao.getCodLocacao() == null);
 
                 locacao.setCodUsuario(frmPrincipal.usuario);
-                Timestamp dtaEntrada = Timestamp.valueOf(Formatacao.ajustaDataAMDHMS(tfdDataEntrada.getText()));
-                //Date dtaEntrada = Date.valueOf(dateEntrada);
-                //Timestamp dtaEntrada = Timestamp.valueOf(Formatacao.ajustaDataAMDHMS(tfdDataEntrada.getText()));
-                Date dtaEntradaPrevista = Date.valueOf(Formatacao.ajustaDataAMD(tfdDataEntradaPrevista.getText()));
+                Timestamp dtaEntrada = Timestamp.valueOf(Formatacao.ajustaDataAMDHMS(Unit.getDataHoraAtual()));
+                //Timestamp dtaSaidaPrevista = Timestamp.valueOf(Formatacao.ajustaDataAMDHMS(tfdDataSaidaPrevista.getCurrent().getTime().toString()));
                 locacao.setDtaEntrada(dtaEntrada);
                 locacao.setCodQuarto(quarto);
-                locacao.setDtaEntradaPrevista(dtaEntradaPrevista);
-                locacao.setDtaLocacao(dtaEntrada);
                 locacao.setDtaSaidaPrevista(tfdDataSaidaPrevista.getCurrent().getTime());
                 locacao.setIndSituacao("A");
                 double bd = Double.parseDouble(lblValorRestante.getText().replace(",", ".").replace("R$ ", ""));
@@ -1095,14 +1012,14 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         selecaoReserva.setVisible(true);
         reserva = selecaoReserva.getReserva();
         if (reserva != null) {
-            tfdDataEntradaPrevista.setLocked(false);
+            tfdDataEntrada.setLocked(false);
             popularTelaCadastro(2);
             calculaValorLocacao();
         }
     }//GEN-LAST:event_btnProcurarReservaActionPerformed
 
     private void btnSelecaoPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecaoPessoaActionPerformed
-        pessoaTitular = PessoaRepository.readId(Integer.parseInt(tfdPessoaCodigo.getText()));
+        pessoaTitular = PessoaRepository.readId(pessoaTitular.getCodPessoa());
         frmSelecaoPessoa pessoa = new frmSelecaoPessoa((JFrame) SwingUtilities.getWindowAncestor(this), true, listAcompanhante, pessoaTitular, Integer.parseInt(tfdQuantidadeLugares.getValue().toString()));
         pessoa.setVisible(true);
         listAcompanhante = pessoa.getListPessoas();
@@ -1121,10 +1038,10 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         setInfoQuarto(pesquisaQuarto.getQuarto());
     }//GEN-LAST:event_btnSelecaoQuartoActionPerformed
 
-    private void tfdDataEntradaPrevistaOnCommit(datechooser.events.CommitEvent evt) {//GEN-FIRST:event_tfdDataEntradaPrevistaOnCommit
+    private void tfdDataEntradaOnCommit(datechooser.events.CommitEvent evt) {//GEN-FIRST:event_tfdDataEntradaOnCommit
         habilitarQuarto();
         calculaValorLocacao();
-    }//GEN-LAST:event_tfdDataEntradaPrevistaOnCommit
+    }//GEN-LAST:event_tfdDataEntradaOnCommit
 
     private void tfdQuantidadeLugaresStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tfdQuantidadeLugaresStateChanged
         habilitarQuarto();
@@ -1163,8 +1080,6 @@ public class frmLocacao extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnSelecaoTitular;
     private javax.swing.JLabel lblCodigo;
     private javax.swing.JLabel lblDataEntrada;
-    private javax.swing.JLabel lblDataEntradaPrevista;
-    private javax.swing.JLabel lblDataSaida;
     private javax.swing.JLabel lblNomeTitular;
     private javax.swing.JLabel lblPesquisa;
     private javax.swing.JLabel lblQuantidadeLugares;
@@ -1172,6 +1087,7 @@ public class frmLocacao extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lblSaidaPrevista;
     private javax.swing.JLabel lblValorPago;
     private javax.swing.JLabel lblValorRestante;
+    private javax.swing.JLabel lblValorTotal;
     private javax.swing.JPanel pnlAcompanhante;
     private javax.swing.JPanel pnlCadastro;
     private javax.swing.JPanel pnlDetalhe;
@@ -1189,15 +1105,13 @@ public class frmLocacao extends javax.swing.JInternalFrame {
     private javax.swing.JTable tblLista;
     private javax.swing.JTabbedPane tbpLocacao;
     private javax.swing.JTextField tfdCodigo;
-    private javax.swing.JTextField tfdDataEntrada;
-    private hotel.support.JDateChooserComboLayout tfdDataEntradaPrevista;
-    private javax.swing.JTextField tfdDataSaida;
+    private hotel.support.JDateChooserComboLayout tfdDataEntrada;
     private hotel.support.JDateChooserComboLayout tfdDataSaidaPrevista;
     private javax.swing.JTextField tfdNomeTitular;
     private javax.swing.JTextField tfdPesquisa;
-    private javax.swing.JTextField tfdPessoaCodigo;
     private javax.swing.JSpinner tfdQuantidadeLugares;
     private javax.swing.JTextField tfdQuarto;
     private hotel.support.JNumberFormatField tfdValorPago;
+    private hotel.support.JNumberFormatField tfdValorTotal;
     // End of variables declaration//GEN-END:variables
 }

@@ -64,8 +64,6 @@
                   <Component id="btnCancelar" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnProcurarReserva" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tfdPessoaCodigo" min="-2" pref="18" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="btnFechar" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
@@ -79,11 +77,6 @@
               <Component id="btnCancelar" alignment="0" min="-2" max="-2" attributes="0"/>
               <Component id="btnFechar" alignment="0" min="-2" max="-2" attributes="0"/>
               <Component id="btnProcurarReserva" alignment="0" min="-2" max="-2" attributes="0"/>
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="tfdPessoaCodigo" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-              </Group>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -183,11 +176,6 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnProcurarReservaActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JTextField" name="tfdPessoaCodigo">
-          <Properties>
-            <Property name="name" type="java.lang.String" value="tfdPessoaCodigo" noResource="true"/>
-          </Properties>
-        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JTabbedPane" name="tbpLocacao">
@@ -242,8 +230,8 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="pnlFields" min="-2" pref="330" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="pnlFields" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="pnlAcompanhante" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -363,45 +351,36 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
                               <Component id="lblQuarto" min="-2" pref="185" max="-2" attributes="0"/>
-                              <Component id="lblDataEntrada" alignment="0" min="-2" pref="185" max="-2" attributes="0"/>
                               <Component id="lblNomeTitular" alignment="0" min="-2" pref="185" max="-2" attributes="0"/>
                               <Component id="lblValorPago" min="-2" pref="185" max="-2" attributes="0"/>
+                              <Component id="lblQuantidadeLugares" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblValorTotal" min="-2" pref="185" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="lblQuantidadeLugares" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="tfdQuantidadeLugares" min="-2" pref="45" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="pnlValorTotal" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="tfdNomeTitular" max="32767" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="btnSelecaoTitular" min="-2" pref="49" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="tfdQuantidadeLugares" min="-2" pref="45" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Component id="tfdValorTotal" alignment="0" max="32767" attributes="0"/>
                                       <Component id="tfdValorPago" alignment="1" max="32767" attributes="0"/>
                                       <Component id="tfdQuarto" alignment="0" max="32767" attributes="0"/>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="tfdDataEntrada" min="-2" pref="160" max="-2" attributes="0"/>
-                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                      </Group>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="btnSelecaoQuarto" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" attributes="0">
-                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                          <Component id="lblDataSaida" min="-2" pref="180" max="-2" attributes="0"/>
-                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Component id="tfdDataSaida" min="-2" pref="160" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Component id="tfdNomeTitular" max="32767" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="btnSelecaoTitular" min="-2" pref="49" max="-2" attributes="0"/>
-                              </Group>
                           </Group>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="pnlValorTotal" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -417,20 +396,18 @@
                               </Group>
                               <Component id="btnSelecaoTitular" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="lblDataEntrada" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="tfdDataEntrada" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="tfdDataSaida" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblDataSaida" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblQuantidadeLugares" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="tfdQuantidadeLugares" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="lblQuarto" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="tfdQuarto" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="tfdQuarto" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnSelecaoQuarto" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="btnSelecaoQuarto" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblQuarto" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -438,14 +415,12 @@
                               <Component id="tfdValorPago" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="pnlValorTotal" min="-2" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="lblQuantidadeLugares" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="tfdQuantidadeLugares" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lblValorTotal" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="tfdValorTotal" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                          <Component id="pnlValorTotal" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -476,31 +451,6 @@
                     <Property name="text" type="java.lang.String" value="&lt;html&gt;Quarto&lt;font color=&apos;red&apos;&gt;&lt;b&gt;*&lt;/b&gt;&lt;/font&gt;:&lt;/html&gt;"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="lblDataEntrada">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Segoe UI" size="16" style="1"/>
-                    </Property>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="66" green="66" red="66" type="rgb"/>
-                    </Property>
-                    <Property name="horizontalAlignment" type="int" value="4"/>
-                    <Property name="text" type="java.lang.String" value="&lt;html&gt;Data entrada&lt;font color=&apos;red&apos;&gt;&lt;b&gt;*&lt;/b&gt;&lt;/font&gt;:&lt;/html&gt;"/>
-                    <Property name="toolTipText" type="java.lang.String" value=""/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="lblDataSaida">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Segoe UI" size="16" style="1"/>
-                    </Property>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="66" green="66" red="66" type="rgb"/>
-                    </Property>
-                    <Property name="horizontalAlignment" type="int" value="4"/>
-                    <Property name="text" type="java.lang.String" value="&lt;html&gt;Data sa&#xed;da&lt;font color=&apos;red&apos;&gt;*&lt;b&gt;&lt;/b&gt;&lt;/font&gt;:&lt;/html&gt;"/>
-                  </Properties>
-                </Component>
                 <Component class="javax.swing.JLabel" name="lblValorPago">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -526,36 +476,6 @@
                       </Border>
                     </Property>
                     <Property name="name" type="java.lang.String" value="tfdQuarto" noResource="true"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JTextField" name="tfdDataEntrada">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="SansSerif" size="14" style="0"/>
-                    </Property>
-                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                      <Border info="org.netbeans.modules.form.compat2.border.MatteColorBorderInfo">
-                        <MatteColorBorder bottom="2" left="0" right="0" top="0">
-                          <Color PropertyName="color" blue="a0" green="5b" red="c" type="rgb"/>
-                        </MatteColorBorder>
-                      </Border>
-                    </Property>
-                    <Property name="name" type="java.lang.String" value="tfdDataEntrada" noResource="true"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JTextField" name="tfdDataSaida">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="SansSerif" size="14" style="0"/>
-                    </Property>
-                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                      <Border info="org.netbeans.modules.form.compat2.border.MatteColorBorderInfo">
-                        <MatteColorBorder bottom="2" left="0" right="0" top="0">
-                          <Color PropertyName="color" blue="a0" green="5b" red="c" type="rgb"/>
-                        </MatteColorBorder>
-                      </Border>
-                    </Property>
-                    <Property name="name" type="java.lang.String" value="tfdDataSaida" noResource="true"/>
                   </Properties>
                 </Component>
                 <Component class="hotel.support.JNumberFormatField" name="tfdValorPago">
@@ -606,18 +526,18 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="lblDataEntradaPrevista" pref="185" max="32767" attributes="0"/>
+                                  <Component id="lblDataEntrada" pref="185" max="32767" attributes="0"/>
                                   <Component id="lblCodigo" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
-                                      <Component id="tfdDataEntradaPrevista" min="-2" pref="120" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
+                                      <Component id="tfdDataEntrada" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                                       <Component id="lblSaidaPrevista" pref="185" max="32767" attributes="0"/>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="tfdDataSaidaPrevista" min="-2" pref="120" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+                                      <Component id="tfdDataSaidaPrevista" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="tfdCodigo" max="32767" attributes="0"/>
                               </Group>
@@ -634,11 +554,11 @@
                               </Group>
                               <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="tfdDataEntradaPrevista" min="-2" pref="24" max="-2" attributes="0"/>
+                                  <Component id="tfdDataEntrada" min="-2" pref="24" max="-2" attributes="0"/>
                                   <Group type="102" attributes="0">
                                       <Group type="103" groupAlignment="1" attributes="0">
                                           <Group type="103" alignment="1" groupAlignment="3" attributes="0">
-                                              <Component id="lblDataEntradaPrevista" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="lblDataEntrada" alignment="3" min="-2" max="-2" attributes="0"/>
                                               <Component id="lblSaidaPrevista" alignment="3" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                           <Component id="tfdDataSaidaPrevista" alignment="1" min="-2" pref="24" max="-2" attributes="0"/>
@@ -651,7 +571,7 @@
                     </DimensionLayout>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JLabel" name="lblDataEntradaPrevista">
+                    <Component class="javax.swing.JLabel" name="lblDataEntrada">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Segoe UI" size="16" style="1"/>
@@ -660,7 +580,7 @@
                           <Color blue="66" green="66" red="66" type="rgb"/>
                         </Property>
                         <Property name="horizontalAlignment" type="int" value="4"/>
-                        <Property name="text" type="java.lang.String" value="&lt;html&gt;Data entrada prevista&lt;font color=&apos;red&apos;&gt;&lt;b&gt;*&lt;/b&gt;&lt;/font&gt;:&lt;/html&gt;"/>
+                        <Property name="text" type="java.lang.String" value="&lt;html&gt;Data entrada&lt;font color=&apos;red&apos;&gt;&lt;b&gt;*&lt;/b&gt;&lt;/font&gt;:&lt;/html&gt;"/>
                         <Property name="toolTipText" type="java.lang.String" value=""/>
                       </Properties>
                     </Component>
@@ -705,7 +625,7 @@
                         <Property name="toolTipText" type="java.lang.String" value=""/>
                       </Properties>
                     </Component>
-                    <Component class="hotel.support.JDateChooserComboLayout" name="tfdDataEntradaPrevista">
+                    <Component class="hotel.support.JDateChooserComboLayout" name="tfdDataEntrada">
                       <Properties>
                         <Property name="dch_backgroundColor" type="java.awt.Color" editor="datechooser.beans.editor.SimpleColorEditor">
                           <SerializedValue value="-84,-19,0,5,115,114,0,14,106,97,118,97,46,97,119,116,46,67,111,108,111,114,1,-91,23,-125,16,-113,51,117,2,0,5,70,0,6,102,97,108,112,104,97,73,0,5,118,97,108,117,101,76,0,2,99,115,116,0,27,76,106,97,118,97,47,97,119,116,47,99,111,108,111,114,47,67,111,108,111,114,83,112,97,99,101,59,91,0,9,102,114,103,98,118,97,108,117,101,116,0,2,91,70,91,0,6,102,118,97,108,117,101,113,0,126,0,2,120,112,0,0,0,0,-1,-1,-1,-1,112,112,112"/>
@@ -719,7 +639,7 @@
                         </Property>
                       </Properties>
                       <Events>
-                        <EventHandler event="onCommit" listener="datechooser.events.CommitListener" parameters="datechooser.events.CommitEvent" handler="tfdDataEntradaPrevistaOnCommit"/>
+                        <EventHandler event="onCommit" listener="datechooser.events.CommitListener" parameters="datechooser.events.CommitEvent" handler="tfdDataEntradaOnCommit"/>
                       </Events>
                     </Component>
                     <Component class="hotel.support.JDateChooserComboLayout" name="tfdDataSaidaPrevista">
@@ -763,7 +683,7 @@
                     </Property>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                        <TitledBorder title="Valor Total">
+                        <TitledBorder title="Valor Devedor">
                           <Font PropertyName="font" name="Segoe UI" size="15" style="1"/>
                         </TitledBorder>
                       </Border>
@@ -782,11 +702,7 @@
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lblValorRestante" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="21" max="32767" attributes="0"/>
-                          </Group>
+                          <Component id="lblValorRestante" min="-2" max="-2" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                   </Layout>
@@ -829,6 +745,34 @@
                   <Events>
                     <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="tfdQuantidadeLugaresStateChanged"/>
                   </Events>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblValorTotal">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Segoe UI" size="16" style="1"/>
+                    </Property>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="66" green="66" red="66" type="rgb"/>
+                    </Property>
+                    <Property name="horizontalAlignment" type="int" value="4"/>
+                    <Property name="text" type="java.lang.String" value="&lt;html&gt;Valor total&lt;font color=&apos;red&apos;&gt;&lt;b&gt;*&lt;/b&gt;&lt;/font&gt;:&lt;/html&gt;"/>
+                  </Properties>
+                </Component>
+                <Component class="hotel.support.JNumberFormatField" name="tfdValorTotal">
+                  <Properties>
+                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                      <Border info="org.netbeans.modules.form.compat2.border.MatteColorBorderInfo">
+                        <MatteColorBorder bottom="2" left="0" right="0" top="0">
+                          <Color PropertyName="color" blue="a0" green="5b" red="c" type="rgb"/>
+                        </MatteColorBorder>
+                      </Border>
+                    </Property>
+                    <Property name="horizontalAlignment" type="int" value="2"/>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="SansSerif" size="14" style="0"/>
+                    </Property>
+                    <Property name="name" type="java.lang.String" value="tfdValorPago" noResource="true"/>
+                  </Properties>
                 </Component>
               </SubComponents>
             </Container>

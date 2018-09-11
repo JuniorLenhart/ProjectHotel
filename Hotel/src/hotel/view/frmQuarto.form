@@ -205,6 +205,9 @@
                   <Font name="SansSerif" size="14" style="0"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tfdNumeroKeyTyped"/>
+              </Events>
             </Component>
             <Component class="hotel.support.JNumberFormatField" name="tfdValor">
               <Properties>

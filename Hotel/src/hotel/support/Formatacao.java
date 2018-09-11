@@ -150,7 +150,7 @@ public class Formatacao {
         if (pData != null) {
             if (!pData.trim().isEmpty()) {
                 try {
-                    Date lDataAMD = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(pData);
+                    Date lDataAMD = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(pData);
                     lDataFormatada = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(lDataAMD);
                 } catch (ParseException e) {
                     System.err.println(e);

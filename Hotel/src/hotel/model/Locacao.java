@@ -22,14 +22,6 @@ public class Locacao {
     @Column(name = "cod_locacao")
     private Integer codLocacao;
 
-    @Column(name = "dta_locacao")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dtaLocacao;
-
-    @Column(name = "dta_entrada_prevista")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dtaEntradaPrevista;
-
     @Column(name = "dta_entrada")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dtaEntrada;
@@ -63,10 +55,8 @@ public class Locacao {
         this.codLocacao = codLocacao;
     }
 
-    public Locacao(Integer codLocacao, Date dtaLocacao, Date dtaEntradaPrevista, Date dtaEntrada, Date dtaSaidaPrevista, BigDecimal vlrLocacao, String indSituacao) {
+    public Locacao(Integer codLocacao, Date dtaEntrada, Date dtaSaidaPrevista, BigDecimal vlrLocacao, String indSituacao) {
         this.codLocacao = codLocacao;
-        this.dtaLocacao = dtaLocacao;
-        this.dtaEntradaPrevista = dtaEntradaPrevista;
         this.dtaEntrada = dtaEntrada;
         this.dtaSaidaPrevista = dtaSaidaPrevista;
         this.vlrLocacao = vlrLocacao;
@@ -79,22 +69,6 @@ public class Locacao {
 
     public void setCodLocacao(Integer codLocacao) {
         this.codLocacao = codLocacao;
-    }
-
-    public Date getDtaLocacao() {
-        return dtaLocacao;
-    }
-
-    public void setDtaLocacao(Date dtaLocacao) {
-        this.dtaLocacao = dtaLocacao;
-    }
-
-    public Date getDtaEntradaPrevista() {
-        return dtaEntradaPrevista;
-    }
-
-    public void setDtaEntradaPrevista(Date dtaEntradaPrevista) {
-        this.dtaEntradaPrevista = dtaEntradaPrevista;
     }
 
     public Date getDtaEntrada() {
@@ -175,11 +149,5 @@ public class Locacao {
     @Override
     public String toString() {
         return "hotel.model.Locacao[ codLocacao=" + codLocacao + " ]";
-    }
-    
-    public String auditoriaFormat() {
-        return "ID: " + codLocacao + " ID Quarto: " + codQuarto.getCodQuarto() + " ID Usuário: " + codUsuario.getCodUsuario() + " Data locação: " + dtaLocacao
-                + " Data entrada prevista: " + dtaEntradaPrevista + " Data entrada: " + dtaEntrada + " Data saida prevista: " + dtaSaidaPrevista + " Data saida: " + dtaSaida
-                + " Valor locação: " + vlrLocacao + " Situação: " + indSituacao;
     }
 }

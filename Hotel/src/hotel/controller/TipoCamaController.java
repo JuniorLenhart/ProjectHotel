@@ -27,6 +27,15 @@ public class TipoCamaController extends BaseController<TipoCama> {
         }
         return null;
     }
+    
+    public List<TipoCama> getReadAllAtivos() {
+        try {
+            return TipoCamaRepository.readAllAtivos();
+        } catch (Exception ex) {
+            LoggerController.log(this.getClass(), ex);
+        }
+        return null;
+    }
 
     public TipoCama getReadId(int pCodigo) {
         try {

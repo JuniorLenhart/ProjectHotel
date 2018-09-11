@@ -473,7 +473,7 @@ public class frmSelecaoPessoa extends javax.swing.JDialog {
 
     private void btnPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaActionPerformed
         if (tfdPesquisa.getText().trim().isEmpty()) {
-            pessoaController.popularTabela(tblListaBusca, 0, "", pessoaTitular.getCodPessoa());
+            pessoaController.popularTabela(tblListaBusca, 3, "", pessoaTitular.getCodPessoa());
         } else if (rbNome.isSelected()) {
             pessoaController.popularTabela(tblListaBusca, 1, tfdPesquisa.getText(), pessoaTitular.getCodPessoa());
         } else if (rbCPF.isSelected()) {
