@@ -1,7 +1,9 @@
 package hotel.controller;
 
+import hotel.config.HibernateUtil;
 import hotel.model.Locacao;
 import hotel.model.LocacaoHospede;
+import hotel.model.Parametro;
 import hotel.repository.LocacaoHospedeRepository;
 import hotel.repository.LocacaoRepository;
 import hotel.support.Formatacao;
@@ -12,14 +14,30 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import org.hibernate.Transaction;
 
 public class LocacaoController extends BaseController<Locacao> {
 
-    public String changeSituation(int pCodigo) {
+    public String saveOver(Locacao locacao) {
         try {
-            Locacao locacoa = LocacaoRepository.readId(pCodigo);
-            locacoa.setIndSituacao("E");
-            save(locacoa);
+            Transaction transaction = HibernateUtil.getBeginTransaction();
+            new UsuarioController().setUserSession(Parametro.USUARIO);
+
+            HibernateUtil.getSession().saveOrUpdate(locacao);
+
+            locacao.setCodLocacao(getLastCod());
+            transaction.commit();
+        } catch (Exception ex) {
+            LoggerController.log(this.getClass(), ex);
+        }
+        return null;
+    }
+
+    public String changeSituation(int pCodigo, String situacao) {
+        try {
+            Locacao locacao = LocacaoRepository.readId(pCodigo);
+            locacao.setIndSituacao(situacao);
+            save(locacao);
         } catch (Exception ex) {
             LoggerController.log(this.getClass(), ex);
         }
@@ -29,6 +47,15 @@ public class LocacaoController extends BaseController<Locacao> {
     public Locacao getReadId(int pCodigo) {
         try {
             return LocacaoRepository.readId(pCodigo);
+        } catch (Exception ex) {
+            LoggerController.log(this.getClass(), ex);
+        }
+        return null;
+    }
+
+    public Integer getLastCod() {
+        try {
+            return LocacaoRepository.getLastCod().intValue();
         } catch (Exception ex) {
             LoggerController.log(this.getClass(), ex);
         }
@@ -71,7 +98,7 @@ public class LocacaoController extends BaseController<Locacao> {
                 }
                 case 1: {
                     String dates[] = pParam.split(";");
-                    List<Locacao> listLocacao = LocacaoRepository.readBetweenDates(dates[0],dates[1]);
+                    List<Locacao> listLocacao = LocacaoRepository.readBetweenDates(dates[0], dates[1]);
                     lTabela = new Object[listLocacao.size()][7];
                     for (Locacao l : listLocacao) {
                         String situacao = (l.getIndSituacao().equals("F") ? "Finalizada" : (l.getIndSituacao().equals("C") ? "Cancelada" : "Em aberto"));
@@ -96,7 +123,7 @@ public class LocacaoController extends BaseController<Locacao> {
                         JOptionPane.showMessageDialog(null, "Pessoa não encontrado pelo código: " + pParam);
                     } else {
                         String situacao = (l.getIndSituacao().equals("F") ? "Finalizada" : (l.getIndSituacao().equals("C") ? "Cancelada" : "Em aberto"));
-                        
+
                         lTabela = new Object[1][6];
                         lTabela[lLinha][0] = l.getCodLocacao();
                         lTabela[lLinha][1] = l.getCodQuarto().getNumQuarto();

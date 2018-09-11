@@ -2,6 +2,7 @@ package hotel.repository;
 
 import hotel.config.HibernateUtil;
 import hotel.model.Locacao;
+import java.math.BigInteger;
 import java.util.List;
 import org.hibernate.Query;
 
@@ -26,5 +27,10 @@ public class LocacaoRepository {
         Query query = HibernateUtil.getSession().createQuery("FROM Locacao WHERE indSituacao = :indSituacao");
         query.setParameter("indSituacao", pSituation);
         return query.list();
+    }
+    
+    public static BigInteger getLastCod() {
+        Query query = HibernateUtil.getSession().createSQLQuery("SELECT currval(pg_get_serial_sequence('locacao', 'cod_locacao'))");
+        return (BigInteger) query.uniqueResult();
     }
 }

@@ -22,7 +22,6 @@ public class frmSelecaoReserva extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
-        this.reserva = new Reserva();
         this.reservaController = new ReservaController();
         this.pnlFields = fields;
         reservaController.popularTabela(tblListaBusca, 0, "");

@@ -102,7 +102,7 @@ public class frmSelecaoPessoa extends javax.swing.JDialog {
         scpLista1 = new javax.swing.JScrollPane();
         tblListaAcompanhante = new javax.swing.JTable();
         pnlHeader = new javax.swing.JPanel();
-        btnSalvar = new javax.swing.JButton();
+        btnConfirmar = new javax.swing.JButton();
         btnAdicionar = new javax.swing.JButton();
         btnRemover = new javax.swing.JButton();
         btnFechar = new javax.swing.JButton();
@@ -295,17 +295,15 @@ public class frmSelecaoPessoa extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        pnlHeader.setBackground(new java.awt.Color(255, 255, 255));
-
-        btnSalvar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnSalvar.setForeground(new java.awt.Color(12, 91, 160));
-        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/save.png"))); // NOI18N
-        btnSalvar.setText("Salvar");
-        btnSalvar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnSalvar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+        btnConfirmar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnConfirmar.setForeground(new java.awt.Color(12, 91, 160));
+        btnConfirmar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/save.png"))); // NOI18N
+        btnConfirmar.setText("Confirmar");
+        btnConfirmar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnConfirmar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnConfirmar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalvarActionPerformed(evt);
+                btnConfirmarActionPerformed(evt);
             }
         });
 
@@ -351,18 +349,18 @@ public class frmSelecaoPessoa extends javax.swing.JDialog {
             pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlHeaderLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnSalvar)
+                .addComponent(btnConfirmar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAdicionar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRemover)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 443, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 417, Short.MAX_VALUE)
                 .addComponent(btnFechar)
                 .addContainerGap())
         );
         pnlHeaderLayout.setVerticalGroup(
             pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnSalvar)
+            .addComponent(btnConfirmar)
             .addComponent(btnAdicionar)
             .addComponent(btnRemover)
             .addComponent(btnFechar)
@@ -393,13 +391,13 @@ public class frmSelecaoPessoa extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+    private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
         if (listPessoas.isEmpty()) {
             JOptionPane.showMessageDialog(this, "A lista de acompanhantes está vazia!");
         } else {
             this.dispose();
         }
-    }//GEN-LAST:event_btnSalvarActionPerformed
+    }//GEN-LAST:event_btnConfirmarActionPerformed
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
         pessoa = pessoaController.getReadId(Integer.parseInt(tblListaBusca.getModel().getValueAt(tblListaBusca.getSelectedRow(), 0).toString()));
@@ -488,10 +486,10 @@ public class frmSelecaoPessoa extends javax.swing.JDialog {
     private javax.swing.ButtonGroup btgPesquisa;
     private javax.swing.JButton btnAdicionar;
     private javax.swing.JButton btnAdicionarPessoa;
+    private javax.swing.JButton btnConfirmar;
     private javax.swing.JButton btnFechar;
     private javax.swing.JButton btnPesquisa;
     private javax.swing.JButton btnRemover;
-    private javax.swing.JButton btnSalvar;
     private javax.swing.JLabel lblAcompanhantes;
     private javax.swing.JLabel lblBusca;
     private javax.swing.JLabel lblOU;
