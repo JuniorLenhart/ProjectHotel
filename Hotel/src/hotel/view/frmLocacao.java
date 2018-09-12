@@ -139,8 +139,11 @@ public class frmLocacao extends javax.swing.JInternalFrame {
 
     private void limparCampos() {
         locacao = new Locacao();
+        reserva = null;
+        setInfoPessoa(null);
         LimpaCampos.LimparCampos(pnlFields);
         LimpaCampos.LimparCampos(pnlField2);
+        tfdValorTotal.setValue(BigDecimal.ZERO);
         setMinDateCombo();
         lblValorRestante.setText("R$ 0,00");
         DefaultTableModel dm = (DefaultTableModel) tbListaAcompanhante.getModel();
@@ -160,7 +163,11 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         tfdQuantidadeLugares.setEnabled(pEditable);
         if (tfdQuantidadeLugares.getEditor() instanceof JSpinner.DefaultEditor) {
             JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) tfdQuantidadeLugares.getEditor();
-            editor.getTextField().setEnabled(!pEditable);
+            if (pEditable == false) {
+                editor.getTextField().setEnabled(!pEditable);
+            } else {
+                editor.getTextField().setEnabled(pEditable);
+            }
             editor.getTextField().setEditable(pEditable);
         }
     }
@@ -173,10 +180,9 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         tfdQuantidadeLugares.setValue(reserva.getQtdLugar());
         tfdValorPago.setValue(reserva.getVlrPago());
         tfdQuarto.setText(quarto.getNumQuarto());
-        tfdDataEntrada.setText(Formatacao.ajustaDataDMAShort(reserva.getDtaEntrada().toString()));
+        //tfdDataEntrada.setText(Formatacao.ajustaDataDMAShort(reserva.getDtaEntrada().toString()));
         tfdDataSaidaPrevista.setText(Formatacao.ajustaDataDMAShort(reserva.getDtaSaida().toString()));
         setVisibleDatasPrevistas(true);
-        tfdDataEntrada.setLocked(true);
         setJSpinnerEditable(false);
     }
 
@@ -228,12 +234,12 @@ public class frmLocacao extends javax.swing.JInternalFrame {
             tfdQuarto.setText(quarto.getNumQuarto());
             locacao.setCodQuarto(quarto);
             this.quarto = quarto;
-            calculaValorLocacao();
         } else {
             locacao.setCodQuarto(new Quarto());
             tfdQuarto.setText("");
             this.quarto = null;
         }
+        calculaValorLocacao();
     }
 
     private void calculaValorLocacao() {
@@ -266,12 +272,10 @@ public class frmLocacao extends javax.swing.JInternalFrame {
             if (reserva == null) {
                 btnSelecaoQuarto.setEnabled(true);
             }
-
         }
         if (reserva == null) {
             setInfoQuarto(null);
         }
-
     }
 
     /**
@@ -1012,7 +1016,6 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         selecaoReserva.setVisible(true);
         reserva = selecaoReserva.getReserva();
         if (reserva != null) {
-            tfdDataEntrada.setLocked(false);
             popularTelaCadastro(2);
             calculaValorLocacao();
         }
