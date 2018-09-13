@@ -219,6 +219,11 @@ public class frmPrincipal extends javax.swing.JFrame {
         mnuAjuda.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         mniAplicacao.setText("Cadastro de Aplicação");
+        mniAplicacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniAplicacaoActionPerformed(evt);
+            }
+        });
         mnuAjuda.add(mniAplicacao);
 
         mniSair.setText("Sair");
@@ -287,6 +292,10 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void mnuReservaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mnuReservaMouseClicked
         abrirTela(new frmReserva());
     }//GEN-LAST:event_mnuReservaMouseClicked
+
+    private void mniAplicacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniAplicacaoActionPerformed
+        abrirTela(new frmAplicacao());
+    }//GEN-LAST:event_mniAplicacaoActionPerformed
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -21,6 +21,9 @@ public class Aplicacao {
 
     @Column(name = "nom_arquivo_java")
     private String nomArquivoJava;
+    
+    @Column(name = "ind_situacao")
+    private String indSituacao;
 
     public Aplicacao() {
     }
@@ -29,10 +32,11 @@ public class Aplicacao {
         this.codAplicacao = codAplicacao;
     }
 
-    public Aplicacao(Integer codAplicacao, String nomAplicacao, String nomArquivoJava) {
+    public Aplicacao(Integer codAplicacao, String nomAplicacao, String nomArquivoJava, String indSituacao) {
         this.codAplicacao = codAplicacao;
         this.nomAplicacao = nomAplicacao;
         this.nomArquivoJava = nomArquivoJava;
+        this.indSituacao = indSituacao;
     }
 
     public Integer getCodAplicacao() {
@@ -59,6 +63,14 @@ public class Aplicacao {
         this.nomArquivoJava = nomArquivoJava;
     }
 
+    public String getIndSituacao() {
+        return indSituacao;
+    }
+
+    public void setIndSituacao(String indSituacao) {
+        this.indSituacao = indSituacao;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -81,9 +93,5 @@ public class Aplicacao {
     @Override
     public String toString() {
         return "hotel.model.Aplicacao[ codAplicacao=" + codAplicacao + " ]";
-    }
-    
-    public String auditoriaFormat() {
-        return "ID: "+codAplicacao+" Nome: "+nomAplicacao+" Nome arquivo: "+nomArquivoJava;
     }
 }
