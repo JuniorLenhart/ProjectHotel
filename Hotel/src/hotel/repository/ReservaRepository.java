@@ -55,4 +55,8 @@ public class ReservaRepository {
         query.setParameter("numQuarto", "%" + pNumeroQuarto + "%");
         return query.list();
     }
+
+    public static void refreshReserve() {
+        HibernateUtil.getSession().createSQLQuery("SELECT cancel_reserve_not_pay()");
+    }
 }

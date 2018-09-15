@@ -31,7 +31,7 @@ public class frmReserva extends javax.swing.JInternalFrame {
         reservaController = new ReservaController();
         pessoaController = new PessoaController();
         setVisibleCodigo(false);
-        
+
         reservaController.popularTabela(tblLista, 0, "");
 
         Formatacao.formatarCPF(tfdCPF);
@@ -137,6 +137,7 @@ public class frmReserva extends javax.swing.JInternalFrame {
         btnCancelar = new javax.swing.JButton();
         btnFechar = new javax.swing.JButton();
         btnConfirmar = new javax.swing.JButton();
+        btnAtualizar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -345,7 +346,7 @@ public class frmReserva extends javax.swing.JInternalFrame {
                     .addComponent(btnPesquisaPessoa))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblNomePessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(179, Short.MAX_VALUE))
+                .addContainerGap(183, Short.MAX_VALUE))
         );
 
         tbpReserva.addTab("Adicionar", pnlCadastro);
@@ -493,7 +494,7 @@ public class frmReserva extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(pnlDetalhe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scpLista, javax.swing.GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
+                .addComponent(scpLista, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -537,13 +538,25 @@ public class frmReserva extends javax.swing.JInternalFrame {
 
         btnConfirmar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnConfirmar.setForeground(new java.awt.Color(12, 91, 160));
-        btnConfirmar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/payment-method.png"))); // NOI18N
+        btnConfirmar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/bill.png"))); // NOI18N
         btnConfirmar.setText("Confirmar");
         btnConfirmar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnConfirmar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnConfirmar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConfirmarActionPerformed(evt);
+            }
+        });
+
+        btnAtualizar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnAtualizar.setForeground(new java.awt.Color(12, 91, 160));
+        btnAtualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/refresh-arrow.png"))); // NOI18N
+        btnAtualizar.setText("Atualizar");
+        btnAtualizar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAtualizar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAtualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAtualizarActionPerformed(evt);
             }
         });
 
@@ -558,6 +571,8 @@ public class frmReserva extends javax.swing.JInternalFrame {
                 .addComponent(btnConfirmar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCancelar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnAtualizar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnFechar)
                 .addContainerGap())
@@ -568,6 +583,7 @@ public class frmReserva extends javax.swing.JInternalFrame {
             .addComponent(btnCancelar)
             .addComponent(btnFechar)
             .addComponent(btnConfirmar)
+            .addComponent(btnAtualizar)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -733,6 +749,12 @@ public class frmReserva extends javax.swing.JInternalFrame {
         setAba(1);
     }//GEN-LAST:event_btnConfirmarActionPerformed
 
+    private void btnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualizarActionPerformed
+        reservaController.refreshReserve();
+        JOptionPane.showMessageDialog(this, "Atualizada com sucesso!");
+        btnPesquisaActionPerformed(null);        
+    }//GEN-LAST:event_btnAtualizarActionPerformed
+
     private void setInfoPessoa(Pessoa pessoa) {
         if (pessoa != null && pessoa.getCodPessoa() != null) {
             tfdCPF.setText(pessoa.getNumCpf());
@@ -766,6 +788,7 @@ public class frmReserva extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAtualizar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnConfirmar;
     private javax.swing.JButton btnFechar;

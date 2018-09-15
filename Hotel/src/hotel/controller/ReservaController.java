@@ -1,15 +1,17 @@
 package hotel.controller;
 
+import hotel.config.HibernateUtil;
+import hotel.model.Parametro;
 import hotel.model.Reserva;
 import hotel.repository.ReservaRepository;
 import hotel.support.Formatacao;
 import java.util.List;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import org.hibernate.Transaction;
 
 public class ReservaController extends BaseController<Reserva> {
 
@@ -31,6 +33,18 @@ public class ReservaController extends BaseController<Reserva> {
             LoggerController.log(this.getClass(), ex);
         }
         return null;
+    }
+
+    public void refreshReserve() {
+        try {
+            Transaction transaction = HibernateUtil.getBeginTransaction();
+
+            ReservaRepository.refreshReserve();
+
+            transaction.commit();
+        } catch (Exception ex) {
+            LoggerController.log(this.getClass(), ex);
+        }
     }
 
     public void popularTabela(JTable pTabela, int pOption, String pParam) {
