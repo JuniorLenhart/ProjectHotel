@@ -3,12 +3,14 @@ package hotel.support;
 import datechooser.beans.DateChooserCombo;
 import java.awt.Color;
 import java.awt.Component;
+import java.text.DateFormat;
 import javax.swing.JFormattedTextField;
 
 public class JDateChooserComboLayout extends DateChooserCombo {
     
     public JDateChooserComboLayout() {
         super();
+        this.setFormat(DateFormat.MEDIUM);
         
         Component lComponent[] = this.getComponents();
         for (int i = 0; i < lComponent.length; i++) {

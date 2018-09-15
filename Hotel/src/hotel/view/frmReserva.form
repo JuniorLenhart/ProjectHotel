@@ -261,7 +261,7 @@
                   <Color blue="66" green="66" red="66" type="rgb"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="4"/>
-                <Property name="text" type="java.lang.String" value="&lt;html&gt;Quantidade&lt;font color=&apos;red&apos;&gt;&lt;b&gt;*&lt;/b&gt;&lt;/font&gt;:&lt;/html&gt;"/>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;Lugares&lt;font color=&apos;red&apos;&gt;&lt;b&gt;*&lt;/b&gt;&lt;/font&gt;:&lt;/html&gt;"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
               </Properties>
             </Component>

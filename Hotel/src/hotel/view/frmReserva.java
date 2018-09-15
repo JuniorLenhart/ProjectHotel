@@ -31,7 +31,7 @@ public class frmReserva extends javax.swing.JInternalFrame {
         reservaController = new ReservaController();
         pessoaController = new PessoaController();
         setVisibleCodigo(false);
-
+        
         reservaController.popularTabela(tblLista, 0, "");
 
         Formatacao.formatarCPF(tfdCPF);
@@ -175,7 +175,7 @@ public class frmReserva extends javax.swing.JInternalFrame {
         lblLugar.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lblLugar.setForeground(new java.awt.Color(102, 102, 102));
         lblLugar.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblLugar.setText("<html>Quantidade<font color='red'><b>*</b></font>:</html>");
+        lblLugar.setText("<html>Lugares<font color='red'><b>*</b></font>:</html>");
         lblLugar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         lblQuarto.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
