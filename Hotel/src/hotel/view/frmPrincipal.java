@@ -68,6 +68,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         mniAuditoria = new javax.swing.JMenuItem();
         mnuAjuda = new javax.swing.JMenu();
         mniAplicacao = new javax.swing.JMenuItem();
+        mniBotao = new javax.swing.JMenuItem();
         mniSair = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -226,6 +227,14 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
         mnuAjuda.add(mniAplicacao);
 
+        mniBotao.setText("Cadastro de Botões");
+        mniBotao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniBotaoActionPerformed(evt);
+            }
+        });
+        mnuAjuda.add(mniBotao);
+
         mniSair.setText("Sair");
         mniSair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -296,6 +305,10 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void mniAplicacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniAplicacaoActionPerformed
         abrirTela(new frmAplicacao());
     }//GEN-LAST:event_mniAplicacaoActionPerformed
+
+    private void mniBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniBotaoActionPerformed
+        abrirTela(new frmAplicacaoBotoes());
+    }//GEN-LAST:event_mniBotaoActionPerformed
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -304,6 +317,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuBar mnbPrincipal;
     private javax.swing.JMenuItem mniAplicacao;
     private javax.swing.JMenuItem mniAuditoria;
+    private javax.swing.JMenuItem mniBotao;
     private javax.swing.JMenuItem mniCadastroLocacao;
     private javax.swing.JMenuItem mniConsumivel;
     private javax.swing.JMenuItem mniFormaPgto;

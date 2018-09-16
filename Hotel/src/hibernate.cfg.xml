@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
-
 <hibernate-configuration>
-    <session-factory>
-        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/hotel</property>
-        <property name="hibernate.connection.username">postgres</property>
-        <property name="hibernate.connection.password">postgres</property>
-        <property name="show_sql">true</property>
-        <mapping class="hotel.model.Aplicacao"/>
-        <mapping class="hotel.model.Auditoria"/>
-        <mapping class="hotel.model.Consumivel"/>
-        <mapping class="hotel.model.Financeiro"/>
-        <mapping class="hotel.model.FormaPagamento"/>
-        <mapping class="hotel.model.Locacao"/>
-        <mapping class="hotel.model.LocacaoConsumivel"/>
-        <mapping class="hotel.model.LocacaoHospede"/>
-        <mapping class="hotel.model.Permissao"/>
-        <mapping class="hotel.model.Pessoa"/>
-        <mapping class="hotel.model.Quarto"/>
-        <mapping class="hotel.model.Reserva"/>
-        <mapping class="hotel.model.TipoCama"/>
-        <mapping class="hotel.model.Usuario"/>
-        <mapping class="hotel.model.Parametro"/>
-    </session-factory>
+  <session-factory>
+    <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+    <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+    <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/hotel</property>
+    <property name="hibernate.connection.username">postgres</property>
+    <property name="hibernate.connection.password">postgres</property>
+    <property name="show_sql">true</property>
+    <mapping class="hotel.model.Aplicacao"/>
+    <mapping class="hotel.model.Auditoria"/>
+    <mapping class="hotel.model.Consumivel"/>
+    <mapping class="hotel.model.Financeiro"/>
+    <mapping class="hotel.model.FormaPagamento"/>
+    <mapping class="hotel.model.Locacao"/>
+    <mapping class="hotel.model.LocacaoConsumivel"/>
+    <mapping class="hotel.model.LocacaoHospede"/>
+    <mapping class="hotel.model.Permissao"/>
+    <mapping class="hotel.model.Pessoa"/>
+    <mapping class="hotel.model.Quarto"/>
+    <mapping class="hotel.model.Reserva"/>
+    <mapping class="hotel.model.TipoCama"/>
+    <mapping class="hotel.model.Usuario"/>
+    <mapping class="hotel.model.Parametro"/>
+    <mapping class="hotel.model.Botao"/>
+  </session-factory>
 </hibernate-configuration>
