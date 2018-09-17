@@ -42,16 +42,7 @@ public class frmPermissao extends javax.swing.JInternalFrame {
         setVisibleCodigo(false);
         addVariaveisComboBoxTela(cmbTela);
         addVariaveisComboBoxUsuario(cmbUsuario);
-        permissaoController.popularTabela(tblLista, 0, "");
-
-        tblLista.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                habilitar();
-            }
-        });
-
-        setAba(0);
+        
     }
 
     private void setVisibleCodigo(boolean isVisible) {
@@ -62,12 +53,6 @@ public class frmPermissao extends javax.swing.JInternalFrame {
             lblCodigo.setEnabled(!isVisible);
             tfdCodigo.setEnabled(!isVisible);
         }
-    }
-
-    private void setAba(int pIndex) {
-        tbpPermissao.setSelectedIndex(pIndex);
-
-        habilitar();
     }
 
     private void limparCampos() {
@@ -152,16 +137,6 @@ public class frmPermissao extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         scpBotoes = new javax.swing.JScrollPane();
         tblBotoes = new javax.swing.JTable();
-        pnlListagem = new javax.swing.JPanel();
-        pnlDetalhe = new javax.swing.JPanel();
-        tfdPesquisa = new javax.swing.JTextField();
-        lblPesquisa = new javax.swing.JLabel();
-        pnlOpcao = new javax.swing.JPanel();
-        rbNome = new javax.swing.JRadioButton();
-        rbCodigo = new javax.swing.JRadioButton();
-        btnPesquisa = new javax.swing.JButton();
-        scpLista = new javax.swing.JScrollPane();
-        tblLista = new javax.swing.JTable();
         pnlHeader = new javax.swing.JPanel();
         btnSalvar = new javax.swing.JButton();
         btnFechar = new javax.swing.JButton();
@@ -288,138 +263,6 @@ public class frmPermissao extends javax.swing.JInternalFrame {
 
         tbpPermissao.addTab("Adicionar", pnlCadastro);
 
-        pnlListagem.setBackground(new java.awt.Color(255, 255, 255));
-
-        pnlDetalhe.setBackground(new java.awt.Color(255, 255, 255));
-
-        tfdPesquisa.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        tfdPesquisa.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
-        tfdPesquisa.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                tfdPesquisaKeyTyped(evt);
-            }
-        });
-
-        lblPesquisa.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblPesquisa.setText("Nome:");
-
-        pnlOpcao.setBackground(new java.awt.Color(255, 255, 255));
-        pnlOpcao.setBorder(javax.swing.BorderFactory.createTitledBorder(null, " Pesquisa Detalhada ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
-
-        rbNome.setBackground(new java.awt.Color(255, 255, 255));
-        rbNome.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        rbNome.setSelected(true);
-        rbNome.setText("Por nome");
-        rbNome.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbNomeActionPerformed(evt);
-            }
-        });
-
-        rbCodigo.setBackground(new java.awt.Color(255, 255, 255));
-        rbCodigo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        rbCodigo.setText("Por código");
-        rbCodigo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbCodigoActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout pnlOpcaoLayout = new javax.swing.GroupLayout(pnlOpcao);
-        pnlOpcao.setLayout(pnlOpcaoLayout);
-        pnlOpcaoLayout.setHorizontalGroup(
-            pnlOpcaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlOpcaoLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(rbNome)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rbCodigo))
-        );
-        pnlOpcaoLayout.setVerticalGroup(
-            pnlOpcaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlOpcaoLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(pnlOpcaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rbNome)
-                    .addComponent(rbCodigo))
-                .addContainerGap())
-        );
-
-        btnPesquisa.setBackground(new java.awt.Color(12, 91, 160));
-        btnPesquisa.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnPesquisa.setForeground(new java.awt.Color(255, 255, 255));
-        btnPesquisa.setText("Pesquisar");
-        btnPesquisa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPesquisaActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout pnlDetalheLayout = new javax.swing.GroupLayout(pnlDetalhe);
-        pnlDetalhe.setLayout(pnlDetalheLayout);
-        pnlDetalheLayout.setHorizontalGroup(
-            pnlDetalheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlDetalheLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlDetalheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(pnlOpcao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblPesquisa)
-                    .addComponent(tfdPesquisa))
-                .addGap(18, 18, 18)
-                .addComponent(btnPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 289, Short.MAX_VALUE))
-        );
-        pnlDetalheLayout.setVerticalGroup(
-            pnlDetalheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlDetalheLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(pnlOpcao, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblPesquisa)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlDetalheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfdPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnPesquisa))
-                .addContainerGap(27, Short.MAX_VALUE))
-        );
-
-        tblLista.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Código", "Nome", "CPF", "CNPJ"
-            }
-        ));
-        scpLista.setViewportView(tblLista);
-
-        javax.swing.GroupLayout pnlListagemLayout = new javax.swing.GroupLayout(pnlListagem);
-        pnlListagem.setLayout(pnlListagemLayout);
-        pnlListagemLayout.setHorizontalGroup(
-            pnlListagemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlListagemLayout.createSequentialGroup()
-                .addGroup(pnlListagemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnlDetalhe, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(pnlListagemLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(scpLista)))
-                .addContainerGap())
-        );
-        pnlListagemLayout.setVerticalGroup(
-            pnlListagemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlListagemLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(pnlDetalhe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scpLista, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        tbpPermissao.addTab("Listagem", pnlListagem);
-
         btnSalvar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnSalvar.setForeground(new java.awt.Color(12, 91, 160));
         btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/save.png"))); // NOI18N
@@ -491,35 +334,6 @@ public class frmPermissao extends javax.swing.JInternalFrame {
         habilitarUsuario();
     }//GEN-LAST:event_cmbTelaItemStateChanged
 
-    private void tfdPesquisaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfdPesquisaKeyTyped
-        char vChar = evt.getKeyChar();
-        if (!(Character.isDigit(vChar) || (vChar == KeyEvent.VK_BACK_SPACE) || (vChar == KeyEvent.VK_DELETE))) {
-            if (rbCodigo.isSelected()) {
-                evt.consume();
-            }
-        }
-    }//GEN-LAST:event_tfdPesquisaKeyTyped
-
-    private void rbNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbNomeActionPerformed
-        lblPesquisa.setText("Nome:");
-        tfdPesquisa.setText("");
-    }//GEN-LAST:event_rbNomeActionPerformed
-
-    private void rbCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbCodigoActionPerformed
-        lblPesquisa.setText("Código:");
-        tfdPesquisa.setText("");
-    }//GEN-LAST:event_rbCodigoActionPerformed
-
-    private void btnPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaActionPerformed
-        if (rbNome.isSelected()) {
-            permissaoController.popularTabela(tblLista, 1, tfdPesquisa.getText());
-        } else if (rbCodigo.isSelected()) {
-            permissaoController.popularTabela(tblLista, 2, tfdPesquisa.getText());
-        } else {
-            permissaoController.popularTabela(tblLista, 0, "");
-        }
-    }//GEN-LAST:event_btnPesquisaActionPerformed
-
     private void tbpPermissaoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tbpPermissaoStateChanged
         habilitar();
     }//GEN-LAST:event_tbpPermissaoStateChanged
@@ -536,6 +350,7 @@ public class frmPermissao extends javax.swing.JInternalFrame {
                         permissao.setCodUsuario(usuario);
 
                         permissoes.add(permissao);
+                        permissao = new Permissao();
                     }
                 } else {
                     if (permissaoController.isInserted(botao.getCodAplicacaoBotao(), usuario.getCodUsuario())) {
@@ -550,10 +365,7 @@ public class frmPermissao extends javax.swing.JInternalFrame {
 
             JOptionPane.showMessageDialog(this, "Atualizado com sucesso!");
 
-            permissaoController.popularTabela(tblLista, 0, "");
-
             limparCampos();
-            setAba(1);
         } else {
             JOptionPane.showMessageDialog(this, "Campos obrigatórios não preenchidos!");
         }
@@ -570,28 +382,18 @@ public class frmPermissao extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFechar;
-    private javax.swing.JButton btnPesquisa;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JComboBox<String> cmbTela;
     private javax.swing.JComboBox<String> cmbUsuario;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblCodigo;
-    private javax.swing.JLabel lblPesquisa;
     private javax.swing.JLabel lblTela;
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JPanel pnlCadastro;
-    private javax.swing.JPanel pnlDetalhe;
     private javax.swing.JPanel pnlHeader;
-    private javax.swing.JPanel pnlListagem;
-    private javax.swing.JPanel pnlOpcao;
-    private javax.swing.JRadioButton rbCodigo;
-    private javax.swing.JRadioButton rbNome;
     private javax.swing.JScrollPane scpBotoes;
-    private javax.swing.JScrollPane scpLista;
     private javax.swing.JTable tblBotoes;
-    private javax.swing.JTable tblLista;
     private javax.swing.JTabbedPane tbpPermissao;
     private javax.swing.JTextField tfdCodigo;
-    private javax.swing.JTextField tfdPesquisa;
     // End of variables declaration//GEN-END:variables
 }
