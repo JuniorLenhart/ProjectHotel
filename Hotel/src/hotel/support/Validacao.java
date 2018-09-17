@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JList;
 import javax.swing.JSpinner;
@@ -117,6 +118,11 @@ public class Validacao {
                 } else if (lComponent[i] instanceof JDateChooserComboLayout) {
                     JDateChooserComboLayout lField = (JDateChooserComboLayout) lComponent[i];
                     if (lField.getText().equals("")) {
+                        return 1;
+                    }
+                } else if (lComponent[i] instanceof JComboBox) {
+                    JComboBox lField = (JComboBox) lComponent[i];
+                    if (lField.getSelectedIndex() == -1 || lField.getSelectedItem().toString().equals("")) {
                         return 1;
                     }
                 }

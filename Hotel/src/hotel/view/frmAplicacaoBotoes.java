@@ -1,9 +1,9 @@
 package hotel.view;
 
 import hotel.controller.AplicacaoController;
-import hotel.controller.BotaoController;
+import hotel.controller.AplicacaoBotaoController;
 import hotel.model.Aplicacao;
-import hotel.model.Botao;
+import hotel.model.AplicacaoBotao;
 import hotel.support.DocumentoLimitado;
 import hotel.support.LimpaCampos;
 import hotel.support.Validacao;
@@ -17,15 +17,15 @@ import javax.swing.event.ListSelectionListener;
 
 public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
 
-    Botao botao;
-    BotaoController botaoController;
+    AplicacaoBotao botao;
+    AplicacaoBotaoController botaoController;
     AplicacaoController aplicacaoController;
     Aplicacao aplicacao;
 
     public frmAplicacaoBotoes() {
         initComponents();
-        botao = new Botao();
-        botaoController = new BotaoController();
+        botao = new AplicacaoBotao();
+        botaoController = new AplicacaoBotaoController();
         aplicacaoController = new AplicacaoController();
         setVisibleCodigo(false);
         setEditableBotaoArquivoENome(false);
@@ -67,7 +67,7 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
     }
 
     private void limparCampos() {
-        botao = new Botao();
+        botao = new AplicacaoBotao();
         LimpaCampos.LimparCampos(pnlCadastro);
     }
 

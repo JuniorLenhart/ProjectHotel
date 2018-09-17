@@ -41,6 +41,24 @@ public class PermissaoController extends BaseController<Permissao> {
         return null;
     }
 
+    public boolean isInserted(int pCodigoAplicacaoBotao, int pCodigoUsuario) {
+        try {
+            return PermissaoRepository.isInserted(pCodigoAplicacaoBotao, pCodigoUsuario);
+        } catch (Exception ex) {
+            LoggerController.log(this.getClass(), ex);
+        }
+        return false;
+    }
+
+    public Permissao readByAplicacaoBotaoAndUsuario(int pCodigoUsuario, int pCodigoAplicacaoBotao) {
+        try {
+            return PermissaoRepository.readByAplicacaoBotaoAndUsuario(pCodigoAplicacaoBotao, pCodigoUsuario);
+        } catch (Exception ex) {
+            LoggerController.log(this.getClass(), ex);
+        }
+        return null;
+    }
+
     public void popularTabela(JTable pTabela, int pOption, String pParam) {
         try {
             Object[][] lTabela = null;
@@ -58,8 +76,8 @@ public class PermissaoController extends BaseController<Permissao> {
                     for (Permissao p : listPermissao) {
 
                         lTabela[lLinha][0] = p.getCodPermissao();
-                        lTabela[lLinha][1] = p.getCodBotao().getCodAplicacao().getNomAplicacao();
-                        lTabela[lLinha][2] = p.getCodBotao().getNomBotao();
+                        lTabela[lLinha][1] = p.getCodAplicacaoBotao().getCodAplicacao().getNomAplicacao();
+                        lTabela[lLinha][2] = p.getCodAplicacaoBotao().getNomBotao();
                         lTabela[lLinha][3] = p.getCodUsuario().getDesLogin();
                         lLinha++;
                     }
@@ -71,8 +89,8 @@ public class PermissaoController extends BaseController<Permissao> {
                     for (Permissao p : listPermissao) {
 
                         lTabela[lLinha][0] = p.getCodPermissao();
-                        lTabela[lLinha][1] = p.getCodBotao().getCodAplicacao().getNomAplicacao();
-                        lTabela[lLinha][2] = p.getCodBotao().getNomBotao();
+                        lTabela[lLinha][1] = p.getCodAplicacaoBotao().getCodAplicacao().getNomAplicacao();
+                        lTabela[lLinha][2] = p.getCodAplicacaoBotao().getNomBotao();
                         lTabela[lLinha][3] = p.getCodUsuario().getDesLogin();
                         lLinha++;
                     }
@@ -83,29 +101,12 @@ public class PermissaoController extends BaseController<Permissao> {
                     if (permissao == null) {
                         JOptionPane.showMessageDialog(null, "Permissão não encontrada pelo cóodigo: " + pParam);
                     } else {
+                        lTabela = new Object[1][4];
 
                         lTabela[lLinha][0] = permissao.getCodPermissao();
-                        lTabela[lLinha][1] = permissao.getCodBotao().getCodAplicacao().getNomAplicacao();
-                        lTabela[lLinha][2] = permissao.getCodBotao().getNomBotao();
+                        lTabela[lLinha][1] = permissao.getCodAplicacaoBotao().getCodAplicacao().getNomAplicacao();
+                        lTabela[lLinha][2] = permissao.getCodAplicacaoBotao().getNomBotao();
                         lTabela[lLinha][3] = permissao.getCodUsuario().getDesLogin();
-                        lLinha++;
-                    }
-                    break;
-                }
-                case 3: {
-                    List<Permissao> listPermissao = PermissaoRepository.readAllByTela(Integer.parseInt(pParam));
-                    lTabelaTitulo = new Object[3];
-                    lTabelaTitulo[0] = "Código";
-                    lTabelaTitulo[1] = "Nome";
-                    lTabelaTitulo[2] = "Tem acesso?";
-                    lTabela = new Object[listPermissao.size()][3];
-                    
-                    for (Permissao p : listPermissao) {
-                        JCheckBox checkBox = new JCheckBox();
-                        checkBox.setVisible(true);
-                        lTabela[lLinha][0] = p.getCodBotao().getCodAplicacaoBotao();
-                        lTabela[lLinha][1] = p.getCodBotao().getNomBotao();
-                        lTabela[lLinha][2] = checkBox;
                         lLinha++;
                     }
                     break;
@@ -115,11 +116,9 @@ public class PermissaoController extends BaseController<Permissao> {
                     lTabela = new Object[listPermissao.size()][4];
                     for (Permissao p : listPermissao) {
 
-                        lTabela = new Object[1][4];
-
                         lTabela[lLinha][0] = p.getCodPermissao();
-                        lTabela[lLinha][1] = p.getCodBotao().getCodAplicacao().getNomAplicacao();
-                        lTabela[lLinha][2] = p.getCodBotao().getNomBotao();
+                        lTabela[lLinha][1] = p.getCodAplicacaoBotao().getCodAplicacao().getNomAplicacao();
+                        lTabela[lLinha][2] = p.getCodAplicacaoBotao().getNomBotao();
                         lTabela[lLinha][3] = p.getCodUsuario().getDesLogin();
                         lLinha++;
                     }
@@ -134,8 +133,6 @@ public class PermissaoController extends BaseController<Permissao> {
 
                 @Override
                 public Class getColumnClass(int pColumn) {
-                    if (pColumn == 2) {
-                    }
                     return Object.class;
                 }
             });

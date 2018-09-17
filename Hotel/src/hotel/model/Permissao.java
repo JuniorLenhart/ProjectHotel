@@ -20,7 +20,7 @@ public class Permissao {
 
     @JoinColumn(name = "cod_aplicacao_botao", referencedColumnName = "cod_aplicacao_botao")
     @ManyToOne(optional = false)
-    private Botao codAplicacaoBotao;
+    private AplicacaoBotao codAplicacaoBotao;
 
     @JoinColumn(name = "cod_usuario", referencedColumnName = "cod_usuario")
     @ManyToOne(optional = false)
@@ -33,17 +33,17 @@ public class Permissao {
         this.codPermissao = codPermissao;
     }
 
-    public Permissao(Integer codPermissao, Botao codAplicacaoBotao, Usuario codUsuario) {
+    public Permissao(Integer codPermissao, AplicacaoBotao codAplicacaoBotao, Usuario codUsuario) {
         this.codPermissao = codPermissao;
         this.codAplicacaoBotao = codAplicacaoBotao;
         this.codUsuario = codUsuario;
     }
 
-    public Botao getCodBotao() {
+    public AplicacaoBotao getCodAplicacaoBotao() {
         return codAplicacaoBotao;
     }
 
-    public void setCodBotao(Botao codAplicacaoBotao) {
+    public void setCodAplicacaoBotao(AplicacaoBotao codAplicacaoBotao) {
         this.codAplicacaoBotao = codAplicacaoBotao;
     }
 

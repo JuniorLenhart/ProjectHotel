@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "aplicacao_botao")
-public class Botao {
+public class AplicacaoBotao {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,14 +28,14 @@ public class Botao {
     @ManyToOne(optional = false)
     private Aplicacao codAplicacao;
 
-    public Botao() {
+    public AplicacaoBotao() {
     }
 
-    public Botao(Integer codBotao) {
+    public AplicacaoBotao(Integer codBotao) {
         this.codAplicacaoBotao = codBotao;
     }
 
-    public Botao(Integer codBotao, String nomBotao, String nomBotaoForm, Aplicacao codAplicacao) {
+    public AplicacaoBotao(Integer codBotao, String nomBotao, String nomBotaoForm, Aplicacao codAplicacao) {
         this.codAplicacaoBotao = codBotao;
         this.nomBotao = nomBotao;
         this.nomBotaoForm = nomBotaoForm;
@@ -83,10 +83,10 @@ public class Botao {
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof Botao)) {
+        if (!(object instanceof AplicacaoBotao)) {
             return false;
         }
-        Botao other = (Botao) object;
+        AplicacaoBotao other = (AplicacaoBotao) object;
         if ((this.codAplicacaoBotao == null && other.codAplicacaoBotao != null) || (this.codAplicacaoBotao != null && !this.codAplicacaoBotao.equals(other.codAplicacaoBotao))) {
             return false;
         }
@@ -95,6 +95,6 @@ public class Botao {
 
     @Override
     public String toString() {
-        return "hotel.model.Botao[ codBotao=" + codAplicacaoBotao + " ]";
+        return "hotel.model.AplicacaoBotao[ codAplicacaoBotao=" + codAplicacaoBotao + " ]";
     }
 }
