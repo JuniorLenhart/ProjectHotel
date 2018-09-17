@@ -2,8 +2,11 @@ package hotel.view;
 
 import hotel.controller.AplicacaoController;
 import hotel.controller.BotaoController;
+import hotel.controller.PermissaoController;
+import hotel.controller.UsuarioController;
 import hotel.model.Aplicacao;
-import hotel.model.Botao;
+import hotel.model.Permissao;
+import hotel.model.Usuario;
 import hotel.support.DocumentoLimitado;
 import hotel.support.LimpaCampos;
 import hotel.support.Validacao;
@@ -15,25 +18,27 @@ import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
-
-    Botao botao;
-    BotaoController botaoController;
-    AplicacaoController aplicacaoController;
+public class frmPermissao extends javax.swing.JInternalFrame {
+    
+    Permissao permissao;
     Aplicacao aplicacao;
-
-    public frmAplicacaoBotoes() {
+    Usuario usuario;
+    PermissaoController permissaoController;
+    AplicacaoController aplicacaoController;
+    UsuarioController usuarioController;
+    BotaoController botaoController;
+    public frmPermissao() {
         initComponents();
-        botao = new Botao();
-        botaoController = new BotaoController();
+        permissao = new Permissao();
+        permissaoController = new PermissaoController();
         aplicacaoController = new AplicacaoController();
+        usuarioController = new UsuarioController();
+        botaoController = new BotaoController();
+        
         setVisibleCodigo(false);
-        setEditableBotaoArquivoENome(false);
         addVariaveisComboBoxTela(cmbTela);
-        botaoController.popularTabela(tblLista, 0, "");
-
-        tfdNome.setDocument(new DocumentoLimitado(100));
-        tfdBotaoNome.setDocument(new DocumentoLimitado(100));
+        addVariaveisComboBoxUsuario(cmbUsuario);
+        permissaoController.popularTabela(tblLista, 0, "");
 
         tblLista.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -44,7 +49,7 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
 
         setAba(0);
     }
-
+    
     private void setVisibleCodigo(boolean isVisible) {
         lblCodigo.setVisible(isVisible);
         tfdCodigo.setVisible(isVisible);
@@ -55,24 +60,19 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
         }
     }
 
-    private void setEditableBotaoArquivoENome(boolean isEditable) {
-        tfdBotaoNome.setEditable(isEditable);
-        tfdNome.setEditable(isEditable);
-    }
-
     private void setAba(int pIndex) {
-        tbpBotao.setSelectedIndex(pIndex);
+        tbpPermissao.setSelectedIndex(pIndex);
 
         habilitar();
     }
 
     private void limparCampos() {
-        botao = new Botao();
+        permissao = new Permissao();
         LimpaCampos.LimparCampos(pnlCadastro);
     }
 
     private void habilitar() {
-        if (tbpBotao.getSelectedIndex() == 0) {
+        if (tbpPermissao.getSelectedIndex() == 0) {
             btnSalvar.setEnabled(true);
             btnEditar.setEnabled(false);
             btnExcluir.setEnabled(false);
@@ -86,15 +86,15 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
     }
 
     private void popularTelaCadastro() {
-        tfdCodigo.setText(botao.getCodAplicacaoBotao().toString());
-        tfdBotaoNome.setText(botao.getNomBotaoForm());
-        tfdNome.setText(botao.getNomBotao());
-        for (int i = 0; i < cmbTela.getItemCount(); i++) {
-            if (cmbTela.getItemAt(i).equals(botao.getCodAplicacao().getCodAplicacao() + " " + botao.getCodAplicacao().getNomAplicacao())) {
-                cmbTela.setSelectedIndex(i);
-            }
-        }
-        setVisibleCodigo(true);
+//        tfdCodigo.setText(botao.getCodBotao().toString());
+//        tfdBotaoNome.setText(botao.getNomBotaoForm());
+//        tfdNome.setText(botao.getNomBotao());
+//        for (int i = 0; i < cmbTela.getItemCount(); i++) {
+//            if (cmbTela.getItemAt(i).equals(botao.getCodAplicacao().getCodAplicacao() + " " + botao.getCodAplicacao().getNomAplicacao())) {
+//                cmbTela.setSelectedIndex(i);
+//            }
+//        }
+//        setVisibleCodigo(true);
     }
 
     private void addVariaveisComboBoxTela(javax.swing.JComboBox comboBox) {
@@ -105,10 +105,44 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
                 listAplicacaoString.add(a.getCodAplicacao() + " " + a.getNomAplicacao());
             }
             comboBox.setModel(new DefaultComboBoxModel(listAplicacaoString.toArray()));
-            setEditableBotaoArquivoENome(true);
             String split[] = cmbTela.getSelectedItem().toString().split(" ");
             aplicacao = aplicacaoController.getReadId((Integer.parseInt(split[0])));
         }
+    }
+    
+    private void addVariaveisComboBoxUsuario(javax.swing.JComboBox comboBox) {
+        List<Usuario> listUsuario = usuarioController.getReadAllAtivos();
+        if (!listUsuario.isEmpty()) {
+            List<String> listUsuarioString = new ArrayList<>();
+            for (Usuario u : listUsuario) {
+                listUsuarioString.add(u.getCodUsuario()+ " " + u.getDesLogin());
+            }
+            comboBox.setModel(new DefaultComboBoxModel(listUsuarioString.toArray()));
+            String split[] = cmbUsuario.getSelectedItem().toString().split(" ");
+            usuario = usuarioController.getReadId((Integer.parseInt(split[0])));
+        }
+    }
+    
+    private void habilitarUsuario() {
+        if (cmbTela.getSelectedIndex() != -1) {
+            String split[] = cmbTela.getSelectedItem().toString().split(" ");
+            aplicacao = aplicacaoController.getReadId((Integer.parseInt(split[0])));
+        } else {
+            aplicacao = null;
+        }
+        if (cmbUsuario.getSelectedIndex() != -1) {
+            String split[] = cmbUsuario.getSelectedItem().toString().split(" ");
+            usuario = usuarioController.getReadId((Integer.parseInt(split[0])));
+        } else {
+            usuario = null;
+        }
+        if (aplicacao != null && usuario != null) {
+            carregaBotoes();
+        }
+    }
+    
+    private void carregaBotoes() {
+        botaoController.popularTabela(tblBotoes, 3, aplicacao.getCodAplicacao().toString());
     }
 
     /**
@@ -120,22 +154,17 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btgPesquisa = new javax.swing.ButtonGroup();
-        pnlHeader = new javax.swing.JPanel();
-        btnSalvar = new javax.swing.JButton();
-        btnEditar = new javax.swing.JButton();
-        btnExcluir = new javax.swing.JButton();
-        btnFechar = new javax.swing.JButton();
-        tbpBotao = new javax.swing.JTabbedPane();
+        tbpPermissao = new javax.swing.JTabbedPane();
         pnlCadastro = new javax.swing.JPanel();
-        lblNome = new javax.swing.JLabel();
-        tfdNome = new javax.swing.JTextField();
         lblCodigo = new javax.swing.JLabel();
         tfdCodigo = new javax.swing.JTextField();
-        lblNomeArquivo = new javax.swing.JLabel();
+        lblUsuario = new javax.swing.JLabel();
         lblTela = new javax.swing.JLabel();
         cmbTela = new javax.swing.JComboBox<>();
-        tfdBotaoNome = new javax.swing.JTextField();
+        cmbUsuario = new javax.swing.JComboBox<>();
+        jPanel1 = new javax.swing.JPanel();
+        scpBotoes = new javax.swing.JScrollPane();
+        tblBotoes = new javax.swing.JTable();
         pnlListagem = new javax.swing.JPanel();
         pnlDetalhe = new javax.swing.JPanel();
         tfdPesquisa = new javax.swing.JTextField();
@@ -146,102 +175,22 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
         btnPesquisa = new javax.swing.JButton();
         scpLista = new javax.swing.JScrollPane();
         tblLista = new javax.swing.JTable();
+        pnlHeader = new javax.swing.JPanel();
+        btnSalvar = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
+        btnFechar = new javax.swing.JButton();
 
-        btnSalvar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnSalvar.setForeground(new java.awt.Color(12, 91, 160));
-        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/save.png"))); // NOI18N
-        btnSalvar.setText("Salvar");
-        btnSalvar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnSalvar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalvarActionPerformed(evt);
-            }
-        });
-
-        btnEditar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnEditar.setForeground(new java.awt.Color(12, 91, 160));
-        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/edit.png"))); // NOI18N
-        btnEditar.setText("Editar");
-        btnEditar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnEditar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
-            }
-        });
-
-        btnExcluir.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnExcluir.setForeground(new java.awt.Color(12, 91, 160));
-        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/trash.png"))); // NOI18N
-        btnExcluir.setText("Excluir");
-        btnExcluir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnExcluir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExcluirActionPerformed(evt);
-            }
-        });
-
-        btnFechar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnFechar.setForeground(new java.awt.Color(12, 91, 160));
-        btnFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/close.png"))); // NOI18N
-        btnFechar.setText("Fechar");
-        btnFechar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnFechar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnFechar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnFecharActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout pnlHeaderLayout = new javax.swing.GroupLayout(pnlHeader);
-        pnlHeader.setLayout(pnlHeaderLayout);
-        pnlHeaderLayout.setHorizontalGroup(
-            pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlHeaderLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnSalvar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnEditar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnExcluir)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnFechar)
-                .addContainerGap())
-        );
-        pnlHeaderLayout.setVerticalGroup(
-            pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnSalvar)
-            .addComponent(btnEditar)
-            .addComponent(btnExcluir)
-            .addComponent(btnFechar)
-        );
-
-        tbpBotao.setBackground(new java.awt.Color(255, 255, 255));
-        tbpBotao.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        tbpBotao.addChangeListener(new javax.swing.event.ChangeListener() {
+        tbpPermissao.setBackground(new java.awt.Color(255, 255, 255));
+        tbpPermissao.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tbpPermissao.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                tbpBotaoStateChanged(evt);
+                tbpPermissaoStateChanged(evt);
             }
         });
 
         pnlCadastro.setBackground(new java.awt.Color(255, 255, 255));
-        pnlCadastro.setBorder(javax.swing.BorderFactory.createTitledBorder(null, " Cadastro de Botões ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
-
-        lblNome.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        lblNome.setForeground(new java.awt.Color(102, 102, 102));
-        lblNome.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblNome.setText("<html>Nome<font color='red'><b>*</b></font>:</html>");
-        lblNome.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-
-        tfdNome.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        tfdNome.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
-        tfdNome.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                tfdNomeTyped(evt);
-            }
-        });
+        pnlCadastro.setBorder(javax.swing.BorderFactory.createTitledBorder(null, " Cadastro de Permissões ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
 
         lblCodigo.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lblCodigo.setForeground(new java.awt.Color(102, 102, 102));
@@ -252,10 +201,10 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
         tfdCodigo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         tfdCodigo.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
 
-        lblNomeArquivo.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        lblNomeArquivo.setForeground(new java.awt.Color(102, 102, 102));
-        lblNomeArquivo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblNomeArquivo.setText("<html>Botão nome arquivo<font color='red'><b>*</b></font>:</html>");
+        lblUsuario.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        lblUsuario.setForeground(new java.awt.Color(102, 102, 102));
+        lblUsuario.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblUsuario.setText("<html>Usuário<font color='red'><b>*</b></font>:</html>");
 
         lblTela.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lblTela.setForeground(new java.awt.Color(102, 102, 102));
@@ -269,32 +218,60 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
             }
         });
 
-        tfdBotaoNome.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        tfdBotaoNome.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
-        tfdBotaoNome.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                tfdBotaoNomeTyped(evt);
+        cmbUsuario.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        cmbUsuario.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbUsuarioItemStateChanged(evt);
             }
         });
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, " Botões ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
+
+        tblBotoes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        scpBotoes.setViewportView(tblBotoes);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(scpBotoes, javax.swing.GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(scpBotoes, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout pnlCadastroLayout = new javax.swing.GroupLayout(pnlCadastro);
         pnlCadastro.setLayout(pnlCadastroLayout);
         pnlCadastroLayout.setHorizontalGroup(
             pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlCadastroLayout.createSequentialGroup()
-                .addGap(89, 89, 89)
+                .addGap(138, 138, 138)
                 .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblCodigo)
-                    .addComponent(lblNomeArquivo, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblNome, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblUsuario, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblTela, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
                 .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(tfdCodigo)
-                    .addComponent(tfdNome)
                     .addComponent(cmbTela, javax.swing.GroupLayout.Alignment.TRAILING, 0, 290, Short.MAX_VALUE)
-                    .addComponent(tfdBotaoNome))
-                .addContainerGap(89, Short.MAX_VALUE))
+                    .addComponent(cmbUsuario, 0, 290, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(pnlCadastroLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         pnlCadastroLayout.setVerticalGroup(
             pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -309,16 +286,14 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
                     .addComponent(cmbTela, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblNomeArquivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfdBotaoNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tfdNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(325, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        tbpBotao.addTab("Adicionar", pnlCadastro);
+        tbpPermissao.addTab("Adicionar", pnlCadastro);
 
         pnlListagem.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -339,7 +314,6 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
         pnlOpcao.setBorder(javax.swing.BorderFactory.createTitledBorder(null, " Pesquisa Detalhada ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
 
         rbNome.setBackground(new java.awt.Color(255, 255, 255));
-        btgPesquisa.add(rbNome);
         rbNome.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         rbNome.setSelected(true);
         rbNome.setText("Por nome");
@@ -350,7 +324,6 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
         });
 
         rbCodigo.setBackground(new java.awt.Color(255, 255, 255));
-        btgPesquisa.add(rbCodigo);
         rbCodigo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         rbCodigo.setText("Por código");
         rbCodigo.addActionListener(new java.awt.event.ActionListener() {
@@ -448,11 +421,82 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(pnlDetalhe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scpLista, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
+                .addComponent(scpLista, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        tbpBotao.addTab("Listagem", pnlListagem);
+        tbpPermissao.addTab("Listagem", pnlListagem);
+
+        btnSalvar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnSalvar.setForeground(new java.awt.Color(12, 91, 160));
+        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/save.png"))); // NOI18N
+        btnSalvar.setText("Salvar");
+        btnSalvar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnSalvar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
+
+        btnEditar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnEditar.setForeground(new java.awt.Color(12, 91, 160));
+        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/edit.png"))); // NOI18N
+        btnEditar.setText("Editar");
+        btnEditar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnEditar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
+
+        btnExcluir.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnExcluir.setForeground(new java.awt.Color(12, 91, 160));
+        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/trash.png"))); // NOI18N
+        btnExcluir.setText("Excluir");
+        btnExcluir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnExcluir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
+
+        btnFechar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnFechar.setForeground(new java.awt.Color(12, 91, 160));
+        btnFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/close.png"))); // NOI18N
+        btnFechar.setText("Fechar");
+        btnFechar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnFechar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnFechar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFecharActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlHeaderLayout = new javax.swing.GroupLayout(pnlHeader);
+        pnlHeader.setLayout(pnlHeaderLayout);
+        pnlHeaderLayout.setHorizontalGroup(
+            pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlHeaderLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnSalvar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEditar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnExcluir)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnFechar)
+                .addContainerGap())
+        );
+        pnlHeaderLayout.setVerticalGroup(
+            pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(btnSalvar)
+            .addComponent(btnEditar)
+            .addComponent(btnExcluir)
+            .addComponent(btnFechar)
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -463,7 +507,7 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnlHeader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(tbpBotao, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(tbpPermissao, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -473,66 +517,16 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(pnlHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tbpBotao)
+                .addComponent(tbpPermissao)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        if ((Validacao.validarCampos(pnlCadastro) == 0)) {
-            boolean isNew = (botao.getCodAplicacaoBotao() == null);
-
-            botao.setNomBotao(tfdNome.getText());
-            botao.setCodAplicacao(aplicacao);
-            botao.setNomBotaoForm(tfdBotaoNome.getText());
-            botaoController.save(botao);
-
-            if (!isNew) {
-                JOptionPane.showMessageDialog(this, "Atualizado com sucesso!");
-                setVisibleCodigo(false);
-            } else {
-                JOptionPane.showMessageDialog(this, "Cadastrado com sucesso!");
-            }
-
-            botaoController.popularTabela(tblLista, 0, "");
-
-            limparCampos();
-            setAba(1);
-        } else {
-            JOptionPane.showMessageDialog(this, "Campos obrigatórios não preenchidos!");
-        }
-    }//GEN-LAST:event_btnSalvarActionPerformed
-
-    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        botao = botaoController.getReadId(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString()));
-        popularTelaCadastro();
-        setAba(0);
-        tfdNome.requestFocus();
-    }//GEN-LAST:event_btnEditarActionPerformed
-
-    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        Object[] options = {"Sim", "Não"};
-        int escolha = JOptionPane.showOptionDialog(null, "Você tem certeza que gostaria de excluir o registro " + tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString() + "?", "Escolha", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-        if (escolha == 0) {
-            botaoController.delete(botaoController.getReadId(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString())));
-            JOptionPane.showMessageDialog(this, "Excluído com sucesso!");
-            botaoController.popularTabela(tblLista, 0, "");
-            //addVariaveisComboBox(cmbBotao);
-        }
-    }//GEN-LAST:event_btnExcluirActionPerformed
-
-    private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_btnFecharActionPerformed
-
-    private void tfdNomeTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfdNomeTyped
-        char vChar = evt.getKeyChar();
-        if (!(Character.isLetter(vChar) || (vChar == KeyEvent.VK_BACK_SPACE) || (vChar == KeyEvent.VK_DELETE) || (vChar == KeyEvent.VK_SPACE))) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_tfdNomeTyped
+    private void cmbTelaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbTelaItemStateChanged
+        habilitarUsuario();
+    }//GEN-LAST:event_cmbTelaItemStateChanged
 
     private void tfdPesquisaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfdPesquisaKeyTyped
         char vChar = evt.getKeyChar();
@@ -555,44 +549,79 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
 
     private void btnPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaActionPerformed
         if (rbNome.isSelected()) {
-            botaoController.popularTabela(tblLista, 1, tfdPesquisa.getText());
+            permissaoController.popularTabela(tblLista, 1, tfdPesquisa.getText());
         } else {
-            botaoController.popularTabela(tblLista, 2, tfdPesquisa.getText());
+            permissaoController.popularTabela(tblLista, 2, tfdPesquisa.getText());
         }
     }//GEN-LAST:event_btnPesquisaActionPerformed
 
-    private void tbpBotaoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tbpBotaoStateChanged
+    private void tbpPermissaoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tbpPermissaoStateChanged
         habilitar();
-    }//GEN-LAST:event_tbpBotaoStateChanged
+    }//GEN-LAST:event_tbpPermissaoStateChanged
 
-    private void cmbTelaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbTelaItemStateChanged
-        if (evt.getItem() != null) {
-            String split[] = cmbTela.getSelectedItem().toString().split(" ");
-            aplicacao = aplicacaoController.getReadId((Integer.parseInt(split[0])));
-            setEditableBotaoArquivoENome(true);
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        if ((Validacao.validarCampos(pnlCadastro) == 0)) {
+            boolean isNew = (permissao.getCodPermissao() == null);
+
+//            permissao.setCodBotao();
+//            botaoController.save(botao);
+//
+//            if (!isNew) {
+//                JOptionPane.showMessageDialog(this, "Atualizado com sucesso!");
+//                setVisibleCodigo(false);
+//            } else {
+//                JOptionPane.showMessageDialog(this, "Cadastrado com sucesso!");
+//            }
+//
+//            botaoController.popularTabela(tblLista, 0, "");
+//
+//            limparCampos();
+//            setAba(1);
         } else {
-            setEditableBotaoArquivoENome(false);
+            JOptionPane.showMessageDialog(this, "Campos obrigatórios não preenchidos!");
         }
-    }//GEN-LAST:event_cmbTelaItemStateChanged
+    }//GEN-LAST:event_btnSalvarActionPerformed
 
-    private void tfdBotaoNomeTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfdBotaoNomeTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfdBotaoNomeTyped
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+//        botao = botaoController.getReadId(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString()));
+//        popularTelaCadastro();
+//        setAba(0);
+//        tfdNome.requestFocus();
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+//        Object[] options = {"Sim", "Não"};
+//        int escolha = JOptionPane.showOptionDialog(null, "Você tem certeza que gostaria de excluir o registro " + tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString() + "?", "Escolha", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+//        if (escolha == 0) {
+//            botaoController.delete(botaoController.getReadId(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString())));
+//            JOptionPane.showMessageDialog(this, "Excluído com sucesso!");
+//            botaoController.popularTabela(tblLista, 0, "");
+//            //addVariaveisComboBox(cmbBotao);
+//        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnFecharActionPerformed
+
+    private void cmbUsuarioItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbUsuarioItemStateChanged
+        habilitarUsuario();
+    }//GEN-LAST:event_cmbUsuarioItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup btgPesquisa;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnFechar;
     private javax.swing.JButton btnPesquisa;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JComboBox<String> cmbTela;
+    private javax.swing.JComboBox<String> cmbUsuario;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblCodigo;
-    private javax.swing.JLabel lblNome;
-    private javax.swing.JLabel lblNomeArquivo;
     private javax.swing.JLabel lblPesquisa;
     private javax.swing.JLabel lblTela;
+    private javax.swing.JLabel lblUsuario;
     private javax.swing.JPanel pnlCadastro;
     private javax.swing.JPanel pnlDetalhe;
     private javax.swing.JPanel pnlHeader;
@@ -600,12 +629,12 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
     private javax.swing.JPanel pnlOpcao;
     private javax.swing.JRadioButton rbCodigo;
     private javax.swing.JRadioButton rbNome;
+    private javax.swing.JScrollPane scpBotoes;
     private javax.swing.JScrollPane scpLista;
+    private javax.swing.JTable tblBotoes;
     private javax.swing.JTable tblLista;
-    private javax.swing.JTabbedPane tbpBotao;
-    private javax.swing.JTextField tfdBotaoNome;
+    private javax.swing.JTabbedPane tbpPermissao;
     private javax.swing.JTextField tfdCodigo;
-    private javax.swing.JTextField tfdNome;
     private javax.swing.JTextField tfdPesquisa;
     // End of variables declaration//GEN-END:variables
 }

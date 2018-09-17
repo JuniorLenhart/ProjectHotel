@@ -10,13 +10,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "botao")
+@Table(name = "aplicacao_botao")
 public class Botao {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cod_botao")
-    private Integer codBotao;
+    @Column(name = "cod_aplicacao_botao")
+    private Integer codAplicacaoBotao;
     
     @Column(name = "nom_botao")
     private String nomBotao;
@@ -32,22 +32,22 @@ public class Botao {
     }
 
     public Botao(Integer codBotao) {
-        this.codBotao = codBotao;
+        this.codAplicacaoBotao = codBotao;
     }
 
     public Botao(Integer codBotao, String nomBotao, String nomBotaoForm, Aplicacao codAplicacao) {
-        this.codBotao = codBotao;
+        this.codAplicacaoBotao = codBotao;
         this.nomBotao = nomBotao;
         this.nomBotaoForm = nomBotaoForm;
         this.codAplicacao = codAplicacao;
     }
 
-    public Integer getCodBotao() {
-        return codBotao;
+    public Integer getCodAplicacaoBotao() {
+        return codAplicacaoBotao;
     }
 
-    public void setCodBotao(Integer codBotao) {
-        this.codBotao = codBotao;
+    public void setCodAplicacaoBotao(Integer codAplicacaoBotao) {
+        this.codAplicacaoBotao = codAplicacaoBotao;
     }
 
     public String getNomBotao() {
@@ -77,7 +77,7 @@ public class Botao {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (codBotao != null ? codBotao.hashCode() : 0);
+        hash += (codAplicacaoBotao != null ? codAplicacaoBotao.hashCode() : 0);
         return hash;
     }
 
@@ -87,7 +87,7 @@ public class Botao {
             return false;
         }
         Botao other = (Botao) object;
-        if ((this.codBotao == null && other.codBotao != null) || (this.codBotao != null && !this.codBotao.equals(other.codBotao))) {
+        if ((this.codAplicacaoBotao == null && other.codAplicacaoBotao != null) || (this.codAplicacaoBotao != null && !this.codAplicacaoBotao.equals(other.codAplicacaoBotao))) {
             return false;
         }
         return true;
@@ -95,6 +95,6 @@ public class Botao {
 
     @Override
     public String toString() {
-        return "hotel.model.Botao[ codBotao=" + codBotao + " ]";
+        return "hotel.model.Botao[ codBotao=" + codAplicacaoBotao + " ]";
     }
 }

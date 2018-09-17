@@ -203,6 +203,11 @@ public class frmPrincipal extends javax.swing.JFrame {
         mnuUsuario.add(mniUsuario);
 
         mniPermissao.setText("Permissão");
+        mniPermissao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniPermissaoActionPerformed(evt);
+            }
+        });
         mnuUsuario.add(mniPermissao);
 
         mniAuditoria.setText("Auditoria");
@@ -309,6 +314,10 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void mniBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniBotaoActionPerformed
         abrirTela(new frmAplicacaoBotoes());
     }//GEN-LAST:event_mniBotaoActionPerformed
+
+    private void mniPermissaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniPermissaoActionPerformed
+        abrirTela(new frmPermissao());
+    }//GEN-LAST:event_mniPermissaoActionPerformed
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

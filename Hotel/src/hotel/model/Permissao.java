@@ -18,15 +18,9 @@ public class Permissao {
     @Column(name = "cod_permissao")
     private Integer codPermissao;
 
-    @Column(name = "ind_leitura")
-    private String indLeitura;
-
-    @Column(name = "ind_escrita")
-    private String indEscrita;
-
-    @JoinColumn(name = "cod_aplicacao", referencedColumnName = "cod_aplicacao")
+    @JoinColumn(name = "cod_aplicacao_botao", referencedColumnName = "cod_aplicacao_botao")
     @ManyToOne(optional = false)
-    private Aplicacao codAplicacao;
+    private Botao codAplicacaoBotao;
 
     @JoinColumn(name = "cod_usuario", referencedColumnName = "cod_usuario")
     @ManyToOne(optional = false)
@@ -39,10 +33,18 @@ public class Permissao {
         this.codPermissao = codPermissao;
     }
 
-    public Permissao(Integer codPermissao, String indLeitura, String indEscrita) {
+    public Permissao(Integer codPermissao, Botao codAplicacaoBotao, Usuario codUsuario) {
         this.codPermissao = codPermissao;
-        this.indLeitura = indLeitura;
-        this.indEscrita = indEscrita;
+        this.codAplicacaoBotao = codAplicacaoBotao;
+        this.codUsuario = codUsuario;
+    }
+
+    public Botao getCodBotao() {
+        return codAplicacaoBotao;
+    }
+
+    public void setCodBotao(Botao codAplicacaoBotao) {
+        this.codAplicacaoBotao = codAplicacaoBotao;
     }
 
     public Integer getCodPermissao() {
@@ -51,30 +53,6 @@ public class Permissao {
 
     public void setCodPermissao(Integer codPermissao) {
         this.codPermissao = codPermissao;
-    }
-
-    public String getIndLeitura() {
-        return indLeitura;
-    }
-
-    public void setIndLeitura(String indLeitura) {
-        this.indLeitura = indLeitura;
-    }
-
-    public String getIndEscrita() {
-        return indEscrita;
-    }
-
-    public void setIndEscrita(String indEscrita) {
-        this.indEscrita = indEscrita;
-    }
-
-    public Aplicacao getCodAplicacao() {
-        return codAplicacao;
-    }
-
-    public void setCodAplicacao(Aplicacao codAplicacao) {
-        this.codAplicacao = codAplicacao;
     }
 
     public Usuario getCodUsuario() {
@@ -108,10 +86,5 @@ public class Permissao {
     @Override
     public String toString() {
         return "hotel.model.Permissao[ codPermissao=" + codPermissao + " ]";
-    }
-
-    public String auditoriaFormat() {
-        return "ID: " + codPermissao + " ID Aplicação: " + codAplicacao.getCodAplicacao() + " ID Usuário: " + codUsuario.getCodUsuario() + " Leitura: " + indLeitura
-                + " Escrita: " + indEscrita;
     }
 }

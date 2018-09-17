@@ -39,6 +39,15 @@ public class UsuarioController extends BaseController<Usuario> {
         }
         return null;
     }
+    
+    public List<Usuario> getReadAllAtivos() {
+        try {
+            return UsuarioRepository.readAllAtivos();
+        } catch (Exception ex) {
+            LoggerController.log(this.getClass(), ex);
+        }
+        return null;
+    }
 
     public String resetPassword(int id) {
         try {

@@ -1,9 +1,10 @@
 package hotel.controller;
 
-import hotel.model.Botao;
-import hotel.repository.BotaoRepository;
+import hotel.model.Permissao;
+import hotel.repository.PermissaoRepository;
 import java.awt.HeadlessException;
 import java.util.List;
+import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -11,29 +12,29 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-public class BotaoController extends BaseController<Botao>{
+public class PermissaoController extends BaseController<Permissao> {
 
-    public Botao getReadId(int pCodigo) {
+    public Permissao getReadId(int pCodigo) {
         try {
-            return BotaoRepository.readId(pCodigo);
+            return PermissaoRepository.readId(pCodigo);
         } catch (Exception ex) {
             LoggerController.log(this.getClass(), ex);
         }
         return null;
     }
-    
-    public List<Botao> getReadAll() {
+
+    public List<Permissao> getReadAll() {
         try {
-            return BotaoRepository.readAll();
+            return PermissaoRepository.readAll();
         } catch (Exception ex) {
             LoggerController.log(this.getClass(), ex);
         }
         return null;
     }
-    
-    public List<Botao> readAllAplicacaoID(int pCodigo) {
+
+    public List<Permissao> getReadAllTelaID(int pCodigo) {
         try {
-            return BotaoRepository.readAllAplicacaoID(pCodigo);
+            return PermissaoRepository.readAllByTela(pCodigo);
         } catch (Exception ex) {
             LoggerController.log(this.getClass(), ex);
         }
@@ -47,65 +48,79 @@ public class BotaoController extends BaseController<Botao>{
             Object[] lTabelaTitulo = new Object[4];
             lTabelaTitulo[0] = "Código";
             lTabelaTitulo[1] = "Tela";
-            lTabelaTitulo[2] = "Nome";
-            lTabelaTitulo[3] = "Nome arquivo";
+            lTabelaTitulo[2] = "Botão";
+            lTabelaTitulo[3] = "Usuário";
             int lLinha = 0;
             switch (pOption) {
                 case 0: {
-                    List<Botao> listBotao = BotaoRepository.readAll();
-                    lTabela = new Object[listBotao.size()][4];
-                    for (Botao b : listBotao) {
+                    List<Permissao> listPermissao = PermissaoRepository.readAll();
+                    lTabela = new Object[listPermissao.size()][4];
+                    for (Permissao p : listPermissao) {
 
-                        lTabela[lLinha][0] = b.getCodAplicacaoBotao();
-                        lTabela[lLinha][1] = b.getCodAplicacao().getNomArquivoJava();
-                        lTabela[lLinha][2] = b.getNomBotao();
-                        lTabela[lLinha][3] = b.getNomBotaoForm();
+                        lTabela[lLinha][0] = p.getCodPermissao();
+                        lTabela[lLinha][1] = p.getCodBotao().getCodAplicacao().getNomAplicacao();
+                        lTabela[lLinha][2] = p.getCodBotao().getNomBotao();
+                        lTabela[lLinha][3] = p.getCodUsuario().getDesLogin();
                         lLinha++;
                     }
                     break;
                 }
                 case 1: {
-                    List<Botao> listBotao = BotaoRepository.read(pParam);
-                    lTabela = new Object[listBotao.size()][4];
-                    for (Botao b : listBotao) {
+                    List<Permissao> listPermissao = PermissaoRepository.read(pParam);
+                    lTabela = new Object[listPermissao.size()][4];
+                    for (Permissao p : listPermissao) {
 
-                        lTabela[lLinha][0] = b.getCodAplicacaoBotao();
-                        lTabela[lLinha][1] = b.getCodAplicacao().getNomArquivoJava();
-                        lTabela[lLinha][2] = b.getNomBotao();
-                        lTabela[lLinha][3] = b.getNomBotaoForm();
+                        lTabela[lLinha][0] = p.getCodPermissao();
+                        lTabela[lLinha][1] = p.getCodBotao().getCodAplicacao().getNomAplicacao();
+                        lTabela[lLinha][2] = p.getCodBotao().getNomBotao();
+                        lTabela[lLinha][3] = p.getCodUsuario().getDesLogin();
+                        lLinha++;
+                    }
+                    break;
+                }
+                case 2: {
+                    Permissao permissao = PermissaoRepository.readId(Integer.parseInt(pParam));
+                    if (permissao == null) {
+                        JOptionPane.showMessageDialog(null, "Permissão não encontrada pelo cóodigo: " + pParam);
+                    } else {
+
+                        lTabela[lLinha][0] = permissao.getCodPermissao();
+                        lTabela[lLinha][1] = permissao.getCodBotao().getCodAplicacao().getNomAplicacao();
+                        lTabela[lLinha][2] = permissao.getCodBotao().getNomBotao();
+                        lTabela[lLinha][3] = permissao.getCodUsuario().getDesLogin();
                         lLinha++;
                     }
                     break;
                 }
                 case 3: {
-                    List<Botao> listBotao = BotaoRepository.readAllAplicacaoID(Integer.parseInt(pParam));
+                    List<Permissao> listPermissao = PermissaoRepository.readAllByTela(Integer.parseInt(pParam));
                     lTabelaTitulo = new Object[3];
                     lTabelaTitulo[0] = "Código";
                     lTabelaTitulo[1] = "Nome";
                     lTabelaTitulo[2] = "Tem acesso?";
-                    lTabela = new Object[listBotao.size()][3];
+                    lTabela = new Object[listPermissao.size()][3];
                     
-                    for (Botao b : listBotao) {
-                        Object o = false;
-                        lTabela[lLinha][0] = b.getCodAplicacaoBotao();
-                        lTabela[lLinha][1] = b.getNomBotao();
-                        lTabela[lLinha][2] = o;
+                    for (Permissao p : listPermissao) {
+                        JCheckBox checkBox = new JCheckBox();
+                        checkBox.setVisible(true);
+                        lTabela[lLinha][0] = p.getCodBotao().getCodAplicacaoBotao();
+                        lTabela[lLinha][1] = p.getCodBotao().getNomBotao();
+                        lTabela[lLinha][2] = checkBox;
                         lLinha++;
                     }
                     break;
                 }
                 default:
-                    Botao botao = BotaoRepository.readId(Integer.parseInt(pParam));
-                    if (botao == null) {
-                        JOptionPane.showMessageDialog(null, "Botão não encontrado pelo código: " + pParam);
-                    } else {
+                    List<Permissao> listPermissao = PermissaoRepository.readAll();
+                    lTabela = new Object[listPermissao.size()][4];
+                    for (Permissao p : listPermissao) {
 
                         lTabela = new Object[1][4];
-                        
-                        lTabela[lLinha][0] = botao.getCodAplicacaoBotao();
-                        lTabela[lLinha][1] = botao.getCodAplicacao().getNomArquivoJava();
-                        lTabela[lLinha][2] = botao.getNomBotao();
-                        lTabela[lLinha][3] = botao.getNomBotaoForm();
+
+                        lTabela[lLinha][0] = p.getCodPermissao();
+                        lTabela[lLinha][1] = p.getCodBotao().getCodAplicacao().getNomAplicacao();
+                        lTabela[lLinha][2] = p.getCodBotao().getNomBotao();
+                        lTabela[lLinha][3] = p.getCodUsuario().getDesLogin();
                         lLinha++;
                     }
                     break;
@@ -119,15 +134,9 @@ public class BotaoController extends BaseController<Botao>{
 
                 @Override
                 public Class getColumnClass(int pColumn) {
-                    if (pOption == 3) {
-                        if(pColumn == 2) {
-                            return Boolean.class;
-                        } else {
-                            return Object.class;
-                        }
-                    } else {
-                        return Object.class;
+                    if (pColumn == 2) {
                     }
+                    return Object.class;
                 }
             });
 
@@ -164,7 +173,7 @@ public class BotaoController extends BaseController<Botao>{
                         break;
                 }
             }
-        } catch (HeadlessException | NumberFormatException ex) {
+        } catch (HeadlessException ex) {
             LoggerController.log(this.getClass(), ex);
         }
     }
