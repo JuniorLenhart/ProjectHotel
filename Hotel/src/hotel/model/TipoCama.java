@@ -94,8 +94,4 @@ public class TipoCama {
     public String toString() {
         return "hotel.model.TipoCama[ codTipoCama=" + codTipoCama + " ]";
     }
-
-    public String auditoriaFormat() {
-        return "ID: " + codTipoCama + " Descriçao: " + desTipoCama + " Quantidade de lugares tipo cama: " + qtdLugarTipoCama + " Situação: " + indSituacao;
-    }
 }

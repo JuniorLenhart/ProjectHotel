@@ -24,7 +24,7 @@ public class AuditoriaRepository {
     }
 
     public static List<Auditoria> readLogin(String pParam) {
-        Query query = HibernateUtil.getSession().createQuery("FROM Auditoria WHERE LOWER(codUsuario.desLogin) = '" + pParam.toLowerCase() + "'");
+        Query query = HibernateUtil.getSession().createQuery("FROM Auditoria WHERE LOWER(usuario.desLogin) = '" + pParam.toLowerCase() + "'");
         return query.list();
     }
 

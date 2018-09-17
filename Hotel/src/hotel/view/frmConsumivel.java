@@ -1,14 +1,12 @@
 package hotel.view;
 
-import hotel.controller.AuditoriaController;
 import hotel.support.DocumentoLimitado;
 import hotel.support.LimpaCampos;
 import hotel.support.Validacao;
 import hotel.controller.ConsumivelController;
-import hotel.model.Auditoria;
+import hotel.controller.PermissaoController;
 import hotel.model.Consumivel;
 import hotel.model.TipoConsumivel;
-import hotel.support.Formatacao;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +19,10 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
 
     Consumivel consumivel;
     ConsumivelController consumivelController;
+
+    boolean isSalvar = false;
+    boolean isEditar = false;
+    boolean isExcluir = false;
 
     public frmConsumivel() {
         initComponents();
@@ -40,8 +42,16 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
             }
         });
 
-        setAba(0);
         addVariaveisComboBox(cmbTipo);
+
+        loadPermission();
+        setAba(0);
+    }
+
+    private void loadPermission() {
+        isSalvar = PermissaoController.hasPermission("frmConsumivel", "btnSalvar");
+        isEditar = PermissaoController.hasPermission("frmConsumivel", "btnEditar");
+        isExcluir = PermissaoController.hasPermission("frmConsumivel", "btnExcluir");
     }
 
     public void setVisibleCodigo(boolean isVisible) {
@@ -68,7 +78,7 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
 
     private void habilitar() {
         if (tbpConsumivel.getSelectedIndex() == 0) {
-            btnSalvar.setEnabled(true);
+            btnSalvar.setEnabled(isSalvar && true);
             btnEditar.setEnabled(false);
             btnExcluir.setEnabled(false);
         } else {
@@ -78,8 +88,8 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
             }
 
             btnSalvar.setEnabled(false);
-            btnEditar.setEnabled(lSituacao.equals("Ativo"));
-            btnExcluir.setEnabled(lSituacao.equals("Ativo"));
+            btnEditar.setEnabled(isEditar && lSituacao.equals("Ativo"));
+            btnExcluir.setEnabled(isExcluir && lSituacao.equals("Ativo"));
         }
     }
 

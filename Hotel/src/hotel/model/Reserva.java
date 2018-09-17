@@ -186,10 +186,4 @@ public class Reserva {
     public String toString() {
         return "hotel.model.Reserva[ codReserva=" + codReserva + " ]";
     }
-
-    public String auditoriaFormat() {
-        return "ID: " + codReserva + " ID Pessoa: " + pessoa.getCodPessoa() + " ID Usuário: " + usuario.getCodUsuario() + " ID Quarto: " + quarto.getCodQuarto()
-                + " Data reserva: " + dtaReserva + " Data entrada: " + dtaEntrada + " Data saida: " + dtaSaida + " Valor locação: " + vlrReserva
-                + " Quantidade lugares:" + qtdLugar + " Situação: " + indSituacao;
-    }
 }

@@ -41,11 +41,11 @@ public class Financeiro {
 
     @JoinColumn(name = "cod_forma_pgto", referencedColumnName = "cod_forma_pgto")
     @ManyToOne(optional = false)
-    private FormaPagamento codFormaPgto;
+    private FormaPagamento formaPgto;
 
     @JoinColumn(name = "cod_locacao", referencedColumnName = "cod_locacao")
     @ManyToOne(optional = false)
-    private Locacao codLocacao;
+    private Locacao locacao;
 
     public Financeiro() {
     }
@@ -109,20 +109,20 @@ public class Financeiro {
         this.vlrPago = vlrPago;
     }
 
-    public FormaPagamento getCodFormaPgto() {
-        return codFormaPgto;
+    public FormaPagamento getFormaPgto() {
+        return formaPgto;
     }
 
-    public void setCodFormaPgto(FormaPagamento codFormaPgto) {
-        this.codFormaPgto = codFormaPgto;
+    public void setFormaPgto(FormaPagamento formaPgto) {
+        this.formaPgto = formaPgto;
     }
 
-    public Locacao getCodLocacao() {
-        return codLocacao;
+    public Locacao getLocacao() {
+        return locacao;
     }
 
-    public void setCodLocacao(Locacao codLocacao) {
-        this.codLocacao = codLocacao;
+    public void setLocacao(Locacao locacao) {
+        this.locacao = locacao;
     }
 
     @Override
@@ -147,9 +147,5 @@ public class Financeiro {
     @Override
     public String toString() {
         return "hotel.model.Financeiro[ codFinanceiro=" + codFinanceiro + " ]";
-    }
-    
-    public String auditoriaFormat() {
-        return "ID: " + codFinanceiro + " ID Locação: " + codLocacao.getCodLocacao() + " ID FormaPgto: " + codFormaPgto.getCodFormaPgto() + " Parcela: " + parcela + " Data venc: " + dtaVencimento + " Data pgto: " + dtaPgto + " Valor financeiro: " + vlrFinanceiro + " Valor pago: " + vlrPago;
     }
 }

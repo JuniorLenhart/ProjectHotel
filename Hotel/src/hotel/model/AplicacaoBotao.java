@@ -12,21 +12,21 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "aplicacao_botao")
 public class AplicacaoBotao {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cod_aplicacao_botao")
     private Integer codAplicacaoBotao;
-    
+
     @Column(name = "nom_botao")
     private String nomBotao;
-    
+
     @Column(name = "nom_botao_form")
     private String nomBotaoForm;
-    
+
     @JoinColumn(name = "cod_aplicacao", referencedColumnName = "cod_aplicacao")
     @ManyToOne(optional = false)
-    private Aplicacao codAplicacao;
+    private Aplicacao aplicacao;
 
     public AplicacaoBotao() {
     }
@@ -35,11 +35,11 @@ public class AplicacaoBotao {
         this.codAplicacaoBotao = codBotao;
     }
 
-    public AplicacaoBotao(Integer codBotao, String nomBotao, String nomBotaoForm, Aplicacao codAplicacao) {
+    public AplicacaoBotao(Integer codBotao, String nomBotao, String nomBotaoForm, Aplicacao aplicacao) {
         this.codAplicacaoBotao = codBotao;
         this.nomBotao = nomBotao;
         this.nomBotaoForm = nomBotaoForm;
-        this.codAplicacao = codAplicacao;
+        this.aplicacao = aplicacao;
     }
 
     public Integer getCodAplicacaoBotao() {
@@ -66,12 +66,12 @@ public class AplicacaoBotao {
         this.nomBotaoForm = nomBotaoForm;
     }
 
-    public Aplicacao getCodAplicacao() {
-        return codAplicacao;
+    public Aplicacao getAplicacao() {
+        return aplicacao;
     }
 
-    public void setCodAplicacao(Aplicacao codAplicacao) {
-        this.codAplicacao = codAplicacao;
+    public void setCodAplicacao(Aplicacao aplicacao) {
+        this.aplicacao = aplicacao;
     }
 
     @Override

@@ -11,7 +11,7 @@ public class TipoCamaRepository {
         Query query = HibernateUtil.getSession().createQuery("FROM TipoCama");
         return query.list();
     }
-    
+
     public static List<TipoCama> readAllAtivos() {
         Query query = HibernateUtil.getSession().createQuery("FROM TipoCama WHERE indSituacao = 'A'");
         return query.list();

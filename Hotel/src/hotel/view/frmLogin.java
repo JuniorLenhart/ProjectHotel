@@ -29,9 +29,9 @@ public class frmLogin extends javax.swing.JFrame {
         usuarioController = new UsuarioController();
         parametroController = new ParametroController();
 
-        setLocationRelativeTo(null); //centralizando o form
+        setLocationRelativeTo(null);
 
-        pnlLogin.setBackground(new Color(0, 0, 0, 100)); //setando opacidade do panel
+        pnlLogin.setBackground(new Color(0, 0, 0, 100));
         try {
             lblBackground.setIcon(readingAndCreatingResizeImage());
         } catch (IOException ex) {
@@ -41,11 +41,11 @@ public class frmLogin extends javax.swing.JFrame {
         definindoAperenciaButton();
 
         setShape(new RoundRectangle2D.Double(0, 0, 800, 550, 60, 60));
-        
+
         tfdLogin.requestFocus();
     }
 
-    public void definindoAperenciaButton() { //Deixando um JButton com cara de JLabel
+    public void definindoAperenciaButton() {
         btnFechar.setFocusPainted(false);
         btnFechar.setMargin(new Insets(0, 0, 0, 0));
         btnFechar.setContentAreaFilled(false);

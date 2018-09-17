@@ -82,8 +82,4 @@ public class FormaPagamento {
     public String toString() {
         return "hotel.model.FormaPagamento[ codFormaPgto=" + codFormaPgto + " ]";
     }
-    
-    public String auditoriaFormat() {
-        return "ID: "+codFormaPgto+" Descrição: "+desFormaPgto+" Situação: "+indSituacao;
-    }
 }

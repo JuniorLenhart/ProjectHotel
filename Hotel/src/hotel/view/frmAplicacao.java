@@ -196,7 +196,7 @@ public class frmAplicacao extends javax.swing.JInternalFrame {
         });
 
         pnlCadastro.setBackground(new java.awt.Color(255, 255, 255));
-        pnlCadastro.setBorder(javax.swing.BorderFactory.createTitledBorder(null, " Cadastro de Aplicação", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
+        pnlCadastro.setBorder(javax.swing.BorderFactory.createTitledBorder(null, " Cadastro de Aplicação ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
 
         lblNome.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lblNome.setForeground(new java.awt.Color(102, 102, 102));
@@ -227,7 +227,7 @@ public class frmAplicacao extends javax.swing.JInternalFrame {
         lblNomeArquivo.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lblNomeArquivo.setForeground(new java.awt.Color(102, 102, 102));
         lblNomeArquivo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblNomeArquivo.setText("<html>Nome arquivo<font color='red'><b>*</b></font>:</html>");
+        lblNomeArquivo.setText("<html>Nome Arquivo<font color='red'><b>*</b></font>:</html>");
 
         javax.swing.GroupLayout pnlCadastroLayout = new javax.swing.GroupLayout(pnlCadastro);
         pnlCadastro.setLayout(pnlCadastroLayout);
@@ -244,7 +244,7 @@ public class frmAplicacao extends javax.swing.JInternalFrame {
                     .addComponent(tfdCodigo)
                     .addComponent(tfdNome)
                     .addComponent(cmbTipo, 0, 290, Short.MAX_VALUE))
-                .addContainerGap(112, Short.MAX_VALUE))
+                .addContainerGap(110, Short.MAX_VALUE))
         );
         pnlCadastroLayout.setVerticalGroup(
             pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

@@ -31,7 +31,7 @@ public class Usuario {
     @Column(name = "ind_situacao")
     private String indSituacao;
 
-    @OneToMany(mappedBy = "codUsuario", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "usuario", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Permissao> permissao;
 
     @JoinColumn(name = "cod_usuario", referencedColumnName = "cod_pessoa", insertable = false, updatable = false)
@@ -131,14 +131,5 @@ public class Usuario {
     @Override
     public String toString() {
         return "hotel.model.Usuario[ codUsuario=" + codUsuario + " ]";
-    }
-
-    public String auditoriaFormat() {
-        String desListPermissao = "";
-        for (Permissao permissao1 : permissao) {
-            desListPermissao += permissao1.getCodPermissao() + ", ";
-        }
-        return "ID: " + codUsuario + " ID Pessoa: " + pessoa.getCodPessoa() + " ID Permissão(s): " + desListPermissao
-                + " Login: " + desLogin + " Senha: " + desSenha + " Tipo: " + indTipo + " Situação: " + indSituacao;
     }
 }

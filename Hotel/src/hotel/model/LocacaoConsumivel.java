@@ -27,11 +27,11 @@ public class LocacaoConsumivel {
 
     @JoinColumn(name = "cod_consumivel", referencedColumnName = "cod_consumivel")
     @ManyToOne(optional = false)
-    private Consumivel codConsumivel;
+    private Consumivel consumivel;
 
     @JoinColumn(name = "cod_locacao", referencedColumnName = "cod_locacao")
     @ManyToOne(optional = false)
-    private Locacao codLocacao;
+    private Locacao locacao;
 
     public LocacaoConsumivel() {
     }
@@ -70,20 +70,20 @@ public class LocacaoConsumivel {
         this.vlrConsumivel = vlrConsumivel;
     }
 
-    public Consumivel getCodConsumivel() {
-        return codConsumivel;
+    public Consumivel getConsumivel() {
+        return consumivel;
     }
 
-    public void setCodConsumivel(Consumivel codConsumivel) {
-        this.codConsumivel = codConsumivel;
+    public void setConsumivel(Consumivel consumivel) {
+        this.consumivel = consumivel;
     }
 
-    public Locacao getCodLocacao() {
-        return codLocacao;
+    public Locacao getLocacao() {
+        return locacao;
     }
 
-    public void setCodLocacao(Locacao codLocacao) {
-        this.codLocacao = codLocacao;
+    public void setLocacao(Locacao locacao) {
+        this.locacao = locacao;
     }
 
     @Override
@@ -108,10 +108,5 @@ public class LocacaoConsumivel {
     @Override
     public String toString() {
         return "hotel.model.LocacaoConsumivel[ codLocacaoConsumivel=" + codLocacaoConsumivel + " ]";
-    }
-
-    public String auditoriaFormat() {
-        return "ID: " + codLocacaoConsumivel + " ID Consumível: " + codConsumivel.getCodConsumivel()+ " ID Locação: " + codLocacao.getCodLocacao()+ " Quantidade: " + qtdConsumivel
-                + " Valor: " + vlrConsumivel;
     }
 }

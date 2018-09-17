@@ -198,7 +198,7 @@
                       <EmptySpace min="-2" pref="89" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="lblCodigo" alignment="0" max="32767" attributes="0"/>
-                          <Component id="lblNomeArquivo" alignment="1" max="32767" attributes="0"/>
+                          <Component id="lblNomeBotao" alignment="1" max="32767" attributes="0"/>
                           <Component id="lblNome" alignment="1" max="32767" attributes="0"/>
                           <Component id="lblTela" alignment="1" max="32767" attributes="0"/>
                       </Group>
@@ -207,9 +207,9 @@
                           <Component id="tfdCodigo" alignment="0" max="32767" attributes="0"/>
                           <Component id="tfdNome" alignment="0" max="32767" attributes="0"/>
                           <Component id="cmbTela" alignment="1" pref="290" max="32767" attributes="0"/>
-                          <Component id="tfdBotaoNome" alignment="0" max="32767" attributes="0"/>
+                          <Component id="tfdNomeBotao" alignment="0" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="89" max="32767" attributes="0"/>
+                      <EmptySpace pref="149" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -228,8 +228,8 @@
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lblNomeArquivo" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="tfdBotaoNome" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblNomeBotao" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="tfdNomeBotao" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -299,7 +299,7 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblNomeArquivo">
+            <Component class="javax.swing.JLabel" name="lblNomeBotao">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="16" style="1"/>
@@ -308,7 +308,7 @@
                   <Color blue="66" green="66" red="66" type="rgb"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="4"/>
-                <Property name="text" type="java.lang.String" value="&lt;html&gt;Bot&#xe3;o nome arquivo&lt;font color=&apos;red&apos;&gt;&lt;b&gt;*&lt;/b&gt;&lt;/font&gt;:&lt;/html&gt;"/>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;Nome Bot&#xe3;o&lt;font color=&apos;red&apos;&gt;&lt;b&gt;*&lt;/b&gt;&lt;/font&gt;:&lt;/html&gt;"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="lblTela">
@@ -339,7 +339,7 @@
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
             </Component>
-            <Component class="javax.swing.JTextField" name="tfdBotaoNome">
+            <Component class="javax.swing.JTextField" name="tfdNomeBotao">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="SansSerif" size="14" style="0"/>
@@ -352,9 +352,6 @@
                   </Border>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tfdBotaoNomeTyped"/>
-              </Events>
             </Component>
           </SubComponents>
         </Container>

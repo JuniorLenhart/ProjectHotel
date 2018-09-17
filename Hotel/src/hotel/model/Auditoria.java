@@ -33,7 +33,7 @@ public class Auditoria {
 
     @JoinColumn(name = "cod_usuario", referencedColumnName = "cod_usuario")
     @ManyToOne(optional = false)
-    private Usuario codUsuario;
+    private Usuario usuario;
 
     public Auditoria() {
     }
@@ -81,12 +81,12 @@ public class Auditoria {
         this.desAuditoria = desAuditoria;
     }
 
-    public Usuario getCodUsuario() {
-        return codUsuario;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setCodUsuario(Usuario codUsuario) {
-        this.codUsuario = codUsuario;
+    public void setCodUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     @Override

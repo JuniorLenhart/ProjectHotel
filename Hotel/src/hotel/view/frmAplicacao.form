@@ -71,7 +71,7 @@
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title=" Cadastro de Aplica&#xe7;&#xe3;o">
+                <TitledBorder title=" Cadastro de Aplica&#xe7;&#xe3;o ">
                   <Font PropertyName="font" name="Segoe UI" size="16" style="1"/>
                 </TitledBorder>
               </Border>
@@ -101,7 +101,7 @@
                           <Component id="tfdNome" alignment="0" max="32767" attributes="0"/>
                           <Component id="cmbTipo" alignment="0" pref="290" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="112" max="32767" attributes="0"/>
+                      <EmptySpace pref="110" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -213,7 +213,7 @@
                   <Color blue="66" green="66" red="66" type="rgb"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="4"/>
-                <Property name="text" type="java.lang.String" value="&lt;html&gt;Nome arquivo&lt;font color=&apos;red&apos;&gt;&lt;b&gt;*&lt;/b&gt;&lt;/font&gt;:&lt;/html&gt;"/>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;Nome Arquivo&lt;font color=&apos;red&apos;&gt;&lt;b&gt;*&lt;/b&gt;&lt;/font&gt;:&lt;/html&gt;"/>
               </Properties>
             </Component>
           </SubComponents>

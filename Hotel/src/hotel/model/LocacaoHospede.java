@@ -23,11 +23,11 @@ public class LocacaoHospede {
 
     @JoinColumn(name = "cod_locacao", referencedColumnName = "cod_locacao")
     @ManyToOne(optional = false)
-    private Locacao codLocacao;
+    private Locacao locacao;
 
     @JoinColumn(name = "cod_pessoa", referencedColumnName = "cod_pessoa")
     @ManyToOne(optional = false)
-    private Pessoa codPessoa;
+    private Pessoa pessoa;
 
     public LocacaoHospede() {
     }
@@ -57,20 +57,20 @@ public class LocacaoHospede {
         this.indResponsavel = indResponsavel;
     }
 
-    public Locacao getCodLocacao() {
-        return codLocacao;
+    public Locacao getLocacao() {
+        return locacao;
     }
 
-    public void setCodLocacao(Locacao codLocacao) {
-        this.codLocacao = codLocacao;
+    public void setLocacao(Locacao locacao) {
+        this.locacao = locacao;
     }
 
-    public Pessoa getCodPessoa() {
-        return codPessoa;
+    public Pessoa getPessoa() {
+        return pessoa;
     }
 
-    public void setCodPessoa(Pessoa codPessoa) {
-        this.codPessoa = codPessoa;
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 
     @Override
@@ -95,9 +95,5 @@ public class LocacaoHospede {
     @Override
     public String toString() {
         return "hotel.model.LocacaoHospede[ codLocacaoHospede=" + codLocacaoHospede + " ]";
-    }
-
-    public String auditoriaFormat() {
-        return "ID: " + codLocacaoHospede + " ID Locação: " + codLocacao.getCodLocacao() + " ID Pessoa: " + codPessoa.getCodPessoa() + " Responsável: " + indResponsavel;
     }
 }

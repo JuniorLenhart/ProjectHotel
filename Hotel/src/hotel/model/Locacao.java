@@ -42,11 +42,11 @@ public class Locacao {
 
     @JoinColumn(name = "cod_quarto", referencedColumnName = "cod_quarto")
     @ManyToOne(optional = false)
-    private Quarto codQuarto;
+    private Quarto quarto;
 
     @JoinColumn(name = "cod_usuario", referencedColumnName = "cod_usuario")
     @ManyToOne(optional = false)
-    private Usuario codUsuario;
+    private Usuario usuario;
 
     public Locacao() {
     }
@@ -111,20 +111,20 @@ public class Locacao {
         this.indSituacao = indSituacao;
     }
 
-    public Quarto getCodQuarto() {
-        return codQuarto;
+    public Quarto getQuarto() {
+        return quarto;
     }
 
-    public void setCodQuarto(Quarto codQuarto) {
-        this.codQuarto = codQuarto;
+    public void setQuarto(Quarto codQuarto) {
+        this.quarto = codQuarto;
     }
 
-    public Usuario getCodUsuario() {
-        return codUsuario;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setCodUsuario(Usuario codUsuario) {
-        this.codUsuario = codUsuario;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     @Override

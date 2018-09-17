@@ -37,7 +37,7 @@ public class AuditoriaController extends BaseController<Auditoria> {
                     lTabela = new Object[listAuditoria.size()][5];
                     for (Auditoria a : listAuditoria) {
                         lTabela[lLinha][0] = a.getCodAuditoria();
-                        lTabela[lLinha][1] = a.getCodUsuario().getDesLogin();
+                        lTabela[lLinha][1] = a.getUsuario().getDesLogin();
                         lTabela[lLinha][2] = a.getTipAuditoria();
                         lTabela[lLinha][3] = a.getDtaAuditoria();
                         lTabela[lLinha][4] = a.getDesAuditoria();
@@ -50,7 +50,7 @@ public class AuditoriaController extends BaseController<Auditoria> {
                     lTabela = new Object[listAuditoria.size()][5];
                     for (Auditoria a : listAuditoria) {
                         lTabela[lLinha][0] = a.getCodAuditoria();
-                        lTabela[lLinha][1] = a.getCodUsuario().getDesLogin();
+                        lTabela[lLinha][1] = a.getUsuario().getDesLogin();
                         lTabela[lLinha][2] = a.getTipAuditoria();
                         lTabela[lLinha][3] = a.getDtaAuditoria();
                         lTabela[lLinha][4] = a.getDesAuditoria();
@@ -63,7 +63,7 @@ public class AuditoriaController extends BaseController<Auditoria> {
                     lTabela = new Object[listAuditoria.size()][5];
                     for (Auditoria a : listAuditoria) {
                         lTabela[lLinha][0] = a.getCodAuditoria();
-                        lTabela[lLinha][1] = a.getCodUsuario().getDesLogin();
+                        lTabela[lLinha][1] = a.getUsuario().getDesLogin();
                         lTabela[lLinha][2] = a.getTipAuditoria();
                         lTabela[lLinha][3] = a.getDtaAuditoria();
                         lTabela[lLinha][4] = a.getDesAuditoria();
@@ -76,7 +76,7 @@ public class AuditoriaController extends BaseController<Auditoria> {
                     lTabela = new Object[listAuditoria.size()][5];
                     for (Auditoria a : listAuditoria) {
                         lTabela[lLinha][0] = a.getCodAuditoria();
-                        lTabela[lLinha][1] = a.getCodUsuario().getDesLogin();
+                        lTabela[lLinha][1] = a.getUsuario().getDesLogin();
                         lTabela[lLinha][2] = a.getTipAuditoria();
                         lTabela[lLinha][3] = a.getDtaAuditoria();
                         lTabela[lLinha][4] = a.getDesAuditoria();
@@ -92,7 +92,7 @@ public class AuditoriaController extends BaseController<Auditoria> {
 
                         lTabela = new Object[1][5];
                         lTabela[lLinha][0] = auditoria.getCodAuditoria();
-                        lTabela[lLinha][1] = auditoria.getCodUsuario().getDesLogin();
+                        lTabela[lLinha][1] = auditoria.getUsuario().getDesLogin();
                         lTabela[lLinha][2] = auditoria.getTipAuditoria();
                         lTabela[lLinha][3] = auditoria.getDtaAuditoria();
                         lTabela[lLinha][4] = auditoria.getDesAuditoria();

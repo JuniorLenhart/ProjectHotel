@@ -6,14 +6,14 @@ import java.util.List;
 import org.hibernate.Query;
 
 public class AplicacaoBotaoRepository {
-    
+
     public static List<AplicacaoBotao> readAll() {
         Query query = HibernateUtil.getSession().createQuery("FROM AplicacaoBotao");
         return query.list();
     }
-    
+
     public static List<AplicacaoBotao> readAllAplicacaoID(int pCodigo) {
-        Query query = HibernateUtil.getSession().createQuery("FROM AplicacaoBotao WHERE codAplicacao.codAplicacao = " + pCodigo);
+        Query query = HibernateUtil.getSession().createQuery("FROM AplicacaoBotao WHERE aplicacao.codAplicacao = " + pCodigo);
         return query.list();
     }
 

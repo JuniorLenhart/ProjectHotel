@@ -1,6 +1,6 @@
 package hotel.view;
 
-import hotel.model.Auditoria;
+import hotel.controller.PermissaoController;
 import hotel.model.Usuario;
 import hotel.support.Unit;
 import java.awt.Dimension;
@@ -11,20 +11,23 @@ import javax.swing.*;
 
 public class frmPrincipal extends javax.swing.JFrame {
 
-    public static Usuario usuario;
-    public static Auditoria auditoria;
     public frmPrincipal(Usuario usuario) {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
-        frmPrincipal.usuario = usuario;
-        auditoria = new Auditoria();
-        lblUsuarioLogado.setText(lblUsuarioLogado.getText() + this.usuario.getPessoa().getNomPessoa());
+
+        lblUsuarioLogado.setText(lblUsuarioLogado.getText() + usuario.getPessoa().getNomPessoa());
+
+        new PermissaoController().loadPermission(usuario);
     }
 
     public void abrirTela(JInternalFrame pInternalFrame) {
-        dkpSistema.add(pInternalFrame);
-        Unit.setPosition(pInternalFrame);
-        pInternalFrame.setVisible(true);
+        if (PermissaoController.hasPermission(pInternalFrame.getClass().getName().substring(11))) {
+            dkpSistema.add(pInternalFrame);
+            Unit.setPosition(pInternalFrame);
+            pInternalFrame.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Você não tem acesso neste formulário!");
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -318,7 +321,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void mniPermissaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniPermissaoActionPerformed
         abrirTela(new frmPermissao());
     }//GEN-LAST:event_mniPermissaoActionPerformed
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane dkpSistema;

@@ -11,8 +11,8 @@ public class frmAuditoriaDetalhe extends javax.swing.JDialog {
     public frmAuditoriaDetalhe(JFrame frame, boolean modal, Auditoria pAuditoria) {
         super(frame, modal);
         initComponents();
-
         setLocationRelativeTo(null);
+        
         this.auditoria = pAuditoria;
 
         popularTelaAuditoria();
@@ -20,11 +20,11 @@ public class frmAuditoriaDetalhe extends javax.swing.JDialog {
 
     private void popularTelaAuditoria() {
         lblCodigoValor.setText(auditoria.getCodAuditoria().toString());
-        lblUsuarioValor.setText(auditoria.getCodUsuario().getDesLogin());
+        lblUsuarioValor.setText(auditoria.getUsuario().getDesLogin());
         lblTipoValor.setText(auditoria.getTipAuditoria());
         String data, hora, descricao;
         descricao = auditoria.getDesAuditoria();
-        lblTabelaValor.setText(descricao.substring(descricao.indexOf(" ")+1, descricao.indexOf(" ", descricao.indexOf(" ") + 1)));
+        lblTabelaValor.setText(descricao.substring(descricao.indexOf(" ") + 1, descricao.indexOf(" ", descricao.indexOf(" ") + 1)));
         data = Formatacao.ajustaDataDMA(auditoria.getDtaAuditoria().toString());
         hora = Formatacao.ajustaDataHMS(auditoria.getDtaAuditoria().toString());
         lblDataValor.setText(data);

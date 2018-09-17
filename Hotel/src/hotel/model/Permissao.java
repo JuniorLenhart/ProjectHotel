@@ -1,5 +1,7 @@
 package hotel.model;
 
+import java.util.Map;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +15,8 @@ import javax.persistence.Table;
 @Table(name = "permissao")
 public class Permissao {
 
+    public static Map<String, Set<String>> PERMISSAO = null;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cod_permissao")
@@ -20,11 +24,11 @@ public class Permissao {
 
     @JoinColumn(name = "cod_aplicacao_botao", referencedColumnName = "cod_aplicacao_botao")
     @ManyToOne(optional = false)
-    private AplicacaoBotao codAplicacaoBotao;
+    private AplicacaoBotao aplicacaoBotao;
 
     @JoinColumn(name = "cod_usuario", referencedColumnName = "cod_usuario")
     @ManyToOne(optional = false)
-    private Usuario codUsuario;
+    private Usuario usuario;
 
     public Permissao() {
     }
@@ -33,18 +37,18 @@ public class Permissao {
         this.codPermissao = codPermissao;
     }
 
-    public Permissao(Integer codPermissao, AplicacaoBotao codAplicacaoBotao, Usuario codUsuario) {
+    public Permissao(Integer codPermissao, AplicacaoBotao aplicacaoBotao, Usuario usuario) {
         this.codPermissao = codPermissao;
-        this.codAplicacaoBotao = codAplicacaoBotao;
-        this.codUsuario = codUsuario;
+        this.aplicacaoBotao = aplicacaoBotao;
+        this.usuario = usuario;
     }
 
-    public AplicacaoBotao getCodAplicacaoBotao() {
-        return codAplicacaoBotao;
+    public AplicacaoBotao getAplicacaoBotao() {
+        return aplicacaoBotao;
     }
 
-    public void setCodAplicacaoBotao(AplicacaoBotao codAplicacaoBotao) {
-        this.codAplicacaoBotao = codAplicacaoBotao;
+    public void setAplicacaoBotao(AplicacaoBotao aplicacaoBotao) {
+        this.aplicacaoBotao = aplicacaoBotao;
     }
 
     public Integer getCodPermissao() {
@@ -55,12 +59,12 @@ public class Permissao {
         this.codPermissao = codPermissao;
     }
 
-    public Usuario getCodUsuario() {
-        return codUsuario;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setCodUsuario(Usuario codUsuario) {
-        this.codUsuario = codUsuario;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     @Override
@@ -72,7 +76,6 @@ public class Permissao {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Permissao)) {
             return false;
         }

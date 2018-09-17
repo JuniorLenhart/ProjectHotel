@@ -1,13 +1,11 @@
 package hotel.view;
 
-import hotel.controller.AuditoriaController;
 import hotel.support.DocumentoLimitado;
 import hotel.support.LimpaCampos;
 import hotel.support.Validacao;
 import hotel.model.FormaPagamento;
 import hotel.controller.FormaPagamentoController;
-import hotel.model.Auditoria;
-import hotel.support.Formatacao;
+import hotel.controller.PermissaoController;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
@@ -17,6 +15,10 @@ public class frmFormaPagamento extends javax.swing.JInternalFrame {
 
     FormaPagamento formaPagamento;
     FormaPagamentoController formaPagamentoController;
+
+    boolean isSalvar = false;
+    boolean isEditar = false;
+    boolean isExcluir = false;
 
     public frmFormaPagamento() {
         initComponents();
@@ -35,7 +37,14 @@ public class frmFormaPagamento extends javax.swing.JInternalFrame {
             }
         });
 
+        loadPermission();
         setAba(0);
+    }
+
+    private void loadPermission() {
+        isSalvar = PermissaoController.hasPermission("frmFormaPagamento", "btnSalvar");
+        isEditar = PermissaoController.hasPermission("frmFormaPagamento", "btnEditar");
+        isExcluir = PermissaoController.hasPermission("frmFormaPagamento", "btnExcluir");
     }
 
     public void setVisibleCodigo(boolean isVisible) {
@@ -62,7 +71,7 @@ public class frmFormaPagamento extends javax.swing.JInternalFrame {
 
     private void habilitar() {
         if (tbpFormaPagamento.getSelectedIndex() == 0) {
-            btnSalvar.setEnabled(true);
+            btnSalvar.setEnabled(isSalvar);
             btnEditar.setEnabled(false);
             btnExcluir.setEnabled(false);
         } else {
@@ -72,8 +81,8 @@ public class frmFormaPagamento extends javax.swing.JInternalFrame {
             }
 
             btnSalvar.setEnabled(false);
-            btnEditar.setEnabled(lSituacao.equals("Ativo"));
-            btnExcluir.setEnabled(lSituacao.equals("Ativo"));
+            btnEditar.setEnabled(isEditar && lSituacao.equals("Ativo"));
+            btnExcluir.setEnabled(isExcluir && lSituacao.equals("Ativo"));
             limparCampos();
         }
     }

@@ -7,14 +7,14 @@ import java.util.List;
 import org.hibernate.Query;
 
 public class LocacaoRepository {
-    
+
     public static List<Locacao> readAll() {
         Query query = HibernateUtil.getSession().createQuery("FROM Locacao");
         return query.list();
     }
 
     public static List<Locacao> readBetweenDates(String dateBegin, String dateEnd) {
-        Query query = HibernateUtil.getSession().createQuery("FROM Locacao WHERE dtaLocacao BETWEEN '"+dateBegin+"' AND '"+dateEnd+"'");
+        Query query = HibernateUtil.getSession().createQuery("FROM Locacao WHERE dtaLocacao BETWEEN '" + dateBegin + "' AND '" + dateEnd + "'");
         return query.list();
     }
 
@@ -28,7 +28,7 @@ public class LocacaoRepository {
         query.setParameter("indSituacao", pSituation);
         return query.list();
     }
-    
+
     public static BigInteger getLastCod() {
         Query query = HibernateUtil.getSession().createSQLQuery("SELECT currval(pg_get_serial_sequence('locacao', 'cod_locacao'))");
         return (BigInteger) query.uniqueResult();

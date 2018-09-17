@@ -84,10 +84,10 @@ public class LocacaoController extends BaseController<Locacao> {
                         String situacao = (l.getIndSituacao().equals("F") ? "Finalizada" : (l.getIndSituacao().equals("C") ? "Cancelada" : "Em aberto"));
 
                         lTabela[lLinha][0] = l.getCodLocacao();
-                        lTabela[lLinha][1] = l.getCodQuarto().getNumQuarto();
+                        lTabela[lLinha][1] = l.getQuarto().getNumQuarto();
                         for (LocacaoHospede lh : LocacaoHospedeRepository.readLocacaoId(l.getCodLocacao())) {
                             if (lh.getIndResponsavel().equals("S")) {
-                                lTabela[lLinha][2] = lh.getCodPessoa().getNomPessoa();
+                                lTabela[lLinha][2] = lh.getPessoa().getNomPessoa();
                             }
                         }
                         lTabela[lLinha][3] = Formatacao.ajustaDataDMAHS(l.getDtaEntrada().toString());
@@ -110,10 +110,10 @@ public class LocacaoController extends BaseController<Locacao> {
                         String situacao = (l.getIndSituacao().equals("F") ? "Finalizada" : (l.getIndSituacao().equals("C") ? "Cancelada" : "Em aberto"));
 
                         lTabela[lLinha][0] = l.getCodLocacao();
-                        lTabela[lLinha][1] = l.getCodQuarto().getNumQuarto();
+                        lTabela[lLinha][1] = l.getQuarto().getNumQuarto();
                         for (LocacaoHospede lh : LocacaoHospedeRepository.readLocacaoId(l.getCodLocacao())) {
                             if (lh.getIndResponsavel().equals("S")) {
-                                lTabela[lLinha][2] = lh.getCodPessoa().getNomPessoa();
+                                lTabela[lLinha][2] = lh.getPessoa().getNomPessoa();
                             }
                         }
                         lTabela[lLinha][3] = Formatacao.ajustaDataDMAHS(l.getDtaEntrada().toString());
@@ -135,10 +135,10 @@ public class LocacaoController extends BaseController<Locacao> {
 
                         lTabela = new Object[1][6];
                         lTabela[lLinha][0] = l.getCodLocacao();
-                        lTabela[lLinha][1] = l.getCodQuarto().getNumQuarto();
+                        lTabela[lLinha][1] = l.getQuarto().getNumQuarto();
                         for (LocacaoHospede lh : LocacaoHospedeRepository.readLocacaoId(l.getCodLocacao())) {
                             if (lh.getIndResponsavel().equals("S")) {
-                                lTabela[lLinha][2] = lh.getCodPessoa().getNomPessoa();
+                                lTabela[lLinha][2] = lh.getPessoa().getNomPessoa();
                             }
                         }
                         lTabela[lLinha][3] = Formatacao.ajustaDataDMAHS(l.getDtaEntrada().toString());
@@ -158,10 +158,10 @@ public class LocacaoController extends BaseController<Locacao> {
                         String situacao = (l.getIndSituacao().equals("F") ? "Finalizada" : (l.getIndSituacao().equals("C") ? "Cancelada" : "Em aberto"));
 
                         lTabela[lLinha][0] = l.getCodLocacao();
-                        lTabela[lLinha][1] = l.getCodQuarto().getNumQuarto();
+                        lTabela[lLinha][1] = l.getQuarto().getNumQuarto();
                         for (LocacaoHospede lh : LocacaoHospedeRepository.readLocacaoId(l.getCodLocacao())) {
                             if (lh.getIndResponsavel().equals("S")) {
-                                lTabela[lLinha][2] = lh.getCodPessoa().getNomPessoa();
+                                lTabela[lLinha][2] = lh.getPessoa().getNomPessoa();
                             }
                         }
                         lTabela[lLinha][3] = Formatacao.ajustaDataDMAHS(l.getDtaEntrada().toString());
@@ -181,10 +181,10 @@ public class LocacaoController extends BaseController<Locacao> {
                         String situacao = (l.getIndSituacao().equals("F") ? "Finalizada" : (l.getIndSituacao().equals("C") ? "Cancelada" : "Em aberto"));
 
                         lTabela[lLinha][0] = l.getCodLocacao();
-                        lTabela[lLinha][1] = l.getCodQuarto().getNumQuarto();
+                        lTabela[lLinha][1] = l.getQuarto().getNumQuarto();
                         for (LocacaoHospede lh : LocacaoHospedeRepository.readLocacaoId(l.getCodLocacao())) {
                             if (lh.getIndResponsavel().equals("S")) {
-                                lTabela[lLinha][2] = lh.getCodPessoa().getNomPessoa();
+                                lTabela[lLinha][2] = lh.getPessoa().getNomPessoa();
                             }
                         }
                         lTabela[lLinha][3] = Formatacao.ajustaDataDMAHS(l.getDtaEntrada().toString());

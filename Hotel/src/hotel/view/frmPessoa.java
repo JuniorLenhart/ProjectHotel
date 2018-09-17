@@ -1,5 +1,6 @@
 package hotel.view;
 
+import hotel.controller.PermissaoController;
 import hotel.controller.PessoaController;
 import hotel.model.Locacao;
 import hotel.model.Pessoa;
@@ -18,13 +19,17 @@ public class frmPessoa extends javax.swing.JInternalFrame {
     Pessoa pessoa;
     PessoaController pessoaController;
 
+    boolean isSalvar = false;
+    boolean isEditar = false;
+    boolean isExcluir = false;
+
     public frmPessoa() {
         iniciaConstrutor();
     }
 
     public frmPessoa(Pessoa pessoaTitular, Locacao locacao) {
         iniciaConstrutor();
-        
+
         if (pessoaTitular != null) {
             String[] enderecoSplitado = pessoaTitular.getDesEndereco().split(",");
             tfdRua.setText(enderecoSplitado[0]);
@@ -34,13 +39,13 @@ public class frmPessoa extends javax.swing.JInternalFrame {
             }
         }
     }
-    
+
     private void iniciaConstrutor() {
         initComponents();
         pessoa = new Pessoa();
         pessoaController = new PessoaController();
         setVisibleCodigo(false);
-        
+
         pessoaController.popularTabela(tblLista, 0, "", -1);
 
         tfdNome.setDocument(new DocumentoLimitado(200));
@@ -56,7 +61,14 @@ public class frmPessoa extends javax.swing.JInternalFrame {
             }
         });
 
+        loadPermission();
         setAba(0);
+    }
+
+    private void loadPermission() {
+        isSalvar = PermissaoController.hasPermission("frmPessoa", "btnSalvar");
+        isEditar = PermissaoController.hasPermission("frmPessoa", "btnEditar");
+        isExcluir = PermissaoController.hasPermission("frmPessoa", "btnExcluir");
     }
 
     public void setVisibleCodigo(boolean isVisible) {
@@ -84,7 +96,7 @@ public class frmPessoa extends javax.swing.JInternalFrame {
 
     private void habilitar() {
         if (tbpConsumivel.getSelectedIndex() == 0) {
-            btnSalvar.setEnabled(true);
+            btnSalvar.setEnabled(isSalvar);
             btnEditar.setEnabled(false);
             btnExcluir.setEnabled(false);
         } else {
@@ -94,8 +106,8 @@ public class frmPessoa extends javax.swing.JInternalFrame {
             }
 
             btnSalvar.setEnabled(false);
-            btnEditar.setEnabled(lSituacao.equals("Ativo"));
-            btnExcluir.setEnabled(lSituacao.equals("Ativo"));
+            btnEditar.setEnabled(isEditar && lSituacao.equals("Ativo"));
+            btnExcluir.setEnabled(isExcluir && lSituacao.equals("Ativo"));
         }
     }
 

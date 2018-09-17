@@ -1,10 +1,14 @@
 package hotel.controller;
 
 import hotel.model.Permissao;
+import hotel.model.Usuario;
 import hotel.repository.PermissaoRepository;
 import java.awt.HeadlessException;
+import java.util.HashMap;
 import java.util.List;
-import javax.swing.JCheckBox;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -59,6 +63,39 @@ public class PermissaoController extends BaseController<Permissao> {
         return null;
     }
 
+    public void loadPermission(Usuario usuario) {
+        try {
+            List<Permissao> listPermissao = PermissaoRepository.readPermissionWithUser(usuario);
+
+            Map<String, Set<String>> map = new HashMap();
+            for (Permissao p : listPermissao) {
+                if (map.containsKey(p.getAplicacaoBotao().getAplicacao().getNomArquivoJava())) {
+                    Set<String> value = map.get(p.getAplicacaoBotao().getAplicacao().getNomArquivoJava());
+                    value.add(p.getAplicacaoBotao().getNomBotaoForm());
+                } else {
+                    Set<String> value = new TreeSet();
+                    value.add(p.getAplicacaoBotao().getNomBotaoForm());
+                    map.put(p.getAplicacaoBotao().getAplicacao().getNomArquivoJava(), value);
+                }
+            }
+
+            Permissao.PERMISSAO = map;
+        } catch (Exception ex) {
+            LoggerController.log(this.getClass(), ex);
+        }
+    }
+
+    public static boolean hasPermission(String view, String button) {
+        if (Permissao.PERMISSAO.containsKey(view)) {
+            return Permissao.PERMISSAO.get(view).contains(button);
+        }
+        return false;
+    }
+
+    public static boolean hasPermission(String view) {
+        return Permissao.PERMISSAO.containsKey(view);
+    }
+
     public void popularTabela(JTable pTabela, int pOption, String pParam) {
         try {
             Object[][] lTabela = null;
@@ -76,9 +113,9 @@ public class PermissaoController extends BaseController<Permissao> {
                     for (Permissao p : listPermissao) {
 
                         lTabela[lLinha][0] = p.getCodPermissao();
-                        lTabela[lLinha][1] = p.getCodAplicacaoBotao().getCodAplicacao().getNomAplicacao();
-                        lTabela[lLinha][2] = p.getCodAplicacaoBotao().getNomBotao();
-                        lTabela[lLinha][3] = p.getCodUsuario().getDesLogin();
+                        lTabela[lLinha][1] = p.getAplicacaoBotao().getAplicacao().getNomAplicacao();
+                        lTabela[lLinha][2] = p.getAplicacaoBotao().getNomBotao();
+                        lTabela[lLinha][3] = p.getUsuario().getDesLogin();
                         lLinha++;
                     }
                     break;
@@ -89,9 +126,9 @@ public class PermissaoController extends BaseController<Permissao> {
                     for (Permissao p : listPermissao) {
 
                         lTabela[lLinha][0] = p.getCodPermissao();
-                        lTabela[lLinha][1] = p.getCodAplicacaoBotao().getCodAplicacao().getNomAplicacao();
-                        lTabela[lLinha][2] = p.getCodAplicacaoBotao().getNomBotao();
-                        lTabela[lLinha][3] = p.getCodUsuario().getDesLogin();
+                        lTabela[lLinha][1] = p.getAplicacaoBotao().getAplicacao().getNomAplicacao();
+                        lTabela[lLinha][2] = p.getAplicacaoBotao().getNomBotao();
+                        lTabela[lLinha][3] = p.getUsuario().getDesLogin();
                         lLinha++;
                     }
                     break;
@@ -99,14 +136,14 @@ public class PermissaoController extends BaseController<Permissao> {
                 case 2: {
                     Permissao permissao = PermissaoRepository.readId(Integer.parseInt(pParam));
                     if (permissao == null) {
-                        JOptionPane.showMessageDialog(null, "Permissão não encontrada pelo cóodigo: " + pParam);
+                        JOptionPane.showMessageDialog(null, "Permissão não encontrada pelo código: " + pParam);
                     } else {
                         lTabela = new Object[1][4];
 
                         lTabela[lLinha][0] = permissao.getCodPermissao();
-                        lTabela[lLinha][1] = permissao.getCodAplicacaoBotao().getCodAplicacao().getNomAplicacao();
-                        lTabela[lLinha][2] = permissao.getCodAplicacaoBotao().getNomBotao();
-                        lTabela[lLinha][3] = permissao.getCodUsuario().getDesLogin();
+                        lTabela[lLinha][1] = permissao.getAplicacaoBotao().getAplicacao().getNomAplicacao();
+                        lTabela[lLinha][2] = permissao.getAplicacaoBotao().getNomBotao();
+                        lTabela[lLinha][3] = permissao.getUsuario().getDesLogin();
                         lLinha++;
                     }
                     break;
@@ -117,9 +154,9 @@ public class PermissaoController extends BaseController<Permissao> {
                     for (Permissao p : listPermissao) {
 
                         lTabela[lLinha][0] = p.getCodPermissao();
-                        lTabela[lLinha][1] = p.getCodAplicacaoBotao().getCodAplicacao().getNomAplicacao();
-                        lTabela[lLinha][2] = p.getCodAplicacaoBotao().getNomBotao();
-                        lTabela[lLinha][3] = p.getCodUsuario().getDesLogin();
+                        lTabela[lLinha][1] = p.getAplicacaoBotao().getAplicacao().getNomAplicacao();
+                        lTabela[lLinha][2] = p.getAplicacaoBotao().getNomBotao();
+                        lTabela[lLinha][3] = p.getUsuario().getDesLogin();
                         lLinha++;
                     }
                     break;

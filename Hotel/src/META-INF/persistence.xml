@@ -13,6 +13,7 @@
         <class>hotel.model.LocacaoConsumivel</class>
         <class>hotel.model.TipoCama</class>
         <class>hotel.model.Aplicacao</class>
+        <class>hotel.model.AplicacaoBotao</class>
         <class>hotel.model.Usuario</class>
         <class>hotel.model.LocacaoHospede</class>
         <class>hotel.model.FormaPagamento</class>

@@ -13,18 +13,18 @@ public class LocacaoHospedeRepository {
     }
 
     public static List<LocacaoHospede> readPessoaNome(String pParam) {
-        Query query = HibernateUtil.getSession().createQuery("FROM LocacaoHospede WHERE codPessoa.nomPessoa LIKE :pessoaID");
+        Query query = HibernateUtil.getSession().createQuery("FROM LocacaoHospede WHERE pessoa.nomPessoa LIKE :pessoaID");
         query.setParameter("pessoaID", "%" + pParam.toLowerCase() + "%");
         return query.list();
     }
 
     public static List<LocacaoHospede> readLocacaoId(int pCodigo) {
-        Query query = HibernateUtil.getSession().createQuery("FROM LocacaoHospede WHERE codLocacao.codLocacao = " + pCodigo);
+        Query query = HibernateUtil.getSession().createQuery("FROM LocacaoHospede WHERE locacao.codLocacao = " + pCodigo);
         return query.list();
     }
 
     public static LocacaoHospede readResponsavel(int pCodigo) {
-        Query query = HibernateUtil.getSession().createQuery("FROM LocacaoHospede WHERE codLocacao.codLocacao = " + pCodigo + " AND indResponsavel = 'S'");
+        Query query = HibernateUtil.getSession().createQuery("FROM LocacaoHospede WHERE locacao.codLocacao = " + pCodigo + " AND indResponsavel = 'S'");
         return (LocacaoHospede) query.uniqueResult();
     }
 }

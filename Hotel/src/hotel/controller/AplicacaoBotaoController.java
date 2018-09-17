@@ -6,7 +6,6 @@ import hotel.repository.AplicacaoBotaoRepository;
 import hotel.repository.PermissaoRepository;
 import java.awt.HeadlessException;
 import java.util.List;
-import java.util.Objects;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -51,16 +50,16 @@ public class AplicacaoBotaoController extends BaseController<AplicacaoBotao> {
             lTabelaTitulo[0] = "Código";
             lTabelaTitulo[1] = "Tela";
             lTabelaTitulo[2] = "Nome";
-            lTabelaTitulo[3] = "Nome arquivo";
+            lTabelaTitulo[3] = "Nome Arquivo";
+            
             int lLinha = 0;
             switch (pOption) {
                 case 0: {
                     List<AplicacaoBotao> listBotao = AplicacaoBotaoRepository.readAll();
                     lTabela = new Object[listBotao.size()][4];
                     for (AplicacaoBotao b : listBotao) {
-
                         lTabela[lLinha][0] = b.getCodAplicacaoBotao();
-                        lTabela[lLinha][1] = b.getCodAplicacao().getNomArquivoJava();
+                        lTabela[lLinha][1] = b.getAplicacao().getNomArquivoJava();
                         lTabela[lLinha][2] = b.getNomBotao();
                         lTabela[lLinha][3] = b.getNomBotaoForm();
                         lLinha++;
@@ -71,9 +70,8 @@ public class AplicacaoBotaoController extends BaseController<AplicacaoBotao> {
                     List<AplicacaoBotao> listBotao = AplicacaoBotaoRepository.read(pParam);
                     lTabela = new Object[listBotao.size()][4];
                     for (AplicacaoBotao b : listBotao) {
-
                         lTabela[lLinha][0] = b.getCodAplicacaoBotao();
-                        lTabela[lLinha][1] = b.getCodAplicacao().getNomArquivoJava();
+                        lTabela[lLinha][1] = b.getAplicacao().getNomArquivoJava();
                         lTabela[lLinha][2] = b.getNomBotao();
                         lTabela[lLinha][3] = b.getNomBotaoForm();
                         lLinha++;
@@ -84,10 +82,12 @@ public class AplicacaoBotaoController extends BaseController<AplicacaoBotao> {
                     String split[] = pParam.split(";");
                     List<AplicacaoBotao> listBotao = AplicacaoBotaoRepository.readAllAplicacaoID(Integer.parseInt(split[0]));
                     List<Permissao> listPermissao = PermissaoRepository.readAllByTelaAndUsuario(Integer.parseInt(split[0]), Integer.parseInt(split[1]));
+                    
                     lTabelaTitulo = new Object[3];
                     lTabelaTitulo[0] = "Código";
                     lTabelaTitulo[1] = "Nome";
                     lTabelaTitulo[2] = "Tem acesso?";
+                    
                     lTabela = new Object[listBotao.size()][3];
                     if (listPermissao.isEmpty()) {
                         for (AplicacaoBotao b : listBotao) {
@@ -100,11 +100,12 @@ public class AplicacaoBotaoController extends BaseController<AplicacaoBotao> {
                         for (AplicacaoBotao b : listBotao) {
                             lTabela[lLinha][0] = b.getCodAplicacaoBotao();
                             lTabela[lLinha][1] = b.getNomBotao();
+                            
                             int count = listPermissao.size();
                             while (count != 0) {
                                 if (listPermissao.size() >= lLinha) {
                                     Permissao permissao = listPermissao.get(--count);
-                                    if (permissao.getCodAplicacaoBotao().getCodAplicacaoBotao().intValue() == b.getCodAplicacaoBotao().intValue() && permissao.getCodUsuario().getCodUsuario() == Integer.parseInt(split[1])) {
+                                    if (permissao.getAplicacaoBotao().getCodAplicacaoBotao().intValue() == b.getCodAplicacaoBotao().intValue() && permissao.getUsuario().getCodUsuario() == Integer.parseInt(split[1])) {
                                         lTabela[lLinha][2] = (boolean) true;
                                         count = 0;
                                     } else {
@@ -126,11 +127,10 @@ public class AplicacaoBotaoController extends BaseController<AplicacaoBotao> {
                     if (botao == null) {
                         JOptionPane.showMessageDialog(null, "Botão não encontrado pelo código: " + pParam);
                     } else {
-
                         lTabela = new Object[1][4];
 
                         lTabela[lLinha][0] = botao.getCodAplicacaoBotao();
-                        lTabela[lLinha][1] = botao.getCodAplicacao().getNomArquivoJava();
+                        lTabela[lLinha][1] = botao.getAplicacao().getNomArquivoJava();
                         lTabela[lLinha][2] = botao.getNomBotao();
                         lTabela[lLinha][3] = botao.getNomBotaoForm();
                         lLinha++;

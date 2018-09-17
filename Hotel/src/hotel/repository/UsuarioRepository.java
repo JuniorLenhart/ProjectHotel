@@ -11,14 +11,14 @@ public class UsuarioRepository {
         Query query = HibernateUtil.getSession().createQuery("FROM Usuario");
         return query.list();
     }
-    
+
     public static List<Usuario> readAllAtivos() {
         Query query = HibernateUtil.getSession().createQuery("FROM Usuario WHERE indSituacao = 'A'");
         return query.list();
     }
 
     public static List<Usuario> read(String pParam) {
-        Query query = HibernateUtil.getSession().createQuery("FROM Usuario u WHERE LOWER(u.pessoa.nomPessoa) LIKE :nomPessoa");
+        Query query = HibernateUtil.getSession().createQuery("FROM Usuario WHERE LOWER(pessoa.nomPessoa) LIKE :nomPessoa");
         query.setParameter("nomPessoa", "%" + pParam.toLowerCase() + "%");
         return query.list();
     }
