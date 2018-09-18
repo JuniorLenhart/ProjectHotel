@@ -37,7 +37,7 @@ public class PermissaoRepository {
     public static boolean isInserted(int pCodigoAplicacaoBotao, int pCodigoUsuario) {
         Query query = HibernateUtil.getSession().createQuery("FROM Permissao WHERE aplicacaoBotao.codAplicacaoBotao = " + pCodigoAplicacaoBotao + " AND usuario.codUsuario = " + pCodigoUsuario);
         Permissao p = (Permissao) query.uniqueResult();
-        return p.getCodPermissao() != null;
+        return p != null;
     }
 
     public static Permissao readByAplicacaoBotaoAndUsuario(int pCodigoAplicacaoBotao, int pCodigoUsuario) {

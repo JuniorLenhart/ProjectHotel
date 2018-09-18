@@ -89,7 +89,7 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="112" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="104" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="lblCodigo" alignment="0" max="32767" attributes="0"/>
                           <Component id="lblNomeArquivo" alignment="1" max="32767" attributes="0"/>
@@ -99,9 +99,9 @@
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="tfdCodigo" max="32767" attributes="0"/>
                           <Component id="tfdNome" alignment="0" max="32767" attributes="0"/>
-                          <Component id="cmbTipo" alignment="0" pref="290" max="32767" attributes="0"/>
+                          <Component id="cmbAplicacaoNome" alignment="0" pref="290" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="110" max="32767" attributes="0"/>
+                      <EmptySpace pref="104" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -121,7 +121,7 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="lblNomeArquivo" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cmbTipo" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cmbAplicacaoNome" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="322" max="32767" attributes="0"/>
                   </Group>
@@ -186,7 +186,7 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JComboBox" name="cmbTipo">
+            <Component class="javax.swing.JComboBox" name="cmbAplicacaoNome">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="SansSerif" size="14" style="0"/>
@@ -213,7 +213,7 @@
                   <Color blue="66" green="66" red="66" type="rgb"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="4"/>
-                <Property name="text" type="java.lang.String" value="&lt;html&gt;Nome Arquivo&lt;font color=&apos;red&apos;&gt;&lt;b&gt;*&lt;/b&gt;&lt;/font&gt;:&lt;/html&gt;"/>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;Aplica&#xe7;&#xe3;o Nome&lt;font color=&apos;red&apos;&gt;&lt;b&gt;*&lt;/b&gt;&lt;/font&gt;:&lt;/html&gt;"/>
               </Properties>
             </Component>
           </SubComponents>

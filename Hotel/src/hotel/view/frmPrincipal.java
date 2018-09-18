@@ -21,13 +21,13 @@ public class frmPrincipal extends javax.swing.JFrame {
     }
 
     public void abrirTela(JInternalFrame pInternalFrame) {
-        if (PermissaoController.hasPermission(pInternalFrame.getClass().getName().substring(11))) {
+       // if (PermissaoController.hasPermission(pInternalFrame.getClass().getName().substring(11))) {
             dkpSistema.add(pInternalFrame);
             Unit.setPosition(pInternalFrame);
             pInternalFrame.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(this, "Você não tem acesso neste formulário!");
-        }
+       // } else {
+       //     JOptionPane.showMessageDialog(this, "Você não tem acesso neste formulário!");
+     //   }
     }
 
     @SuppressWarnings("unchecked")
