@@ -1,5 +1,6 @@
 package hotel.view;
 
+import hotel.controller.PermissaoController;
 import hotel.controller.QuartoController;
 import hotel.controller.TipoCamaController;
 import hotel.support.DocumentoLimitado;
@@ -25,6 +26,10 @@ public class frmQuarto extends javax.swing.JInternalFrame {
     Quarto quarto;
     QuartoController quartoController;
     TipoCamaController tipoCamaController;
+    
+    boolean isSalvar = false;
+    boolean isEditar = false;
+    boolean isExcluir = false;
 
     public frmQuarto() {
         initComponents();
@@ -46,7 +51,14 @@ public class frmQuarto extends javax.swing.JInternalFrame {
         });
 
         populaListTipoQuarto();
+        loadPermission();
         setAba(0);
+    }
+    
+    private void loadPermission() {
+        isSalvar = PermissaoController.hasPermission("frmQuarto", "btnSalvar");
+        isEditar = PermissaoController.hasPermission("frmQuarto", "btnEditar");
+        isExcluir = PermissaoController.hasPermission("frmQuarto", "btnExcluir");
     }
 
     public void setVisibleCodigo(boolean isVisible) {
@@ -76,7 +88,7 @@ public class frmQuarto extends javax.swing.JInternalFrame {
 
     private void habilitar() {
         if (tbpQuarto.getSelectedIndex() == 0) {
-            btnSalvar.setEnabled(true);
+            btnSalvar.setEnabled(isSalvar);
             btnEditar.setEnabled(false);
             btnExcluir.setEnabled(false);
         } else {
@@ -86,8 +98,8 @@ public class frmQuarto extends javax.swing.JInternalFrame {
             }
 
             btnSalvar.setEnabled(false);
-            btnEditar.setEnabled(lSituacao.equals("Ativo"));
-            btnExcluir.setEnabled(lSituacao.equals("Ativo"));
+            btnEditar.setEnabled(isEditar && lSituacao.equals("Ativo"));
+            btnExcluir.setEnabled(isExcluir && lSituacao.equals("Ativo"));
         }
     }
 

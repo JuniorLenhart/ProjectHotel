@@ -19,7 +19,9 @@ public class LimpaCampos {
 //                ((JTextArea) ((JScrollPane) lComponent[i]).getViewport().getComponent(0)).setText("");
             } else if (lComponent[i] instanceof JComboBox) {
                 JComboBox lField = (JComboBox) lComponent[i];
-                lField.setSelectedIndex(0);
+                if(lField.getItemCount() != 0) {
+                    lField.setSelectedIndex(0);
+                }
             } else if (lComponent[i] instanceof JCheckBox) {
                 JCheckBox lField = (JCheckBox) lComponent[i];
                 lField.setSelected(false);

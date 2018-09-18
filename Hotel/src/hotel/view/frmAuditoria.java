@@ -2,6 +2,7 @@ package hotel.view;
 
 import hotel.controller.AuditoriaController;
 import hotel.controller.ParametroController;
+import hotel.controller.PermissaoController;
 import hotel.model.Auditoria;
 import hotel.model.Parametro;
 import hotel.repository.ParametroRepository;
@@ -16,6 +17,9 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
     Auditoria auditoria;
     AuditoriaController auditoriaController;
     ParametroController parametroController;
+    
+    boolean isAtivarAuditoria = false;
+    boolean isDetalhe = false;
 
     public frmAuditoria() {
         initComponents();
@@ -26,8 +30,16 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
         checaAuditoriaAtiva();
 
         criaEventoLista();
-
+        
         auditoriaController.popularTabela(tblLista, 0, "");
+        
+        loadPermission();
+        btnAtivarAuditoria.setEnabled(isAtivarAuditoria);
+    }
+    
+    private void loadPermission() {
+        isAtivarAuditoria = PermissaoController.hasPermission("frmAuditoria", "btnAtivarAuditoria");
+        isDetalhe = PermissaoController.hasPermission("frmAuditoria", "btnDetalhe");
     }
 
     private void checaAuditoriaAtiva() {
@@ -45,7 +57,7 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
     private void criaEventoLista() {
         tblLista.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
             if (tblLista.getSelectedRow() != -1) {
-                btnDetalhe.setEnabled(true);
+                btnDetalhe.setEnabled(isDetalhe);
             } else {
                 btnDetalhe.setEnabled(false);
             }

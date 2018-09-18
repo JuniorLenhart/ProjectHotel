@@ -1,5 +1,6 @@
 package hotel.view;
 
+import hotel.controller.PermissaoController;
 import hotel.controller.PessoaController;
 import hotel.controller.UsuarioController;
 import hotel.model.Pessoa;
@@ -15,6 +16,10 @@ public class frmUsuario extends javax.swing.JInternalFrame {
     Usuario usuario;
     UsuarioController usuarioController;
     PessoaController pessoaController;
+    
+    boolean isUsuario = false;
+    boolean isResetar = false;
+    boolean isExcluir = false;
 
     public frmUsuario() {
         initComponents();
@@ -38,8 +43,15 @@ public class frmUsuario extends javax.swing.JInternalFrame {
                 habilitar();
             }
         });
-
+        
+        loadPermission();
         setAba(0);
+    }
+    
+    private void loadPermission() {
+        isUsuario = PermissaoController.hasPermission("frmUsuario", "btnUsuario");
+        isResetar = PermissaoController.hasPermission("frmUsuario", "btnResetar");
+        isExcluir = PermissaoController.hasPermission("frmUsuario", "btnExcluir");
     }
 
     private void setAba(int pIndex) {
@@ -60,7 +72,7 @@ public class frmUsuario extends javax.swing.JInternalFrame {
                 lCodigo = String.valueOf(tblPessoa.getValueAt(tblPessoa.getSelectedRow(), 0));
             }
 
-            btnUsuario.setEnabled(!lCodigo.isEmpty());
+            btnUsuario.setEnabled(isUsuario && !lCodigo.isEmpty());
             btnResetar.setEnabled(false);
             btnExcluir.setEnabled(false);
         } else {
@@ -70,8 +82,8 @@ public class frmUsuario extends javax.swing.JInternalFrame {
             }
 
             btnUsuario.setEnabled(false);
-            btnResetar.setEnabled(lSituacao.equals("Ativo"));
-            btnExcluir.setEnabled(lSituacao.equals("Ativo"));
+            btnResetar.setEnabled(isResetar && lSituacao.equals("Ativo"));
+            btnExcluir.setEnabled(isExcluir && lSituacao.equals("Ativo"));
         }
     }
 
@@ -79,7 +91,7 @@ public class frmUsuario extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnGrupoRadio = new javax.swing.ButtonGroup();
+        btgGrupoRadio = new javax.swing.ButtonGroup();
         pnlHeader = new javax.swing.JPanel();
         btnUsuario = new javax.swing.JButton();
         btnResetar = new javax.swing.JButton();
@@ -232,7 +244,7 @@ public class frmUsuario extends javax.swing.JInternalFrame {
         pnlOpcao.setBorder(javax.swing.BorderFactory.createTitledBorder(null, " Pesquisa Detalhada ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
 
         rbNome.setBackground(new java.awt.Color(255, 255, 255));
-        btnGrupoRadio.add(rbNome);
+        btgGrupoRadio.add(rbNome);
         rbNome.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         rbNome.setSelected(true);
         rbNome.setText("Por nome");
@@ -243,7 +255,7 @@ public class frmUsuario extends javax.swing.JInternalFrame {
         });
 
         rbCodigo.setBackground(new java.awt.Color(255, 255, 255));
-        btnGrupoRadio.add(rbCodigo);
+        btgGrupoRadio.add(rbCodigo);
         rbCodigo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         rbCodigo.setText("Por código");
         rbCodigo.addActionListener(new java.awt.event.ActionListener() {
@@ -479,9 +491,9 @@ public class frmUsuario extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup btgGrupoRadio;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnFechar;
-    private javax.swing.ButtonGroup btnGrupoRadio;
     private javax.swing.JButton btnPesquisa;
     private javax.swing.JButton btnResetar;
     private javax.swing.JButton btnUsuario;

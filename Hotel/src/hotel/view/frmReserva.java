@@ -1,5 +1,6 @@
 package hotel.view;
 
+import hotel.controller.PermissaoController;
 import hotel.controller.PessoaController;
 import hotel.support.LimpaCampos;
 import hotel.controller.ReservaController;
@@ -24,6 +25,11 @@ public class frmReserva extends javax.swing.JInternalFrame {
     Reserva reserva;
     ReservaController reservaController;
     PessoaController pessoaController;
+    
+    boolean isSalvar = false;
+    boolean isConfirmar = false;
+    boolean isCancelar = false;
+    boolean isAtualizar = false;
 
     public frmReserva() {
         initComponents();
@@ -43,9 +49,17 @@ public class frmReserva extends javax.swing.JInternalFrame {
                 habilitar();
             }
         });
-
+        
+        loadPermission();
         setAba(0);
         habilitarQuarto();
+    }
+    
+    private void loadPermission() {
+        isSalvar = PermissaoController.hasPermission("frmReserva", "btnSalvar");
+        isConfirmar = PermissaoController.hasPermission("frmReserva", "btnConfirmar");
+        isCancelar = PermissaoController.hasPermission("frmReserva", "btnCancelar");
+        isAtualizar = PermissaoController.hasPermission("frmReserva", "btnAtualizar");
     }
 
     public void setVisibleCodigo(boolean isVisible) {
@@ -72,8 +86,9 @@ public class frmReserva extends javax.swing.JInternalFrame {
     }
 
     private void habilitar() {
+        btnAtualizar.setEnabled(isAtualizar);
         if (tbpReserva.getSelectedIndex() == 0) {
-            btnSalvar.setEnabled(true);
+            btnSalvar.setEnabled(isSalvar);
             btnConfirmar.setEnabled(false);
             btnCancelar.setEnabled(false);
         } else {
@@ -83,8 +98,8 @@ public class frmReserva extends javax.swing.JInternalFrame {
             }
 
             btnSalvar.setEnabled(false);
-            btnConfirmar.setEnabled(lSituacao.equals("Efetuada"));
-            btnCancelar.setEnabled(lSituacao.equals("Efetuada"));
+            btnConfirmar.setEnabled(isConfirmar && lSituacao.equals("Efetuada"));
+            btnCancelar.setEnabled(isCancelar && lSituacao.equals("Efetuada"));
         }
     }
 

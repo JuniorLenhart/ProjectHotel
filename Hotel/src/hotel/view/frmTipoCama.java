@@ -1,6 +1,7 @@
 package hotel.view;
 
 import hotel.controller.AuditoriaController;
+import hotel.controller.PermissaoController;
 import hotel.support.DocumentoLimitado;
 import hotel.support.LimpaCampos;
 import hotel.support.Validacao;
@@ -17,6 +18,10 @@ public class frmTipoCama extends javax.swing.JInternalFrame {
 
     TipoCama tipoCama;
     TipoCamaController tipoCamaController;
+    
+    boolean isSalvar = false;
+    boolean isEditar = false;
+    boolean isExcluir = false;
 
     public frmTipoCama() {
         initComponents();
@@ -34,8 +39,15 @@ public class frmTipoCama extends javax.swing.JInternalFrame {
                 habilitar();
             }
         });
-
+        
+        loadPermission();
         setAba(0);
+    }
+    
+    private void loadPermission() {
+        isSalvar = PermissaoController.hasPermission("frmTipoCama", "btnSalvar");
+        isEditar = PermissaoController.hasPermission("frmTipoCama", "btnEditar");
+        isExcluir = PermissaoController.hasPermission("frmTipoCama", "btnExcluir");
     }
 
     public void setVisibleCodigo(boolean isVisible) {
@@ -62,7 +74,7 @@ public class frmTipoCama extends javax.swing.JInternalFrame {
 
     private void habilitar() {
         if (tbpTipoCama.getSelectedIndex() == 0) {
-            btnSalvar.setEnabled(true);
+            btnSalvar.setEnabled(isSalvar);
             btnEditar.setEnabled(false);
             btnExcluir.setEnabled(false);
         } else {
@@ -72,8 +84,8 @@ public class frmTipoCama extends javax.swing.JInternalFrame {
             }
 
             btnSalvar.setEnabled(false);
-            btnEditar.setEnabled(lSituacao.equals("Ativo"));
-            btnExcluir.setEnabled(lSituacao.equals("Ativo"));
+            btnEditar.setEnabled(isEditar && lSituacao.equals("Ativo"));
+            btnExcluir.setEnabled(isExcluir && lSituacao.equals("Ativo"));
         }
     }
 

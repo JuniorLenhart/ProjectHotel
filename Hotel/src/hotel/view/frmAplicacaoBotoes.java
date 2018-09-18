@@ -2,15 +2,19 @@ package hotel.view;
 
 import hotel.controller.AplicacaoController;
 import hotel.controller.AplicacaoBotaoController;
+import hotel.controller.PermissaoController;
 import hotel.model.Aplicacao;
 import hotel.model.AplicacaoBotao;
+import hotel.repository.AplicacaoBotaoRepository;
 import hotel.support.DocumentoLimitado;
 import hotel.support.LimpaCampos;
 import hotel.support.Validacao;
 import java.awt.event.KeyEvent;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -21,6 +25,10 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
     AplicacaoBotaoController botaoController;
     AplicacaoController aplicacaoController;
     Aplicacao aplicacao;
+    
+    boolean isSalvar = false;
+    boolean isEditar = false;
+    boolean isExcluir = false;
 
     public frmAplicacaoBotoes() {
         initComponents();
@@ -28,12 +36,13 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
         botaoController = new AplicacaoBotaoController();
         aplicacaoController = new AplicacaoController();
         setVisibleCodigo(false);
+        lblAvisoBotoes.setVisible(false);
         setEditableBotaoArquivoENome(false);
         addVariaveisComboBoxTela(cmbTela);
+        addVariaveisComboBoxBotao(cmbBotao);
         botaoController.popularTabela(tblLista, 0, "");
 
         tfdNome.setDocument(new DocumentoLimitado(100));
-        tfdNomeBotao.setDocument(new DocumentoLimitado(100));
 
         tblLista.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -41,8 +50,15 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
                 habilitar();
             }
         });
-
+        
+        loadPermission();
         setAba(0);
+    }
+    
+    private void loadPermission() {
+        isSalvar = PermissaoController.hasPermission("frmAplicacaoBotoes", "btnSalvar");
+        isEditar = PermissaoController.hasPermission("frmAplicacaoBotoes", "btnEditar");
+        isExcluir = PermissaoController.hasPermission("frmAplicacaoBotoes", "btnExcluir");
     }
 
     private void setVisibleCodigo(boolean isVisible) {
@@ -56,7 +72,6 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
     }
 
     private void setEditableBotaoArquivoENome(boolean isEditable) {
-        tfdNomeBotao.setEditable(isEditable);
         tfdNome.setEditable(isEditable);
     }
 
@@ -73,13 +88,13 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
 
     private void habilitar() {
         if (tbpBotao.getSelectedIndex() == 0) {
-            btnSalvar.setEnabled(true);
+            btnSalvar.setEnabled(isSalvar);
             btnEditar.setEnabled(false);
             btnExcluir.setEnabled(false);
         } else {
             if (tblLista.getSelectedRow() != -1) {
-                btnEditar.setEnabled(true);
-                btnExcluir.setEnabled(true);
+                btnEditar.setEnabled(isEditar);
+                btnExcluir.setEnabled(isExcluir);
             }
             btnSalvar.setEnabled(false);
         }
@@ -87,11 +102,15 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
 
     private void popularTelaCadastro() {
         tfdCodigo.setText(botao.getCodAplicacaoBotao().toString());
-        tfdNomeBotao.setText(botao.getNomBotaoForm());
         tfdNome.setText(botao.getNomBotao());
         for (int i = 0; i < cmbTela.getItemCount(); i++) {
             if (cmbTela.getItemAt(i).equals(botao.getAplicacao().getCodAplicacao() + " " + botao.getAplicacao().getNomAplicacao())) {
                 cmbTela.setSelectedIndex(i);
+            }
+        }
+        for (int i = 0; i < cmbBotao.getItemCount(); i++) {
+            if (cmbBotao.getItemAt(i).equals(botao.getNomBotaoForm())) {
+                cmbBotao.setSelectedIndex(i);
             }
         }
         setVisibleCodigo(true);
@@ -108,6 +127,82 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
             setEditableBotaoArquivoENome(true);
             String split[] = cmbTela.getSelectedItem().toString().split(" ");
             aplicacao = aplicacaoController.getReadId((Integer.parseInt(split[0])));
+        }
+    }
+
+    private void addVariaveisComboBoxBotao(javax.swing.JComboBox comboBox) {
+        JInternalFrame frame = null;
+        List<String> listBotoes = new ArrayList<>();
+        switch (aplicacao.getNomArquivoJava()) {
+            case "frmAplicacao":
+                frame = new frmAplicacao();
+                break;
+            case "frmAplicacaoBotoes":
+                frame = new frmAplicacaoBotoes();
+                break;
+            case "frmAuditoria":
+                frame = new frmAuditoria();
+                break;
+            case "frmConsumivel":
+                frame = new frmConsumivel();
+                break;
+            case "frmFormaPagamento":
+                frame = new frmFormaPagamento();
+                break;
+            case "frmLocacao":
+                frame = new frmLocacao();
+                break;
+            case "frmPermissao":
+                frame = new frmPermissao();
+                break;
+            case "frmPessoa":
+                frame = new frmPessoa();
+                break;
+            case "frmQuarto":
+                frame = new frmQuarto();
+                break;
+            case "frmReserva":
+                frame = new frmReserva();
+                break;
+            case "frmTipoCama":
+                frame = new frmTipoCama();
+                break;
+            case "frmUsuario":
+                frame = new frmUsuario();
+                break;
+            default:
+                break;
+        }
+        String[] split = cmbTela.getSelectedItem().toString().split(" ");
+        List<AplicacaoBotao> aplicacaoBotaos = botaoController.readAllAplicacaoID(Integer.parseInt(split[0]));
+        for (Field f : frame.getClass().getDeclaredFields()) {
+            if (aplicacaoBotaos.isEmpty()) {
+                if (f.getName().contains("btn") && !f.getName().equals("") && !f.getName().contains("Pesquisa") && !f.getName().contains("Fechar") && !f.getName().contains("Selecao")) {
+                    listBotoes.add(f.getName());
+                }
+            } else {
+                boolean exists = false;
+                if (f.getName().contains("btn") && !f.getName().equals("") && !f.getName().contains("Pesquisa") && !f.getName().contains("Fechar") && !f.getName().contains("Selecao")) {
+                    for (AplicacaoBotao aplicacaoBotao : aplicacaoBotaos) {
+                        if (aplicacaoBotao.getNomBotaoForm().equals(f.getName())) {
+                            exists = true;
+                            break;
+                        }
+                    }
+                    if (!exists) {
+                        listBotoes.add(f.getName());
+                    }
+                }
+
+            }
+        }
+        comboBox.setModel(new DefaultComboBoxModel(listBotoes.toArray()));
+        if(listBotoes.isEmpty()) {
+            lblAvisoBotoes.setVisible(true);
+            tfdNome.setEditable(false);
+        } else {
+            lblAvisoBotoes.setVisible(false);
+            tfdNome.setEditable(true);
         }
     }
 
@@ -130,7 +225,8 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
         lblNomeBotao = new javax.swing.JLabel();
         lblTela = new javax.swing.JLabel();
         cmbTela = new javax.swing.JComboBox<>();
-        tfdNomeBotao = new javax.swing.JTextField();
+        cmbBotao = new javax.swing.JComboBox<>();
+        lblAvisoBotoes = new javax.swing.JLabel();
         pnlListagem = new javax.swing.JPanel();
         pnlDetalhe = new javax.swing.JPanel();
         tfdPesquisa = new javax.swing.JTextField();
@@ -264,8 +360,11 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
             }
         });
 
-        tfdNomeBotao.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        tfdNomeBotao.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
+        cmbBotao.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+
+        lblAvisoBotoes.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblAvisoBotoes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblAvisoBotoes.setText("Todos os botões adicionadas da tela!");
 
         javax.swing.GroupLayout pnlCadastroLayout = new javax.swing.GroupLayout(pnlCadastro);
         pnlCadastro.setLayout(pnlCadastroLayout);
@@ -280,10 +379,12 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
                     .addComponent(lblTela, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
                 .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(tfdCodigo)
-                    .addComponent(tfdNome)
-                    .addComponent(cmbTela, javax.swing.GroupLayout.Alignment.TRAILING, 0, 290, Short.MAX_VALUE)
-                    .addComponent(tfdNomeBotao))
+                    .addComponent(lblAvisoBotoes, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
+                    .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(tfdCodigo)
+                        .addComponent(tfdNome)
+                        .addComponent(cmbTela, javax.swing.GroupLayout.Alignment.TRAILING, 0, 290, Short.MAX_VALUE)
+                        .addComponent(cmbBotao, javax.swing.GroupLayout.Alignment.TRAILING, 0, 290, Short.MAX_VALUE)))
                 .addContainerGap(149, Short.MAX_VALUE))
         );
         pnlCadastroLayout.setVerticalGroup(
@@ -300,12 +401,14 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNomeBotao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfdNomeBotao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbBotao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tfdNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(325, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(lblAvisoBotoes)
+                .addContainerGap(292, Short.MAX_VALUE))
         );
 
         tbpBotao.addTab("Adicionar", pnlCadastro);
@@ -476,7 +579,7 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
 
             botao.setNomBotao(tfdNome.getText());
             botao.setCodAplicacao(aplicacao);
-            botao.setNomBotaoForm(tfdNomeBotao.getText());
+            botao.setNomBotaoForm(cmbBotao.getSelectedItem().toString());
             botaoController.save(botao);
 
             if (!isNew) {
@@ -558,7 +661,7 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
         if (evt.getItem() != null) {
             String split[] = cmbTela.getSelectedItem().toString().split(" ");
             aplicacao = aplicacaoController.getReadId((Integer.parseInt(split[0])));
-            setEditableBotaoArquivoENome(true);
+            addVariaveisComboBoxBotao(cmbBotao);
         } else {
             setEditableBotaoArquivoENome(false);
         }
@@ -572,7 +675,9 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnFechar;
     private javax.swing.JButton btnPesquisa;
     private javax.swing.JButton btnSalvar;
+    private javax.swing.JComboBox<String> cmbBotao;
     private javax.swing.JComboBox<String> cmbTela;
+    private javax.swing.JLabel lblAvisoBotoes;
     private javax.swing.JLabel lblCodigo;
     private javax.swing.JLabel lblNome;
     private javax.swing.JLabel lblNomeBotao;
@@ -590,7 +695,6 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
     private javax.swing.JTabbedPane tbpBotao;
     private javax.swing.JTextField tfdCodigo;
     private javax.swing.JTextField tfdNome;
-    private javax.swing.JTextField tfdNomeBotao;
     private javax.swing.JTextField tfdPesquisa;
     // End of variables declaration//GEN-END:variables
 }

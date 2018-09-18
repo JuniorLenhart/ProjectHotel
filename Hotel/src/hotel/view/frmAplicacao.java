@@ -1,6 +1,7 @@
 package hotel.view;
 
 import hotel.controller.AplicacaoController;
+import hotel.controller.PermissaoController;
 import hotel.model.Aplicacao;
 import hotel.support.DocumentoLimitado;
 import hotel.support.LimpaCampos;
@@ -17,6 +18,7 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -26,6 +28,10 @@ public class frmAplicacao extends javax.swing.JInternalFrame {
     Aplicacao aplicacao;
     AplicacaoController aplicacaoController;
     ArrayList<Class> classes = new ArrayList<Class>();
+    
+    boolean isSalvar = false;
+    boolean isEditar = false;
+    boolean isExcluir = false;
 
     public frmAplicacao() {
         initComponents();
@@ -43,9 +49,16 @@ public class frmAplicacao extends javax.swing.JInternalFrame {
                 habilitar();
             }
         });
-
+        
+        loadPermission();
         setAba(0);
         addVariaveisComboBox(cmbAplicacaoNome);
+    }
+    
+    private void loadPermission() {
+        isSalvar = PermissaoController.hasPermission("frmAplicacao", "btnSalvar");
+        isEditar = PermissaoController.hasPermission("frmAplicacao", "btnEditar");
+        isExcluir = PermissaoController.hasPermission("frmAplicacao", "btnExcluir");
     }
 
     public void setVisibleCodigo(boolean isVisible) {
@@ -72,7 +85,7 @@ public class frmAplicacao extends javax.swing.JInternalFrame {
 
     private void habilitar() {
         if (tbpAplicacao.getSelectedIndex() == 0) {
-            btnSalvar.setEnabled(true);
+            btnSalvar.setEnabled(isSalvar);
             btnEditar.setEnabled(false);
             btnExcluir.setEnabled(false);
         } else {
@@ -82,8 +95,8 @@ public class frmAplicacao extends javax.swing.JInternalFrame {
             }
 
             btnSalvar.setEnabled(false);
-            btnEditar.setEnabled(lSituacao.equals("Ativo"));
-            btnExcluir.setEnabled(lSituacao.equals("Ativo"));
+            btnEditar.setEnabled(isEditar && lSituacao.equals("Ativo"));
+            btnExcluir.setEnabled(isExcluir && lSituacao.equals("Ativo"));
         }
     }
 
@@ -121,26 +134,33 @@ public class frmAplicacao extends javax.swing.JInternalFrame {
         }
 
         Set<String> listAplicacao = new TreeSet<>();
-        
+
         for (Class c : classes.subList(0, classes.size())) {
             if (!c.getSimpleName().equals("")) {
-                if (!listAplicacaoExistentes.isEmpty()) {
-                    boolean exists = false;
-                    for (Aplicacao a : listAplicacaoExistentes) {
-                        if (c.getSimpleName().equals(a.getNomArquivoJava())) {
-                            exists = true;
-                            break;
+                if (c.getSuperclass().isAssignableFrom(JInternalFrame.class)) {
+                    if (!listAplicacaoExistentes.isEmpty()) {
+                        boolean exists = false;
+                        for (Aplicacao a : listAplicacaoExistentes) {
+                            if (c.getSimpleName().equals(a.getNomArquivoJava())) {
+                                exists = true;
+                                break;
+                            }
                         }
-                    }
-                    if (!exists) {
+                        if (!exists) {
+                            listAplicacao.add(c.getSimpleName());
+                        }
+                    } else {
                         listAplicacao.add(c.getSimpleName());
                     }
-                } else {
-                    listAplicacao.add(c.getSimpleName());
                 }
             }
         }
         comboBox.setModel(new DefaultComboBoxModel(listAplicacao.toArray()));
+        if(listAplicacao.isEmpty()) {
+            tfdNome.setEditable(false);
+        } else {
+            tfdNome.setEditable(true);
+        }
     }
 
     private static List<Class> findClasses(File directory, String packageName) throws ClassNotFoundException {

@@ -132,7 +132,7 @@ public class frmPessoa extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnGrupoRadio = new javax.swing.ButtonGroup();
+        btgGrupoRadio = new javax.swing.ButtonGroup();
         pnlHeader = new javax.swing.JPanel();
         btnSalvar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
@@ -502,7 +502,7 @@ public class frmPessoa extends javax.swing.JInternalFrame {
         pnlOpcao.setBorder(javax.swing.BorderFactory.createTitledBorder(null, " Pesquisa Detalhada ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
 
         rbNome.setBackground(new java.awt.Color(255, 255, 255));
-        btnGrupoRadio.add(rbNome);
+        btgGrupoRadio.add(rbNome);
         rbNome.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         rbNome.setSelected(true);
         rbNome.setText("Por nome");
@@ -513,7 +513,7 @@ public class frmPessoa extends javax.swing.JInternalFrame {
         });
 
         rbCodigo.setBackground(new java.awt.Color(255, 255, 255));
-        btnGrupoRadio.add(rbCodigo);
+        btgGrupoRadio.add(rbCodigo);
         rbCodigo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         rbCodigo.setText("Por código");
         rbCodigo.addActionListener(new java.awt.event.ActionListener() {
@@ -761,10 +761,10 @@ public class frmPessoa extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup btgGrupoRadio;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnFechar;
-    private javax.swing.ButtonGroup btnGrupoRadio;
     private javax.swing.JButton btnPesquisa;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JLabel lblCPF;

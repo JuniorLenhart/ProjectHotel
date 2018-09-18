@@ -2,6 +2,7 @@ package hotel.view;
 
 import hotel.controller.LocacaoController;
 import hotel.controller.LocacaoHospedeController;
+import hotel.controller.PermissaoController;
 import hotel.model.Locacao;
 import hotel.model.LocacaoHospede;
 import hotel.model.Parametro;
@@ -42,6 +43,11 @@ public class frmLocacao extends javax.swing.JInternalFrame {
     List<LocacaoHospede> locacaoHospede;
     LocacaoHospedeController locacaoHospedeController;
     LocacaoController locacaoController;
+    
+    boolean isCancelar = false;
+    boolean isCheckIn = false;
+    boolean isCheckOut = false;
+    boolean isProcurarReserva = false;
 
     public frmLocacao() {
         initComponents();
@@ -54,7 +60,7 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         setFieldsEditable(true);
         setMinDateCombo();
         criaEventoTextFieldValorRestante();
-        habilitar();
+        loadPermission();
         setAba(0);
         setVisibleCodigo(false);
         setVisibleDatasPrevistas(true);
@@ -64,6 +70,14 @@ public class frmLocacao extends javax.swing.JInternalFrame {
                 habilitar();
             }
         });
+        
+    }
+    
+    private void loadPermission() {
+        isCancelar = PermissaoController.hasPermission("frmLocacao", "btnCancelar");
+        isCheckIn = PermissaoController.hasPermission("frmLocacao", "btnCheckIn");
+        isCheckOut = PermissaoController.hasPermission("frmLocacao", "btnCheckOut");
+        isProcurarReserva = PermissaoController.hasPermission("frmLocacao", "btnProcurarReserva");
     }
 
     private void setFieldsEditable(boolean editable) {
@@ -117,10 +131,10 @@ public class frmLocacao extends javax.swing.JInternalFrame {
 
     private void habilitar() {
         if (tbpLocacao.getSelectedIndex() == 0) {
-            btnCheckIn.setEnabled(true);
+            btnCheckIn.setEnabled(isCheckIn);
             btnCheckOut.setEnabled(false);
             btnCancelar.setEnabled(false);
-            btnProcurarReserva.setEnabled(true);
+            btnProcurarReserva.setEnabled(isProcurarReserva);
             tblLista.clearSelection();
         } else {
             String lSituacao = "";
@@ -130,8 +144,8 @@ public class frmLocacao extends javax.swing.JInternalFrame {
 
             btnCheckIn.setEnabled(false);
             btnProcurarReserva.setEnabled(false);
-            btnCheckOut.setEnabled(lSituacao.equals("Em aberto"));
-            btnCancelar.setEnabled(lSituacao.equals("Em aberto"));
+            btnCheckOut.setEnabled(isCheckOut && lSituacao.equals("Em aberto"));
+            btnCancelar.setEnabled(isCancelar && lSituacao.equals("Em aberto"));
             limparCampos();
         }
     }
@@ -258,7 +272,7 @@ public class frmLocacao extends javax.swing.JInternalFrame {
     }
 
     private long calculaDiasEntreDatas() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yy");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate dateEntrada = LocalDate.parse(tfdDataEntrada.getText(), dtf);
         LocalDate dateSaida = LocalDate.parse(tfdDataSaidaPrevista.getText(), dtf);
         return ChronoUnit.DAYS.between(dateEntrada, dateSaida);

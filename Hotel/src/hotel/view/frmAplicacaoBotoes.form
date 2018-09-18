@@ -204,10 +204,13 @@
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="tfdCodigo" alignment="0" max="32767" attributes="0"/>
-                          <Component id="tfdNome" alignment="0" max="32767" attributes="0"/>
-                          <Component id="cmbTela" alignment="1" pref="290" max="32767" attributes="0"/>
-                          <Component id="tfdNomeBotao" alignment="0" max="32767" attributes="0"/>
+                          <Component id="lblAvisoBotoes" pref="290" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="tfdCodigo" alignment="0" max="32767" attributes="0"/>
+                              <Component id="tfdNome" alignment="0" max="32767" attributes="0"/>
+                              <Component id="cmbTela" alignment="1" pref="290" max="32767" attributes="0"/>
+                              <Component id="cmbBotao" alignment="1" pref="290" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace pref="149" max="32767" attributes="0"/>
                   </Group>
@@ -229,14 +232,16 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="lblNomeBotao" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="tfdNomeBotao" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cmbBotao" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="tfdNome" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="lblNome" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="325" max="32767" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="lblAvisoBotoes" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="292" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -339,18 +344,26 @@
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
             </Component>
-            <Component class="javax.swing.JTextField" name="tfdNomeBotao">
+            <Component class="javax.swing.JComboBox" name="cmbBotao">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="SansSerif" size="14" style="0"/>
                 </Property>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="org.netbeans.modules.form.compat2.border.MatteColorBorderInfo">
-                    <MatteColorBorder bottom="2" left="0" right="0" top="0">
-                      <Color PropertyName="color" blue="a0" green="5b" red="c" type="rgb"/>
-                    </MatteColorBorder>
-                  </Border>
+                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                  <StringArray count="0"/>
                 </Property>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+              </AuxValues>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblAvisoBotoes">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="14" style="1"/>
+                </Property>
+                <Property name="horizontalAlignment" type="int" value="0"/>
+                <Property name="text" type="java.lang.String" value="Todos os bot&#xf5;es adicionadas da tela!"/>
               </Properties>
             </Component>
           </SubComponents>
