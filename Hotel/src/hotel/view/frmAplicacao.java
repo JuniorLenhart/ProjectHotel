@@ -11,14 +11,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -123,6 +121,7 @@ public class frmAplicacao extends javax.swing.JInternalFrame {
         }
 
         Set<String> listAplicacao = new TreeSet<>();
+        
         for (Class c : classes.subList(0, classes.size())) {
             if (!c.getSimpleName().equals("")) {
                 if (!listAplicacaoExistentes.isEmpty()) {
