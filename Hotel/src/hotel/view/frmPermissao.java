@@ -46,7 +46,6 @@ public class frmPermissao extends javax.swing.JInternalFrame {
 
     private void loadPermission() {
         isSalvar = PermissaoController.hasPermission("frmPermissao", "btnSalvar");
-        isSalvar = true;
         habilitar();
     }
 
