@@ -2,9 +2,12 @@ package hotel.controller;
 
 import hotel.model.Auditoria;
 import hotel.repository.AuditoriaRepository;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -19,7 +22,7 @@ public class AuditoriaController extends BaseController<Auditoria> {
         return null;
     }
 
-    public void popularTabela(JTable pTabela, int pOption, String pParam) {
+    public void popularTabela(JTable pTabela, int pOption, String pParam, int page, JTextField registros) {
         try {
             Object[][] lTabela = null;
 
@@ -33,7 +36,12 @@ public class AuditoriaController extends BaseController<Auditoria> {
             int lLinha = 0;
             switch (pOption) {
                 case 0: {
-                    List<Auditoria> listAuditoria = AuditoriaRepository.readAll();
+                    Map<List<Auditoria>, Integer> map = AuditoriaRepository.readAll(page);
+                    List<Auditoria> listAuditoria = new ArrayList<>();
+                    for (List<Auditoria> list : map.keySet()) {
+                        listAuditoria = list;
+                        registros.setText(map.get(list).toString());
+                    }
                     lTabela = new Object[listAuditoria.size()][5];
                     for (Auditoria a : listAuditoria) {
                         lTabela[lLinha][0] = a.getCodAuditoria();

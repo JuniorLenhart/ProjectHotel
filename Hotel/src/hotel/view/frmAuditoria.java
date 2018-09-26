@@ -17,9 +17,11 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
     Auditoria auditoria;
     AuditoriaController auditoriaController;
     ParametroController parametroController;
-    
+
     boolean isAtivarAuditoria = false;
     boolean isDetalhe = false;
+
+    int page = 0;
 
     public frmAuditoria() {
         initComponents();
@@ -30,13 +32,14 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
         checaAuditoriaAtiva();
 
         criaEventoLista();
-        
-        auditoriaController.popularTabela(tblLista, 0, "");
-        
+
+        auditoriaController.popularTabela(tblLista, 0, "", page, tfdRegistrosTotais);
+        habilitaSetas(page);
+
         loadPermission();
         btnAtivarAuditoria.setEnabled(isAtivarAuditoria);
     }
-    
+
     private void loadPermission() {
         isAtivarAuditoria = PermissaoController.hasPermission("frmAuditoria", "btnAtivarAuditoria");
         isDetalhe = PermissaoController.hasPermission("frmAuditoria", "btnDetalhe");
@@ -64,6 +67,30 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
         });
     }
 
+    private int setTotalPages() {
+        return (int) Math.ceil(Double.parseDouble(tfdRegistrosTotais.getText()) / 50);
+    }
+
+    private void habilitaSetas(int currentPage) {
+        alteraTextoPagina();
+        btnUltimaPagina.setEnabled(true);
+        btnProximaPagina.setEnabled(true);
+        btnPaginaAnterior.setEnabled(true);
+        btnPrimeiraPagina.setEnabled(true);
+        if (currentPage == 0) {
+            btnPaginaAnterior.setEnabled(false);
+            btnPrimeiraPagina.setEnabled(false);
+        }
+        if (currentPage == setTotalPages() - 1) {
+            btnUltimaPagina.setEnabled(false);
+            btnProximaPagina.setEnabled(false);
+        }
+    }
+
+    private void alteraTextoPagina() {
+        lblPagina.setText("Página " + (page + 1) + " de " + setTotalPages());
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -88,6 +115,14 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
         cbxDelete = new javax.swing.JCheckBox();
         pnlLista = new javax.swing.JScrollPane();
         tblLista = new javax.swing.JTable();
+        pnlSetas = new javax.swing.JPanel();
+        btnProximaPagina = new javax.swing.JButton();
+        btnPaginaAnterior = new javax.swing.JButton();
+        btnUltimaPagina = new javax.swing.JButton();
+        btnPrimeiraPagina = new javax.swing.JButton();
+        lblPagina = new javax.swing.JLabel();
+        lblRegistrosTotais = new javax.swing.JLabel();
+        tfdRegistrosTotais = new javax.swing.JTextField();
 
         btnFechar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnFechar.setForeground(new java.awt.Color(12, 91, 160));
@@ -299,7 +334,7 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
                             .addComponent(tfdPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(btnPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(170, Short.MAX_VALUE))
+                .addContainerGap(182, Short.MAX_VALUE))
         );
         pnlDetalheLayout.setVerticalGroup(
             pnlDetalheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -330,6 +365,80 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
         ));
         pnlLista.setViewportView(tblLista);
 
+        pnlSetas.setBackground(new java.awt.Color(255, 255, 255));
+
+        btnProximaPagina.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/next_page.png"))); // NOI18N
+        btnProximaPagina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProximaPaginaActionPerformed(evt);
+            }
+        });
+
+        btnPaginaAnterior.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/previous_page.png"))); // NOI18N
+        btnPaginaAnterior.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPaginaAnteriorActionPerformed(evt);
+            }
+        });
+
+        btnUltimaPagina.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/last_page.png"))); // NOI18N
+        btnUltimaPagina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUltimaPaginaActionPerformed(evt);
+            }
+        });
+
+        btnPrimeiraPagina.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/first_page.png"))); // NOI18N
+        btnPrimeiraPagina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrimeiraPaginaActionPerformed(evt);
+            }
+        });
+
+        lblPagina.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblPagina.setText("Página 1 de 5");
+
+        lblRegistrosTotais.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblRegistrosTotais.setText("Registros totais:");
+
+        tfdRegistrosTotais.setEditable(false);
+        tfdRegistrosTotais.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tfdRegistrosTotais.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        javax.swing.GroupLayout pnlSetasLayout = new javax.swing.GroupLayout(pnlSetas);
+        pnlSetas.setLayout(pnlSetasLayout);
+        pnlSetasLayout.setHorizontalGroup(
+            pnlSetasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlSetasLayout.createSequentialGroup()
+                .addComponent(lblRegistrosTotais)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tfdRegistrosTotais, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnPrimeiraPagina)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnPaginaAnterior)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnProximaPagina)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnUltimaPagina)
+                .addGap(178, 178, 178)
+                .addComponent(lblPagina))
+        );
+        pnlSetasLayout.setVerticalGroup(
+            pnlSetasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlSetasLayout.createSequentialGroup()
+                .addGroup(pnlSetasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnProximaPagina)
+                    .addComponent(btnPaginaAnterior)
+                    .addComponent(btnUltimaPagina)
+                    .addComponent(btnPrimeiraPagina)
+                    .addComponent(lblPagina)
+                    .addGroup(pnlSetasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblRegistrosTotais)
+                        .addComponent(tfdRegistrosTotais, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout pnlListagemLayout = new javax.swing.GroupLayout(pnlListagem);
         pnlListagem.setLayout(pnlListagemLayout);
         pnlListagemLayout.setHorizontalGroup(
@@ -339,16 +448,20 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
                     .addComponent(pnlDetalhe, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(pnlListagemLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(pnlLista, javax.swing.GroupLayout.DEFAULT_SIZE, 732, Short.MAX_VALUE)))
+                        .addGroup(pnlListagemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(pnlLista, javax.swing.GroupLayout.DEFAULT_SIZE, 744, Short.MAX_VALUE)
+                            .addComponent(pnlSetas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         pnlListagemLayout.setVerticalGroup(
             pnlListagemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlListagemLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(pnlDetalhe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlLista, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
+                .addComponent(pnlLista, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlSetas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -368,7 +481,7 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pnlHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlListagem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -401,13 +514,13 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
 
     private void btnPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaActionPerformed
         if (tfdPesquisa.getText().trim().isEmpty()) {
-            auditoriaController.popularTabela(tblLista, 0, "");
+            auditoriaController.popularTabela(tblLista, 0, "", page, tfdRegistrosTotais);
         } else if (rbNome.isSelected()) {
-            auditoriaController.popularTabela(tblLista, 1, tfdPesquisa.getText());
+            auditoriaController.popularTabela(tblLista, 1, tfdPesquisa.getText(), page, tfdRegistrosTotais);
         } else if (rbCodigo.isSelected()) {
-            auditoriaController.popularTabela(tblLista, 4, tfdPesquisa.getText());
+            auditoriaController.popularTabela(tblLista, 4, tfdPesquisa.getText(), page, tfdRegistrosTotais);
         } else if (rbUsuarioLogin.isSelected()) {
-            auditoriaController.popularTabela(tblLista, 3, tfdPesquisa.getText());
+            auditoriaController.popularTabela(tblLista, 3, tfdPesquisa.getText(), page, tfdRegistrosTotais);
         }
     }//GEN-LAST:event_btnPesquisaActionPerformed
 
@@ -446,7 +559,7 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
         } else {
             pParam = "'INSERT' OR tipAuditoria = 'DELETE' OR tipAuditoria = 'UPDATE'";
         }
-        auditoriaController.popularTabela(tblLista, 2, pParam);
+        auditoriaController.popularTabela(tblLista, 2, pParam, page, tfdRegistrosTotais);
     }//GEN-LAST:event_cbxInsertItemStateChanged
 
     private void rbUsuarioLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbUsuarioLoginActionPerformed
@@ -459,27 +572,63 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
         new frmAuditoriaDetalhe((JFrame) SwingUtilities.getWindowAncestor(this), true, auditoria).setVisible(true);
     }//GEN-LAST:event_btnDetalheActionPerformed
 
+    private void btnProximaPaginaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProximaPaginaActionPerformed
+        if (page + 1 <= setTotalPages()) {
+            page++;
+            auditoriaController.popularTabela(tblLista, 0, "", page, tfdRegistrosTotais);
+        }
+        habilitaSetas(page);
+    }//GEN-LAST:event_btnProximaPaginaActionPerformed
+
+    private void btnPaginaAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaginaAnteriorActionPerformed
+        if (page - 1 != -1) {
+            page--;
+            auditoriaController.popularTabela(tblLista, 0, "", page, tfdRegistrosTotais);
+        }
+        habilitaSetas(page);
+    }//GEN-LAST:event_btnPaginaAnteriorActionPerformed
+
+    private void btnPrimeiraPaginaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrimeiraPaginaActionPerformed
+        page = 0;
+        auditoriaController.popularTabela(tblLista, 0, "", page, tfdRegistrosTotais);
+        habilitaSetas(page);
+    }//GEN-LAST:event_btnPrimeiraPaginaActionPerformed
+
+    private void btnUltimaPaginaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUltimaPaginaActionPerformed
+        page = setTotalPages() - 1;
+        auditoriaController.popularTabela(tblLista, 0, "", page, tfdRegistrosTotais);
+        habilitaSetas(page);
+    }//GEN-LAST:event_btnUltimaPaginaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup btgGroup;
     private javax.swing.JToggleButton btnAtivarAuditoria;
     private javax.swing.JButton btnDetalhe;
     private javax.swing.JButton btnFechar;
+    private javax.swing.JButton btnPaginaAnterior;
     private javax.swing.JButton btnPesquisa;
+    private javax.swing.JButton btnPrimeiraPagina;
+    private javax.swing.JButton btnProximaPagina;
+    private javax.swing.JButton btnUltimaPagina;
     private javax.swing.JCheckBox cbxDelete;
     private javax.swing.JCheckBox cbxInsert;
     private javax.swing.JCheckBox cbxUpdate;
+    private javax.swing.JLabel lblPagina;
     private javax.swing.JLabel lblPesquisa;
+    private javax.swing.JLabel lblRegistrosTotais;
     private javax.swing.JPanel pnlDetalhe;
     private javax.swing.JPanel pnlHeader;
     private javax.swing.JScrollPane pnlLista;
     private javax.swing.JPanel pnlListagem;
     private javax.swing.JPanel pnlOpcao;
     private javax.swing.JPanel pnlOpcaoTipo;
+    private javax.swing.JPanel pnlSetas;
     private javax.swing.JRadioButton rbCodigo;
     private javax.swing.JRadioButton rbNome;
     private javax.swing.JRadioButton rbUsuarioLogin;
     private javax.swing.JTable tblLista;
     private javax.swing.JTextField tfdPesquisa;
+    private javax.swing.JTextField tfdRegistrosTotais;
     // End of variables declaration//GEN-END:variables
 }
