@@ -16,8 +16,8 @@ public class AuditoriaRepository {
         map = new HashMap();
         Query query = HibernateUtil.getSession().createQuery("FROM Auditoria");
         int totalSize = query.list().size();
-        query.setFirstResult(50 * page);
-        query.setMaxResults(50);
+        query.setFirstResult(25 * page);
+        query.setMaxResults(25);
         map.put(query.list(), totalSize);
         return map;
     }

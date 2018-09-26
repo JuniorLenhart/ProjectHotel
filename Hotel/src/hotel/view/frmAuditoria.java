@@ -68,7 +68,11 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
     }
 
     private int setTotalPages() {
-        return (int) Math.ceil(Double.parseDouble(tfdRegistrosTotais.getText()) / 50);
+        if (!tfdRegistrosTotais.getText().equals("")) {
+            return (int) Math.ceil(Double.parseDouble(tfdRegistrosTotais.getText()) / 25);
+        } else {
+            return 0;
+        }
     }
 
     private void habilitaSetas(int currentPage) {
@@ -81,14 +85,23 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
             btnPaginaAnterior.setEnabled(false);
             btnPrimeiraPagina.setEnabled(false);
         }
-        if (currentPage == setTotalPages() - 1) {
+        if (setTotalPages() != 0) {
+            if (currentPage == setTotalPages() - 1) {
+                btnUltimaPagina.setEnabled(false);
+                btnProximaPagina.setEnabled(false);
+            }
+        } else {
             btnUltimaPagina.setEnabled(false);
             btnProximaPagina.setEnabled(false);
         }
     }
 
     private void alteraTextoPagina() {
-        lblPagina.setText("Página " + (page + 1) + " de " + setTotalPages());
+        if (setTotalPages() != 0) {
+            lblPagina.setText("Página " + (page + 1) + " de " + setTotalPages());
+        } else {
+            lblPagina.setText("Página " + (page + 1) + " de " + setTotalPages() + 1);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -595,8 +608,10 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnPrimeiraPaginaActionPerformed
 
     private void btnUltimaPaginaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUltimaPaginaActionPerformed
-        page = setTotalPages() - 1;
-        auditoriaController.popularTabela(tblLista, 0, "", page, tfdRegistrosTotais);
+        if (setTotalPages() != 0) {
+            page = setTotalPages() - 1;
+            auditoriaController.popularTabela(tblLista, 0, "", page, tfdRegistrosTotais);
+        }
         habilitaSetas(page);
     }//GEN-LAST:event_btnUltimaPaginaActionPerformed
 
