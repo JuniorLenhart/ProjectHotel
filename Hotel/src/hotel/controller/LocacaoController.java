@@ -129,7 +129,7 @@ public class LocacaoController extends BaseController<Locacao> {
                 case 2: {
                     Locacao l = LocacaoRepository.readId(Integer.parseInt(pParam));
                     if (l == null) {
-                        JOptionPane.showMessageDialog(null, "Pessoa não encontrado pelo código: " + pParam);
+                        JOptionPane.showMessageDialog(null, "Locação não encontrada pelo código: " + pParam);
                     } else {
                         String situacao = (l.getIndSituacao().equals("F") ? "Finalizada" : (l.getIndSituacao().equals("C") ? "Cancelada" : "Em aberto"));
 
@@ -153,6 +153,29 @@ public class LocacaoController extends BaseController<Locacao> {
                 }
                 case 4: {
                     List<Locacao> listLocacao = LocacaoRepository.readSituation(pParam);
+                    lTabela = new Object[listLocacao.size()][6];
+                    for (Locacao l : listLocacao) {
+                        String situacao = (l.getIndSituacao().equals("F") ? "Finalizada" : (l.getIndSituacao().equals("C") ? "Cancelada" : "Em aberto"));
+
+                        lTabela[lLinha][0] = l.getCodLocacao();
+                        lTabela[lLinha][1] = l.getQuarto().getNumQuarto();
+                        for (LocacaoHospede lh : LocacaoHospedeRepository.readLocacaoId(l.getCodLocacao())) {
+                            if (lh.getIndResponsavel().equals("S")) {
+                                lTabela[lLinha][2] = lh.getPessoa().getNomPessoa();
+                            }
+                        }
+                        lTabela[lLinha][3] = Formatacao.ajustaDataDMAHS(l.getDtaEntrada().toString());
+                        if (l.getDtaEntrada() != null) {
+                            lTabela[lLinha][4] = Formatacao.ajustaDataDMAHS(l.getDtaSaida().toString());
+                        }
+                        lTabela[lLinha][5] = l.getVlrLocacao();
+                        lTabela[lLinha][6] = situacao;
+                        lLinha++;
+                    }
+                    break;
+                }
+                case 5: {
+                    List<Locacao> listLocacao = LocacaoRepository.readPessoaNome(pParam);
                     lTabela = new Object[listLocacao.size()][6];
                     for (Locacao l : listLocacao) {
                         String situacao = (l.getIndSituacao().equals("F") ? "Finalizada" : (l.getIndSituacao().equals("C") ? "Cancelada" : "Em aberto"));

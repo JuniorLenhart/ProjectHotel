@@ -13,7 +13,7 @@ public class LocacaoHospedeRepository {
     }
 
     public static List<LocacaoHospede> readPessoaNome(String pParam) {
-        Query query = HibernateUtil.getSession().createQuery("FROM LocacaoHospede WHERE pessoa.nomPessoa LIKE :pessoaID");
+        Query query = HibernateUtil.getSession().createQuery("FROM LocacaoHospede WHERE pessoa.nomPessoa LIKE :pessoaID AND indResponsavel = 'S'");
         query.setParameter("pessoaID", "%" + pParam.toLowerCase() + "%");
         return query.list();
     }

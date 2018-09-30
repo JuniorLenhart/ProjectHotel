@@ -179,6 +179,11 @@ public class frmPrincipal extends javax.swing.JFrame {
         mnuFinanceiro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/financeiro.png"))); // NOI18N
         mnuFinanceiro.setText("Financeiro");
         mnuFinanceiro.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        mnuFinanceiro.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                mnuFinanceiroMouseClicked(evt);
+            }
+        });
         mnbPrincipal.add(mnuFinanceiro);
 
         mnuRelatorio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/report.png"))); // NOI18N
@@ -321,6 +326,10 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void mniPermissaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniPermissaoActionPerformed
         abrirTela(new frmPermissao());
     }//GEN-LAST:event_mniPermissaoActionPerformed
+
+    private void mnuFinanceiroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mnuFinanceiroMouseClicked
+        abrirTela(new frmFinanceiro());
+    }//GEN-LAST:event_mnuFinanceiroMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

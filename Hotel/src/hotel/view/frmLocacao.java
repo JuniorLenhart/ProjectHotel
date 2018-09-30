@@ -1,14 +1,10 @@
 package hotel.view;
 
+import hotel.controller.FinanceiroController;
 import hotel.controller.LocacaoController;
 import hotel.controller.LocacaoHospedeController;
 import hotel.controller.PermissaoController;
-import hotel.model.Locacao;
-import hotel.model.LocacaoHospede;
-import hotel.model.Parametro;
-import hotel.model.Pessoa;
-import hotel.model.Quarto;
-import hotel.model.Reserva;
+import hotel.model.*;
 import hotel.repository.PessoaRepository;
 import java.awt.event.KeyEvent;
 import java.util.List;
@@ -43,10 +39,12 @@ public class frmLocacao extends javax.swing.JInternalFrame {
     List<LocacaoHospede> locacaoHospede;
     LocacaoHospedeController locacaoHospedeController;
     LocacaoController locacaoController;
+    FinanceiroController financeiroController;
     
     boolean isCancelar = false;
     boolean isCheckIn = false;
     boolean isCheckOut = false;
+    boolean isConsumivel = false;
     boolean isProcurarReserva = false;
 
     public frmLocacao() {
@@ -55,6 +53,7 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         locacao = new Locacao();
         locacaoHospedeController = new LocacaoHospedeController();
         locacaoController = new LocacaoController();
+        financeiroController = new FinanceiroController();
         locacaoHospede = new ArrayList<>();
         locacaoController.popularTabela(tblLista, 0, "");
         setFieldsEditable(true);
@@ -78,6 +77,7 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         isCheckIn = PermissaoController.hasPermission("frmLocacao", "btnCheckIn");
         isCheckOut = PermissaoController.hasPermission("frmLocacao", "btnCheckOut");
         isProcurarReserva = PermissaoController.hasPermission("frmLocacao", "btnProcurarReserva");
+        isConsumivel = PermissaoController.hasPermission(this.getClass().getName().substring(11));
     }
 
     private void setFieldsEditable(boolean editable) {
@@ -134,6 +134,7 @@ public class frmLocacao extends javax.swing.JInternalFrame {
             btnCheckIn.setEnabled(isCheckIn);
             btnCheckOut.setEnabled(false);
             btnCancelar.setEnabled(false);
+            btnConsumivel.setEnabled(false);
             btnProcurarReserva.setEnabled(isProcurarReserva);
             tblLista.clearSelection();
         } else {
@@ -146,6 +147,7 @@ public class frmLocacao extends javax.swing.JInternalFrame {
             btnProcurarReserva.setEnabled(false);
             btnCheckOut.setEnabled(isCheckOut && lSituacao.equals("Em aberto"));
             btnCancelar.setEnabled(isCancelar && lSituacao.equals("Em aberto"));
+            btnConsumivel.setEnabled(isConsumivel && lSituacao.equals("Em aberto"));
             limparCampos();
         }
     }
@@ -304,6 +306,7 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         btnCancelar = new javax.swing.JButton();
         btnFechar = new javax.swing.JButton();
         btnProcurarReserva = new javax.swing.JButton();
+        btnConsumivel = new javax.swing.JButton();
         tbpLocacao = new javax.swing.JTabbedPane();
         pnlCadastro = new javax.swing.JPanel();
         pnlAcompanhante = new javax.swing.JPanel();
@@ -403,6 +406,18 @@ public class frmLocacao extends javax.swing.JInternalFrame {
             }
         });
 
+        btnConsumivel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnConsumivel.setForeground(new java.awt.Color(12, 91, 160));
+        btnConsumivel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/food.png"))); // NOI18N
+        btnConsumivel.setText("Consumível");
+        btnConsumivel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnConsumivel.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnConsumivel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsumivelActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlHeaderLayout = new javax.swing.GroupLayout(pnlHeader);
         pnlHeader.setLayout(pnlHeaderLayout);
         pnlHeaderLayout.setHorizontalGroup(
@@ -414,6 +429,8 @@ public class frmLocacao extends javax.swing.JInternalFrame {
                 .addComponent(btnCheckOut)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCancelar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnConsumivel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnProcurarReserva)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -427,6 +444,7 @@ public class frmLocacao extends javax.swing.JInternalFrame {
             .addComponent(btnCancelar)
             .addComponent(btnFechar)
             .addComponent(btnProcurarReserva)
+            .addComponent(btnConsumivel)
         );
 
         tbpLocacao.setBackground(new java.awt.Color(255, 255, 255));
@@ -1005,13 +1023,13 @@ public class frmLocacao extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_rbCodigoActionPerformed
 
     private void btnPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaActionPerformed
-//        if (tfdPesquisa.getText().trim().isEmpty()) {
-//            pessoaController.popularTabela(tblLista, 0, "");
-//        } else if (rbNome.isSelected()) {
-//            pessoaController.popularTabela(tblLista, 1, tfdPesquisa.getText());
-//        } else if (rbCodigo.isSelected()) {
-//            pessoaController.popularTabela(tblLista, 2, tfdPesquisa.getText());
-//        }
+        if (tfdPesquisa.getText().trim().isEmpty()) {
+            locacaoController.popularTabela(tblLista, 0, "");
+        } else if (rbNome.isSelected()) {
+            locacaoController.popularTabela(tblLista, 5, tfdPesquisa.getText());
+        } else if (rbCodigo.isSelected()) {
+            locacaoController.popularTabela(tblLista, 2, tfdPesquisa.getText());
+        }
     }//GEN-LAST:event_btnPesquisaActionPerformed
 
     private void tbpLocacaoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tbpLocacaoStateChanged
@@ -1064,6 +1082,13 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         calculaValorLocacao();
     }//GEN-LAST:event_tfdDataSaidaPrevistaOnCommit
 
+    private void btnConsumivelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsumivelActionPerformed
+        frmPrincipal principal = (frmPrincipal) ((JFrame) SwingUtilities.getWindowAncestor(this));
+        locacao = locacaoController.getReadId(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString()));
+        frmLocacaoConsumivel locacaoConsumivelTela = new frmLocacaoConsumivel(locacao);
+        principal.abrirTela(locacaoConsumivelTela);
+    }//GEN-LAST:event_btnConsumivelActionPerformed
+
     private void populaTableAcompanhantes(List<Pessoa> list) {
         clearTabela(tbListaAcompanhante);
         DefaultTableModel model = (DefaultTableModel) tbListaAcompanhante.getModel();
@@ -1083,6 +1108,7 @@ public class frmLocacao extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnCheckIn;
     private javax.swing.JButton btnCheckOut;
+    private javax.swing.JButton btnConsumivel;
     private javax.swing.JButton btnFechar;
     private javax.swing.JButton btnPesquisa;
     private javax.swing.JButton btnProcurarReserva;
