@@ -270,6 +270,10 @@ public class frmLocacao extends javax.swing.JInternalFrame {
                 tfdValorTotal.setValue((BigDecimal.valueOf(valorTotal)));
             }
             lblValorRestante.setText("R$ " + String.valueOf(valorTotal).replace(".", ","));
+        } else {
+            tfdValorTotal.setValue(BigDecimal.ZERO);
+            tfdValorPago.setValue(BigDecimal.ZERO);
+            lblValorRestante.setText("R$ 0,00");
         }
     }
 
@@ -985,11 +989,10 @@ public class frmLocacao extends javax.swing.JInternalFrame {
 
     private void btnCheckOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckOutActionPerformed
         locacao = locacaoController.getReadId(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString()));
-        Timestamp dtaSaida = Timestamp.valueOf(Formatacao.ajustaDataAMDHMS(Unit.getDataHoraAtual()));
-        locacao.setDtaSaida(dtaSaida);
-        locacaoController.changeSituation(locacao.getCodLocacao(), "F");
+        frmConfirmarCheckOut confirmarCheckOut;
+        confirmarCheckOut = new frmConfirmarCheckOut((JFrame) SwingUtilities.getWindowAncestor(this), true, locacao);
+        confirmarCheckOut.setVisible(true);
         locacaoController.popularTabela(tblLista, 0, "");
-        limparCampos();
     }//GEN-LAST:event_btnCheckOutActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed

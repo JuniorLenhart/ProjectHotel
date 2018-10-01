@@ -84,7 +84,6 @@ public class frmLocacaoConsumivel extends javax.swing.JInternalFrame {
 
     private void loadPermission() {
         isSalvar = PermissaoController.hasPermission("frmLocacaoConsumivel", "btnSalvar");
-        isEditar = PermissaoController.hasPermission("frmLocacaoConsumivel", "btnEditar");
         isExcluir = PermissaoController.hasPermission("frmLocacaoConsumivel", "btnExcluir");
     }
 
@@ -115,12 +114,15 @@ public class frmLocacaoConsumivel extends javax.swing.JInternalFrame {
     private void habilitar() {
         if (tbpLocacaoConsumivel.getSelectedIndex() == 0) {
             btnSalvar.setEnabled(isSalvar);
-            btnEditar.setEnabled(false);
             btnExcluir.setEnabled(false);
         } else {
+            boolean hasSelection = false;
+            if (tblLista.getSelectedRow() != -1) {
+                 hasSelection = true;
+            }
+            
             btnSalvar.setEnabled(false);
-            btnEditar.setEnabled(isEditar);
-            btnExcluir.setEnabled(isExcluir);
+            btnExcluir.setEnabled(isExcluir && hasSelection);
             limparCampos();
         }
     }
@@ -165,9 +167,9 @@ public class frmLocacaoConsumivel extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        btgPesquisa = new javax.swing.ButtonGroup();
         pnlHeader = new javax.swing.JPanel();
         btnSalvar = new javax.swing.JButton();
-        btnEditar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         btnFechar = new javax.swing.JButton();
         tbpLocacaoConsumivel = new javax.swing.JTabbedPane();
@@ -205,18 +207,6 @@ public class frmLocacaoConsumivel extends javax.swing.JInternalFrame {
             }
         });
 
-        btnEditar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnEditar.setForeground(new java.awt.Color(12, 91, 160));
-        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/edit.png"))); // NOI18N
-        btnEditar.setText("Editar");
-        btnEditar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnEditar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
-            }
-        });
-
         btnExcluir.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnExcluir.setForeground(new java.awt.Color(12, 91, 160));
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/trash.png"))); // NOI18N
@@ -249,8 +239,6 @@ public class frmLocacaoConsumivel extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(btnSalvar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnEditar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnExcluir)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnFechar)
@@ -259,7 +247,6 @@ public class frmLocacaoConsumivel extends javax.swing.JInternalFrame {
         pnlHeaderLayout.setVerticalGroup(
             pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(btnSalvar)
-            .addComponent(btnEditar)
             .addComponent(btnExcluir)
             .addComponent(btnFechar)
         );
@@ -393,6 +380,7 @@ public class frmLocacaoConsumivel extends javax.swing.JInternalFrame {
         pnlOpcao.setBorder(javax.swing.BorderFactory.createTitledBorder(null, " Pesquisa Detalhada ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
 
         rbNome.setBackground(new java.awt.Color(255, 255, 255));
+        btgPesquisa.add(rbNome);
         rbNome.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         rbNome.setSelected(true);
         rbNome.setText("Por nome");
@@ -403,6 +391,7 @@ public class frmLocacaoConsumivel extends javax.swing.JInternalFrame {
         });
 
         rbCodigo.setBackground(new java.awt.Color(255, 255, 255));
+        btgPesquisa.add(rbCodigo);
         rbCodigo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         rbCodigo.setText("Por código");
         rbCodigo.addActionListener(new java.awt.event.ActionListener() {
@@ -550,7 +539,7 @@ public class frmLocacaoConsumivel extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(this, "Cadastrado com sucesso!");
             }
 
-            locacaoConsumivelController.popularTabela(tblLista, 0, "");
+            locacaoConsumivelController.popularTabela(tblLista, 1, locacao.getCodLocacao().toString());
 
             limparCampos();
             setAba(1);
@@ -559,20 +548,13 @@ public class frmLocacaoConsumivel extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
-    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        locacaoConsumivel = locacaoConsumivelController.getReadId(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString()));
-        popularTelaCadastro();
-        setAba(0);
-        tfdQuantidade.requestFocus();
-    }//GEN-LAST:event_btnEditarActionPerformed
-
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         Object[] options = {"Sim", "Não"};
         int escolha = JOptionPane.showOptionDialog(null, "Você tem certeza que gostaria de excluir o registro " + tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString() + "?", "Escolha", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (escolha == 0) {
             locacaoConsumivelController.delete(locacaoConsumivelController.getReadId(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString())));
             JOptionPane.showMessageDialog(this, "Excluído com sucesso!");
-            locacaoConsumivelController.popularTabela(tblLista, 0, "");
+            locacaoConsumivelController.popularTabela(tblLista, 1, locacao.getCodLocacao().toString());
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
@@ -601,9 +583,11 @@ public class frmLocacaoConsumivel extends javax.swing.JInternalFrame {
 
     private void btnPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaActionPerformed
         if (rbNome.isSelected()) {
-            locacaoConsumivelController.popularTabela(tblLista, 1, tfdPesquisa.getText());
+            locacaoConsumivelController.popularTabela(tblLista, 2, locacao.getCodLocacao()+";"+tfdPesquisa.getText());
+        } else if (rbCodigo.isSelected()) {
+            locacaoConsumivelController.popularTabela(tblLista, 3, tfdPesquisa.getText());
         } else {
-            locacaoConsumivelController.popularTabela(tblLista, 2, tfdPesquisa.getText());
+            locacaoConsumivelController.popularTabela(tblLista, 1, locacao.getCodLocacao().toString());
         }
     }//GEN-LAST:event_btnPesquisaActionPerformed
 
@@ -623,7 +607,7 @@ public class frmLocacaoConsumivel extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnEditar;
+    private javax.swing.ButtonGroup btgPesquisa;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnFechar;
     private javax.swing.JButton btnPesquisa;

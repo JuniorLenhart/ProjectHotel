@@ -1,18 +1,84 @@
 package hotel.view;
 
+import hotel.controller.LocacaoConsumivelController;
+import hotel.controller.LocacaoController;
+import hotel.model.Locacao;
+import hotel.model.LocacaoHospede;
+import hotel.repository.LocacaoHospedeRepository;
+import hotel.support.Formatacao;
+import hotel.support.Unit;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
 public class frmConfirmarCheckOut extends javax.swing.JDialog {
-    
-    public frmConfirmarCheckOut(java.awt.Frame parent, boolean modal) {
+
+    Locacao locacao;
+    LocacaoController locacaoController;
+    LocacaoConsumivelController locacaoConsumivelController;
+
+    public frmConfirmarCheckOut(java.awt.Frame parent, boolean modal, Locacao locacao) {
         super(parent, modal);
         initComponents();
+        this.locacao = locacao;
+        locacaoController = new LocacaoController();
+        locacaoConsumivelController = new LocacaoConsumivelController();
+        populaTelaLocacao();
+        populaConsumiveis();
+        calculaValorTotal();
+        
+        setTitle("Hotel Integrador - Confirmar Check-Out");
+        setLocationRelativeTo(null);
+    }
+
+    private void populaTelaLocacao() {
+        LocalDate dateSaida = LocalDate.now();
+        LocacaoHospede lh = LocacaoHospedeRepository.readResponsavel(locacao.getCodLocacao());
+        tfdCodigo.setText(locacao.getCodLocacao().toString());
+        tfdDataEntrada.setText(Formatacao.ajustaDataDMA(locacao.getDtaEntrada().toString()));
+        tfdDataSaida.setText(Formatacao.ajustaDataDMA(dateSaida.toString()));
+        tfdNomeTitular.setText(lh.getPessoa().getNomPessoa());
+        tfdQuarto.setText(locacao.getQuarto().getNumQuarto());
+        calculaValorLocacao();
+    }
+
+    private long calculaDiasEntreDatas() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate dateEntrada = LocalDate.parse(tfdDataEntrada.getText(), dtf);
+        LocalDate dateSaida = LocalDate.parse(tfdDataSaida.getText(), dtf);
+        return ChronoUnit.DAYS.between(dateEntrada, dateSaida);
+    }
+
+    private void calculaValorLocacao() {
+        long days = calculaDiasEntreDatas() + 1;
+        double valorTotal;
+        valorTotal = days * locacao.getQuarto().getVlrQuarto().doubleValue();
+        tfdSubTotalLocacao.setValue((BigDecimal.valueOf(valorTotal)));
+    }
+
+    private void populaConsumiveis() {
+        locacaoConsumivelController.popularTabela(tblConsumiveis, 4, locacao.getCodLocacao().toString());
+        double subTotal = 0;
+        for (int i = 0; i < tblConsumiveis.getModel().getRowCount(); i++) {
+            subTotal += Double.parseDouble(tblConsumiveis.getModel().getValueAt(i, 3).toString());
+        }
+        tfdSubTotalConsumiveis.setValue(BigDecimal.valueOf(subTotal));
     }
     
+    private void calculaValorTotal() {
+        tfdTotal.setValue(tfdSubTotalConsumiveis.getValue().add(tfdSubTotalLocacao.getValue()));
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         pnlHeader = new javax.swing.JPanel();
-        btnCheckIn = new javax.swing.JButton();
+        btnConfirmar = new javax.swing.JButton();
         btnFechar = new javax.swing.JButton();
         pnlInfo = new javax.swing.JPanel();
         pnlInfoLocacao = new javax.swing.JPanel();
@@ -33,18 +99,20 @@ public class frmConfirmarCheckOut extends javax.swing.JDialog {
         tfdSubTotalConsumiveis = new hotel.support.JNumberFormatField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblConsumiveis = new javax.swing.JTable();
+        pnlTotal = new javax.swing.JPanel();
+        tfdTotal = new hotel.support.JNumberFormatField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        btnCheckIn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnCheckIn.setForeground(new java.awt.Color(12, 91, 160));
-        btnCheckIn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/save.png"))); // NOI18N
-        btnCheckIn.setText("Check-in");
-        btnCheckIn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnCheckIn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnCheckIn.addActionListener(new java.awt.event.ActionListener() {
+        btnConfirmar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnConfirmar.setForeground(new java.awt.Color(12, 91, 160));
+        btnConfirmar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/confirm.png"))); // NOI18N
+        btnConfirmar.setText("Confirmar");
+        btnConfirmar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnConfirmar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnConfirmar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCheckInActionPerformed(evt);
+                btnConfirmarActionPerformed(evt);
             }
         });
 
@@ -66,14 +134,14 @@ public class frmConfirmarCheckOut extends javax.swing.JDialog {
             pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlHeaderLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnCheckIn)
+                .addComponent(btnConfirmar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnFechar)
                 .addContainerGap())
         );
         pnlHeaderLayout.setVerticalGroup(
             pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnCheckIn)
+            .addComponent(btnConfirmar)
             .addComponent(btnFechar)
         );
 
@@ -245,7 +313,7 @@ public class frmConfirmarCheckOut extends javax.swing.JDialog {
             .addGroup(pnlInfoConsumiveisLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlInfoConsumiveisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 526, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 545, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlInfoConsumiveisLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(pnlSubTotalConsumiveis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -261,6 +329,30 @@ public class frmConfirmarCheckOut extends javax.swing.JDialog {
                 .addGap(0, 0, 0))
         );
 
+        pnlTotal.setBackground(new java.awt.Color(255, 255, 255));
+        pnlTotal.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Total", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
+
+        tfdTotal.setBorder(null);
+        tfdTotal.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        tfdTotal.setToolTipText("");
+        tfdTotal.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+
+        javax.swing.GroupLayout pnlTotalLayout = new javax.swing.GroupLayout(pnlTotal);
+        pnlTotal.setLayout(pnlTotalLayout);
+        pnlTotalLayout.setHorizontalGroup(
+            pnlTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlTotalLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(tfdTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnlTotalLayout.setVerticalGroup(
+            pnlTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlTotalLayout.createSequentialGroup()
+                .addComponent(tfdTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout pnlInfoLayout = new javax.swing.GroupLayout(pnlInfo);
         pnlInfo.setLayout(pnlInfoLayout);
         pnlInfoLayout.setHorizontalGroup(
@@ -269,7 +361,8 @@ public class frmConfirmarCheckOut extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(pnlInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnlInfoLocacao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlInfoConsumiveis, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(pnlInfoConsumiveis, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         pnlInfoLayout.setVerticalGroup(
@@ -279,7 +372,9 @@ public class frmConfirmarCheckOut extends javax.swing.JDialog {
                 .addComponent(pnlInfoLocacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pnlInfoConsumiveis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -299,65 +394,29 @@ public class frmConfirmarCheckOut extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(pnlHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pnlInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(pnlInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnCheckInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckInActionPerformed
-
-    }//GEN-LAST:event_btnCheckInActionPerformed
+    private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
+        frmSelecaoPagamento selecaoPagamento;
+        selecaoPagamento = new frmSelecaoPagamento((JFrame) SwingUtilities.getWindowAncestor(this), true, locacao, tfdTotal.getValue().doubleValue());
+        selecaoPagamento.setVisible(true);
+        if (selecaoPagamento.getResult()) {
+            this.dispose();
+        }
+    }//GEN-LAST:event_btnConfirmarActionPerformed
 
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnFecharActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(frmConfirmarCheckOut.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(frmConfirmarCheckOut.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(frmConfirmarCheckOut.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(frmConfirmarCheckOut.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                frmConfirmarCheckOut dialog = new frmConfirmarCheckOut(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCheckIn;
+    private javax.swing.JButton btnConfirmar;
     private javax.swing.JButton btnFechar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCodigo;
@@ -371,6 +430,7 @@ public class frmConfirmarCheckOut extends javax.swing.JDialog {
     private javax.swing.JPanel pnlInfoLocacao;
     private javax.swing.JPanel pnlSubTotalConsumiveis;
     private javax.swing.JPanel pnlSubTotalLocacao;
+    private javax.swing.JPanel pnlTotal;
     private javax.swing.JTable tblConsumiveis;
     private javax.swing.JTextField tfdCodigo;
     private javax.swing.JTextField tfdDataEntrada;
@@ -379,5 +439,6 @@ public class frmConfirmarCheckOut extends javax.swing.JDialog {
     private javax.swing.JTextField tfdQuarto;
     private hotel.support.JNumberFormatField tfdSubTotalConsumiveis;
     private hotel.support.JNumberFormatField tfdSubTotalLocacao;
+    private hotel.support.JNumberFormatField tfdTotal;
     // End of variables declaration//GEN-END:variables
 }
