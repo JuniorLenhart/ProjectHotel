@@ -1,13 +1,17 @@
 package hotel.view;
 
 import hotel.controller.FinanceiroController;
+import hotel.controller.PermissaoController;
 import hotel.model.Financeiro;
 import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
+import java.time.YearMonth;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -17,13 +21,28 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 public class frmFinanceiro extends javax.swing.JInternalFrame {
 
+    Financeiro financeiro;
     FinanceiroController financeiroController;
 
+    boolean isRegistrar = false;
+    
     public frmFinanceiro() {
         initComponents();
+        financeiro = new Financeiro();
         financeiroController = new FinanceiroController();
 
         buildChartDayMonthlyGross();
+
+        financeiroController.popularTabela(tblLista, 0, "");
+        tblLista.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                habilitar();
+            }
+        });
+        setMaxDays();
+        loadPermission();
+        setAba(0);
     }
 
     private void buildChartDayMonthlyGross() {
@@ -34,7 +53,7 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
             Calendar cal2 = Calendar.getInstance();
             cal2.setTime(financeiro.getDtaPgto());
             int day = cal2.get(Calendar.DAY_OF_MONTH);
-            if(map.containsKey(day)){
+            if (map.containsKey(day)) {
                 map.put(day, map.get(day) + financeiro.getVlrPago().doubleValue());
             } else {
                 map.put(day, financeiro.getVlrPago().doubleValue());
@@ -65,16 +84,46 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
         pnlFields.validate();
     }
 
+    private void setMaxDays() {
+        YearMonth yearMonthObject = YearMonth.of(tfdAno.getYear(), tfdMes.getMonth() + 1);
+        int daysInMonth = yearMonthObject.lengthOfMonth();
+        tfdDia.setModel(new SpinnerNumberModel(1, 1, daysInMonth, 1));
+    }
+    
+    private void loadPermission() {
+        isRegistrar = PermissaoController.hasPermission("frmFinanceiro", "btnRegistrarPagamento");
+    }
+    
+    private void setAba(int pIndex) {
+        tbpLocacao.setSelectedIndex(pIndex);
+
+        habilitar();
+    }
+
+    private void limparCampos() {
+        financeiro = new Financeiro();
+    }
+
+    private void habilitar() {
+        if (tbpLocacao.getSelectedIndex() == 0) {
+            btnRegistrarPagamento.setEnabled(false);
+        } else {
+            String lSituacao = "";
+            if (tblLista.getSelectedRow() != -1) {
+                lSituacao = String.valueOf(tblLista.getValueAt(tblLista.getSelectedRow(), 5));
+            }
+            
+            btnRegistrarPagamento.setEnabled(isRegistrar && lSituacao.equals("null"));
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         pnlHeader = new javax.swing.JPanel();
-        btnCheckIn = new javax.swing.JButton();
-        btnCheckOut = new javax.swing.JButton();
-        btnCancelar = new javax.swing.JButton();
+        btnRegistrarPagamento = new javax.swing.JButton();
         btnFechar = new javax.swing.JButton();
-        btnProcurarReserva = new javax.swing.JButton();
         tbpLocacao = new javax.swing.JTabbedPane();
         pnlResumo = new javax.swing.JPanel();
         pnlAcompanhante = new javax.swing.JPanel();
@@ -82,6 +131,7 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
         tbListaAcompanhante = new javax.swing.JTable();
         btnSelecaoPessoa = new javax.swing.JButton();
         pnlFields = new javax.swing.JPanel();
+        jDayChooser1 = new com.toedter.calendar.JDayChooser();
         pnlListagem = new javax.swing.JPanel();
         pnlDetalhe = new javax.swing.JPanel();
         tfdPesquisa = new javax.swing.JTextField();
@@ -90,42 +140,25 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
         rbNome = new javax.swing.JRadioButton();
         rbCodigo = new javax.swing.JRadioButton();
         btnPesquisa = new javax.swing.JButton();
+        pnlOpcao1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        tfdMes = new com.toedter.calendar.JMonthChooser();
+        jLabel2 = new javax.swing.JLabel();
+        tfdAno = new com.toedter.calendar.JYearChooser();
+        jLabel3 = new javax.swing.JLabel();
+        tfdDia = new javax.swing.JSpinner();
         scpLista = new javax.swing.JScrollPane();
         tblLista = new javax.swing.JTable();
 
-        btnCheckIn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnCheckIn.setForeground(new java.awt.Color(12, 91, 160));
-        btnCheckIn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/save.png"))); // NOI18N
-        btnCheckIn.setText("Check-in");
-        btnCheckIn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnCheckIn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnCheckIn.addActionListener(new java.awt.event.ActionListener() {
+        btnRegistrarPagamento.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnRegistrarPagamento.setForeground(new java.awt.Color(12, 91, 160));
+        btnRegistrarPagamento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/payment.png"))); // NOI18N
+        btnRegistrarPagamento.setText("Registrar Pagamento");
+        btnRegistrarPagamento.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnRegistrarPagamento.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnRegistrarPagamento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCheckInActionPerformed(evt);
-            }
-        });
-
-        btnCheckOut.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnCheckOut.setForeground(new java.awt.Color(12, 91, 160));
-        btnCheckOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/edit.png"))); // NOI18N
-        btnCheckOut.setText("Check-out");
-        btnCheckOut.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnCheckOut.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnCheckOut.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCheckOutActionPerformed(evt);
-            }
-        });
-
-        btnCancelar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnCancelar.setForeground(new java.awt.Color(12, 91, 160));
-        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/cancel.png"))); // NOI18N
-        btnCancelar.setText("Cancelar");
-        btnCancelar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnCancelar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelarActionPerformed(evt);
+                btnRegistrarPagamentoActionPerformed(evt);
             }
         });
 
@@ -141,42 +174,21 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
             }
         });
 
-        btnProcurarReserva.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnProcurarReserva.setForeground(new java.awt.Color(12, 91, 160));
-        btnProcurarReserva.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/research.png"))); // NOI18N
-        btnProcurarReserva.setText("Reserva");
-        btnProcurarReserva.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnProcurarReserva.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnProcurarReserva.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnProcurarReservaActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout pnlHeaderLayout = new javax.swing.GroupLayout(pnlHeader);
         pnlHeader.setLayout(pnlHeaderLayout);
         pnlHeaderLayout.setHorizontalGroup(
             pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlHeaderLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnCheckIn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCheckOut)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCancelar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnProcurarReserva)
+                .addComponent(btnRegistrarPagamento)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnFechar)
                 .addContainerGap())
         );
         pnlHeaderLayout.setVerticalGroup(
             pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnCheckIn)
-            .addComponent(btnCheckOut)
-            .addComponent(btnCancelar)
+            .addComponent(btnRegistrarPagamento)
             .addComponent(btnFechar)
-            .addComponent(btnProcurarReserva)
         );
 
         tbpLocacao.setBackground(new java.awt.Color(255, 255, 255));
@@ -269,13 +281,20 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
                     .addComponent(pnlAcompanhante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(pnlResumoLayout.createSequentialGroup()
                         .addComponent(pnlFields, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(154, 154, 154)
+                        .addComponent(jDayChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         pnlResumoLayout.setVerticalGroup(
             pnlResumoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlResumoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(pnlFields, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnlResumoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlResumoLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(pnlFields, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlResumoLayout.createSequentialGroup()
+                        .addGap(53, 53, 53)
+                        .addComponent(jDayChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlAcompanhante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -349,6 +368,63 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
             }
         });
 
+        pnlOpcao1.setBackground(new java.awt.Color(255, 255, 255));
+        pnlOpcao1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, " Pesquisa Detalhada Datas ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
+
+        jLabel1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jLabel1.setText("Mês:");
+
+        tfdMes.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        tfdMes.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                tfdMesPropertyChange(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jLabel2.setText("Ano:");
+
+        tfdAno.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        tfdAno.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                tfdAnoPropertyChange(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jLabel3.setText("Dia:");
+
+        tfdDia.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+
+        javax.swing.GroupLayout pnlOpcao1Layout = new javax.swing.GroupLayout(pnlOpcao1);
+        pnlOpcao1.setLayout(pnlOpcao1Layout);
+        pnlOpcao1Layout.setHorizontalGroup(
+            pnlOpcao1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlOpcao1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tfdDia, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tfdMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tfdAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnlOpcao1Layout.setVerticalGroup(
+            pnlOpcao1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(tfdMes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(tfdAno, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(tfdDia)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout pnlDetalheLayout = new javax.swing.GroupLayout(pnlDetalhe);
         pnlDetalhe.setLayout(pnlDetalheLayout);
         pnlDetalheLayout.setHorizontalGroup(
@@ -359,15 +435,22 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
                     .addComponent(pnlOpcao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblPesquisa)
                     .addComponent(tfdPesquisa))
-                .addGap(18, 18, 18)
-                .addComponent(btnPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 633, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlDetalheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlDetalheLayout.createSequentialGroup()
+                        .addComponent(pnlOpcao1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(pnlDetalheLayout.createSequentialGroup()
+                        .addComponent(btnPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         pnlDetalheLayout.setVerticalGroup(
             pnlDetalheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlDetalheLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnlOpcao, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnlDetalheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(pnlOpcao1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(pnlOpcao, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblPesquisa)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -399,7 +482,7 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
                     .addComponent(pnlDetalhe, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(pnlListagemLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(scpLista)))
+                        .addComponent(scpLista, javax.swing.GroupLayout.DEFAULT_SIZE, 989, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnlListagemLayout.setVerticalGroup(
@@ -438,25 +521,16 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnCheckInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckInActionPerformed
-
-    }//GEN-LAST:event_btnCheckInActionPerformed
-
-    private void btnCheckOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckOutActionPerformed
-
-    }//GEN-LAST:event_btnCheckOutActionPerformed
-
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-
-    }//GEN-LAST:event_btnCancelarActionPerformed
+    private void btnRegistrarPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarPagamentoActionPerformed
+        financeiro = financeiroController.getReadId(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString()));
+        Calendar now = Calendar.getInstance();
+        financeiro.setDtaPgto(now.getTime());
+        financeiroController.popularTabela(tblLista, 0, "");
+    }//GEN-LAST:event_btnRegistrarPagamentoActionPerformed
 
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnFecharActionPerformed
-
-    private void btnProcurarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcurarReservaActionPerformed
-
-    }//GEN-LAST:event_btnProcurarReservaActionPerformed
 
     private void btnSelecaoPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecaoPessoaActionPerformed
 
@@ -492,18 +566,27 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnPesquisaActionPerformed
 
     private void tbpLocacaoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tbpLocacaoStateChanged
-        //habilitar();
+        habilitar();
     }//GEN-LAST:event_tbpLocacaoStateChanged
+
+    private void tfdMesPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tfdMesPropertyChange
+        setMaxDays();
+    }//GEN-LAST:event_tfdMesPropertyChange
+
+    private void tfdAnoPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tfdAnoPropertyChange
+        setMaxDays();
+    }//GEN-LAST:event_tfdAnoPropertyChange
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnCheckIn;
-    private javax.swing.JButton btnCheckOut;
     private javax.swing.JButton btnFechar;
     private javax.swing.JButton btnPesquisa;
-    private javax.swing.JButton btnProcurarReserva;
+    private javax.swing.JButton btnRegistrarPagamento;
     private javax.swing.JButton btnSelecaoPessoa;
+    private com.toedter.calendar.JDayChooser jDayChooser1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel lblPesquisa;
     private javax.swing.JPanel pnlAcompanhante;
     private javax.swing.JPanel pnlDetalhe;
@@ -511,6 +594,7 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
     private javax.swing.JPanel pnlHeader;
     private javax.swing.JPanel pnlListagem;
     private javax.swing.JPanel pnlOpcao;
+    private javax.swing.JPanel pnlOpcao1;
     private javax.swing.JPanel pnlResumo;
     private javax.swing.JRadioButton rbCodigo;
     private javax.swing.JRadioButton rbNome;
@@ -519,6 +603,9 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
     private javax.swing.JTable tbListaAcompanhante;
     private javax.swing.JTable tblLista;
     private javax.swing.JTabbedPane tbpLocacao;
+    private com.toedter.calendar.JYearChooser tfdAno;
+    private javax.swing.JSpinner tfdDia;
+    private com.toedter.calendar.JMonthChooser tfdMes;
     private javax.swing.JTextField tfdPesquisa;
     // End of variables declaration//GEN-END:variables
 }
