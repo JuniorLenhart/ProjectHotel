@@ -1,7 +1,6 @@
 package hotel.controller;
 
 import hotel.config.HibernateUtil;
-import hotel.model.Parametro;
 import hotel.model.Reserva;
 import hotel.repository.ReservaRepository;
 import hotel.support.Formatacao;

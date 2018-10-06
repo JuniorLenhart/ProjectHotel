@@ -1,5 +1,6 @@
 package hotel.controller;
 
+import hotel.config.HibernateUtil;
 import hotel.model.Auditoria;
 import hotel.repository.AuditoriaRepository;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import org.hibernate.Transaction;
 
 public class AuditoriaController extends BaseController<Auditoria> {
 
@@ -20,6 +22,18 @@ public class AuditoriaController extends BaseController<Auditoria> {
             LoggerController.log(this.getClass(), ex);
         }
         return null;
+    }
+
+    public void backup(String pDtaInicial, String pDtaFinal) {
+        try {
+            Transaction transaction = HibernateUtil.getBeginTransaction();
+
+            AuditoriaRepository.backup(pDtaInicial, pDtaFinal);
+
+            transaction.commit();
+        } catch (Exception ex) {
+            LoggerController.log(this.getClass(), ex);
+        }
     }
 
     public void popularTabela(JTable pTabela, int pOption, String pParam, int page, JTextField registros) {

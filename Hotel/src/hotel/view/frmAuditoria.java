@@ -20,6 +20,7 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
 
     boolean isAtivarAuditoria = false;
     boolean isDetalhe = false;
+    boolean isBackup = false;
 
     int page = 0;
 
@@ -38,11 +39,13 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
 
         loadPermission();
         btnAtivarAuditoria.setEnabled(isAtivarAuditoria);
+        btnBackup.setEnabled(isBackup);
     }
 
     private void loadPermission() {
         isAtivarAuditoria = PermissaoController.hasPermission("frmAuditoria", "btnAtivarAuditoria");
         isDetalhe = PermissaoController.hasPermission("frmAuditoria", "btnDetalhe");
+        isBackup = PermissaoController.hasPermission("frmAuditoria", "btnBackup");
     }
 
     private void checaAuditoriaAtiva() {
@@ -113,6 +116,7 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
         btnFechar = new javax.swing.JButton();
         btnDetalhe = new javax.swing.JButton();
         btnAtivarAuditoria = new javax.swing.JToggleButton();
+        btnBackup = new javax.swing.JButton();
         pnlListagem = new javax.swing.JPanel();
         pnlDetalhe = new javax.swing.JPanel();
         tfdPesquisa = new javax.swing.JTextField();
@@ -174,6 +178,18 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
             }
         });
 
+        btnBackup.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnBackup.setForeground(new java.awt.Color(12, 91, 160));
+        btnBackup.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/backup.png"))); // NOI18N
+        btnBackup.setText("Backup");
+        btnBackup.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnBackup.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnBackup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackupActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlHeaderLayout = new javax.swing.GroupLayout(pnlHeader);
         pnlHeader.setLayout(pnlHeaderLayout);
         pnlHeaderLayout.setHorizontalGroup(
@@ -183,15 +199,21 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
                 .addComponent(btnAtivarAuditoria, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnDetalhe)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnBackup)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnFechar)
                 .addContainerGap())
         );
         pnlHeaderLayout.setVerticalGroup(
             pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlHeaderLayout.createSequentialGroup()
+                .addGroup(pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnAtivarAuditoria, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnDetalhe, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnBackup, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addComponent(btnFechar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(btnDetalhe, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(btnAtivarAuditoria, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pnlListagem.setBackground(new java.awt.Color(255, 255, 255));
@@ -494,7 +516,7 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pnlHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(6, 6, 6)
                 .addComponent(pnlListagem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -615,10 +637,22 @@ public class frmAuditoria extends javax.swing.JInternalFrame {
         habilitaSetas(page);
     }//GEN-LAST:event_btnUltimaPaginaActionPerformed
 
+    private void btnBackupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackupActionPerformed
+        frmAuditoriaBackup auditoriaBackup = new frmAuditoriaBackup(null, true);
+        auditoriaBackup.setVisible(true);
 
+        String[] lStr = auditoriaBackup.getResult();
+
+        if (lStr[0].equals("Yes")) {
+            auditoriaController.backup(lStr[1], lStr[2]);
+            btnPesquisaActionPerformed(evt);
+            JOptionPane.showMessageDialog(null, "Backup realizado com sucesso!");
+        }
+    }//GEN-LAST:event_btnBackupActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup btgGroup;
     private javax.swing.JToggleButton btnAtivarAuditoria;
+    private javax.swing.JButton btnBackup;
     private javax.swing.JButton btnDetalhe;
     private javax.swing.JButton btnFechar;
     private javax.swing.JButton btnPaginaAnterior;
