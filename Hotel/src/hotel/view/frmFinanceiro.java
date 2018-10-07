@@ -3,9 +3,14 @@ package hotel.view;
 import hotel.controller.FinanceiroController;
 import hotel.controller.PermissaoController;
 import hotel.model.Financeiro;
+import hotel.model.Parametro;
 import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -115,6 +120,13 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
             
             btnRegistrarPagamento.setEnabled(isRegistrar && lSituacao.equals("null"));
         }
+    }
+    
+    private long calculaDiasEntreDatas(String dataVencimento, String dataPagamento) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate dataVenci = LocalDate.parse(dataVencimento, dtf);
+        LocalDate dataPaga = LocalDate.parse(dataPagamento, dtf);
+        return ChronoUnit.DAYS.between(dataVenci, dataPaga);
     }
 
     @SuppressWarnings("unchecked")
@@ -514,6 +526,13 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
     private void btnRegistrarPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarPagamentoActionPerformed
         financeiro = financeiroController.getReadId(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString()));
         Calendar now = Calendar.getInstance();
+        if(now.getTime().after(financeiro.getDtaVencimento())) {
+            long days = calculaDiasEntreDatas(financeiro.getDtaVencimento().toString(), now.getTime().toString());
+            double valorComJuros = (Parametro.PER_JUROS * days) * financeiro.getVlrFinanceiro().doubleValue();
+            financeiro.setVlrPago(BigDecimal.valueOf(valorComJuros));
+        } else {
+            financeiro.setVlrPago(financeiro.getVlrFinanceiro());
+        }
         financeiro.setDtaPgto(now.getTime());
         financeiroController.popularTabela(tblLista, 0, "");
     }//GEN-LAST:event_btnRegistrarPagamentoActionPerformed
