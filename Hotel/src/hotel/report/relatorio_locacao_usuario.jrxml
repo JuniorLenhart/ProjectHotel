@@ -10,7 +10,7 @@
 	<parameter name="caminhoImagem" class="java.lang.String"/>
 	<parameter name="cod_locacao" class="java.lang.Integer"/>
 	<queryString>
-		<![CDATA[SELECT l.cod_locacao as locacao, l.cod_quarto as quarto, l.dta_entrada, l.dta_saida, l.vlr_locacao, p.nom_pessoa, l.vlr_locacao - SUM(lc.vlr_consumivel) as valorTotal
+		<![CDATA[SELECT l.cod_locacao as locacao, l.cod_quarto as quarto, l.dta_entrada, l.dta_saida, l.vlr_locacao, p.nom_pessoa, l.vlr_locacao - coalesce(SUM(lc.vlr_consumivel), 0) as valorTotal
 FROM locacao l LEFT JOIN locacao_hospede lh ON (l.cod_locacao = lh.cod_locacao) LEFT JOIN pessoa p ON (lh.cod_pessoa = p.cod_pessoa)
 LEFT JOIN locacao_consumivel lc ON (l.cod_locacao = lc.cod_locacao) LEFT JOIN consumivel c ON (lc.cod_consumivel = c.cod_consumivel)
 WHERE l.cod_locacao = $P{cod_locacao}

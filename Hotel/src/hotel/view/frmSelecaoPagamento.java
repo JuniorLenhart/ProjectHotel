@@ -115,7 +115,7 @@ public class frmSelecaoPagamento extends javax.swing.JDialog {
             parametros.put("cod_locacao", codigoLocacao);
 
             JasperPrint impressao = JasperFillManager.fillReport(relatorio, parametros, ConexaoRelatorio.getInstance().getConnection());
-
+            System.out.println(getClass().getResource("/hotel/images/logo_1.png").getPath().replace("/C:", "").replace("/hotel/images/logo_1.png", "/hotel/files/"));
             JasperExportManager.exportReportToPdfFile(impressao, getClass().getResource("/hotel/images/logo_1.png").getPath().replace("/C:", "").replace("/hotel/images/logo_1.png", "/hotel/files/") + "L" + codigoLocacao + ".pdf");
             //File pdf = File.createTempFile("output.", ".pdf");
             //JasperExportManager.exportReportToPdfStream(impressao, new FileOutputStream(pdf));
@@ -306,11 +306,11 @@ public class frmSelecaoPagamento extends javax.swing.JDialog {
                 }
             }
             locacao.setVlrLocacao(BigDecimal.valueOf(valorTotal));
+            locacaoController.save(locacao);
             JOptionPane.showMessageDialog(null, "Pagamento registrado com sucesso!");
             Timestamp dtaSaida = Timestamp.valueOf(Formatacao.ajustaDataAMDHMS(Unit.getDataHoraAtual()));
             locacao.setDtaSaida(dtaSaida);
             locacaoController.changeSituation(locacao.getCodLocacao(), "F");
-            locacaoController.save(locacao);
             gerarRelatorioLocacao(locacao.getCodLocacao());
             Result = true;
             this.dispose();
