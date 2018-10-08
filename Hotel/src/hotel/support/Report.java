@@ -3,6 +3,7 @@ package hotel.support;
 import hotel.controller.LoggerController;
 import java.awt.Desktop;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Map;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.JRExporterParameter;
@@ -48,7 +49,7 @@ public class Report {
         try {
             JRExporter lExportar = new JRPdfExporter();
             lExportar.setParameter(JRExporterParameter.JASPER_PRINT, pJasperPrint);
-            lExportar.setParameter(JRExporterParameter.OUTPUT_STREAM, pDirectory + pFileName + ".pdf");
+            lExportar.setParameter(JRExporterParameter.OUTPUT_STREAM, new FileOutputStream(pDirectory + pFileName + ".pdf"));
             lExportar.exportReport();
         } catch (Exception e) {
             LoggerController.log(this.getClass(), e);

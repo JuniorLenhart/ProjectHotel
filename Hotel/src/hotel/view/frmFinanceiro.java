@@ -122,7 +122,7 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
                 lSituacao = String.valueOf(tblLista.getValueAt(tblLista.getSelectedRow(), 5));
             }
 
-            btnRegistrarPagamento.setEnabled(isRegistrar && !lSituacao.equals("null"));
+            btnRegistrarPagamento.setEnabled(isRegistrar && lSituacao.equals("null"));
             btnNota.setEnabled(isRegistrar && tblLista.getSelectedRow() != -1);
         }
     }
@@ -560,7 +560,7 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
 
     private void btnNotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNotaActionPerformed
         financeiro = financeiroController.getReadId(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString()));
-        new Report().openFile(Parametro.DIR_FINANCEIRO, "L" + financeiro.getLocacao().getCodLocacao());
+        new Report().openFile(Parametro.DIR_FINANCEIRO, "L" + financeiro.getLocacao().getCodLocacao() + ".pdf");
     }//GEN-LAST:event_btnNotaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
