@@ -25,35 +25,35 @@ GROUP BY l.cod_locacao, p.nom_pessoa, c.cod_consumivel, lc.qtd_consumivel, lc.vl
 			<rectangle>
 				<reportElement x="0" y="0" width="555" height="20" uuid="8539ef58-b3cc-42cf-91dc-1b742dffe3f7"/>
 			</rectangle>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="42" height="20" uuid="30c93354-bf66-4af9-acd2-a1c5042d94d8"/>
 				<textElement textAlignment="Right">
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cod_consumivel}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="53" y="0" width="204" height="20" uuid="f2cd5876-96de-43c7-9191-cdb5ddad8759"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nom_consumivel}]]></textFieldExpression>
 			</textField>
-			<textField pattern="¤ #,##0.00">
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
 				<reportElement x="257" y="0" width="100" height="20" uuid="c45b9e6d-9d3b-47bc-a062-1bb2c080f2d4"/>
 				<textElement textAlignment="Center">
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{vlr_unitario}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="357" y="0" width="100" height="20" uuid="e25c7273-60eb-42e4-b63f-4581fd86ad91"/>
 				<textElement textAlignment="Center">
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{quantidade}]]></textFieldExpression>
 			</textField>
-			<textField pattern="¤ #,##0.00">
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
 				<reportElement x="457" y="0" width="98" height="20" uuid="3047a745-ea39-48ea-8043-281db337d6d4"/>
 				<textElement textAlignment="Center">
 					<font size="12"/>

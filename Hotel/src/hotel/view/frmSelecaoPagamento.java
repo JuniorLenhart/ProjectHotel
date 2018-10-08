@@ -109,14 +109,14 @@ public class frmSelecaoPagamento extends javax.swing.JDialog {
             JasperReport relatorio = JasperCompileManager.compileReport(getClass().getResourceAsStream("/hotel/report/relatorio_locacao_usuario.jrxml"));
 
             Map parametros = new HashMap();
-            parametros.put("caminhoImagem", "C:/Users/George/Desktop/Costurati/src/imagens/logo_atualizado.png");
+            parametros.put("caminhoImagem", getClass().getResource("/hotel/images/logo_1.png").getPath());
             parametros.put("subTitulo", "Relatório de locação e consumíveis");
             parametros.put("SUBREPORT_DIR", getClass().getResource("/hotel/report/relatorio_locacao_usuario_consumiveis.jasper").getPath());
             parametros.put("cod_locacao", codigoLocacao);
 
             JasperPrint impressao = JasperFillManager.fillReport(relatorio, parametros, ConexaoRelatorio.getInstance().getConnection());
 
-            //JasperExportManager.exportReportToPdfFile(impressao, getClass().getResource("/hotel/files/").getPath() + "L" + codigoLocacao + ".pdf");
+            JasperExportManager.exportReportToPdfFile(impressao, getClass().getResource("/hotel/images/logo_1.png").getPath().replace("/C:", "").replace("/hotel/images/logo_1.png", "/hotel/files/") + "L" + codigoLocacao + ".pdf");
             //File pdf = File.createTempFile("output.", ".pdf");
             //JasperExportManager.exportReportToPdfStream(impressao, new FileOutputStream(pdf));
 

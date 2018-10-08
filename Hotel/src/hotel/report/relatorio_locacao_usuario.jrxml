@@ -31,11 +31,11 @@ GROUP BY l.cod_locacao, p.nom_pessoa]]>
 			<frame>
 				<reportElement mode="Opaque" x="-20" y="-20" width="595" height="92" backcolor="#0C5BA0" uuid="28ee8fec-b8fa-4dc8-8dec-726b96f2ae69"/>
 				<image isUsingCache="true">
-					<reportElement x="20" y="0" width="323" height="92" uuid="f01679ab-fa2b-4704-a8d2-3c397d627802"/>
+					<reportElement x="20" y="0" width="284" height="92" uuid="f01679ab-fa2b-4704-a8d2-3c397d627802"/>
 					<imageExpression><![CDATA[$P{caminhoImagem}]]></imageExpression>
 				</image>
 				<textField>
-					<reportElement x="380" y="43" width="195" height="20" forecolor="#FFFFFF" uuid="1ef0aa82-fddb-4ff2-9cc6-fc2c3ed63bcf"/>
+					<reportElement x="304" y="43" width="271" height="20" forecolor="#FFFFFF" uuid="1ef0aa82-fddb-4ff2-9cc6-fc2c3ed63bcf"/>
 					<textElement textAlignment="Right">
 						<font size="14" isBold="true"/>
 					</textElement>

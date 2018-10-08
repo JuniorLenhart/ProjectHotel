@@ -30,10 +30,12 @@ public class frmLogin extends javax.swing.JFrame {
         parametroController = new ParametroController();
 
         setLocationRelativeTo(null);
+        lblFrase.setVisible(false);
 
-        pnlLogin.setBackground(new Color(0, 0, 0, 100));
+        pnlLogin.setBackground(new Color(0, 0, 0, 200));
         try {
             lblBackground.setIcon(readingAndCreatingResizeImage());
+            jLabel1.setIcon(readingAndCreatingResizeImage2());
         } catch (IOException ex) {
             Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -60,6 +62,13 @@ public class frmLogin extends javax.swing.JFrame {
     public ImageIcon readingAndCreatingResizeImage() throws IOException {
         Image img = new ImageIcon(getClass().getResource("/hotel/images/LoginBackGround5.jpg")).getImage()
                 .getScaledInstance(lblBackground.getWidth(), lblBackground.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon imageIcon = new ImageIcon(img);
+        return imageIcon;
+    }
+    
+    public ImageIcon readingAndCreatingResizeImage2() throws IOException {
+        Image img = new ImageIcon(getClass().getResource("/hotel/images/logo_1.png")).getImage()
+                .getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), Image.SCALE_SMOOTH);
         ImageIcon imageIcon = new ImageIcon(img);
         return imageIcon;
     }
@@ -90,8 +99,6 @@ public class frmLogin extends javax.swing.JFrame {
     private void initComponents() {
 
         pnlBackground = new javax.swing.JLayeredPane();
-        lblIntegrador = new javax.swing.JLabel();
-        lblHotel = new javax.swing.JLabel();
         lblFrase = new javax.swing.JLabel();
         btnFechar = new javax.swing.JButton();
         pnlLogin = new javax.swing.JPanel();
@@ -101,6 +108,7 @@ public class frmLogin extends javax.swing.JFrame {
         btnLogar = new javax.swing.JButton();
         tfdSenha = new javax.swing.JPasswordField();
         lblLogarse = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         lblBackground = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -109,20 +117,10 @@ public class frmLogin extends javax.swing.JFrame {
 
         pnlBackground.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        lblIntegrador.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
-        lblIntegrador.setForeground(new java.awt.Color(255, 255, 255));
-        lblIntegrador.setText("Integrador");
-        pnlBackground.add(lblIntegrador, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 380, -1));
-
-        lblHotel.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
-        lblHotel.setForeground(new java.awt.Color(255, 255, 255));
-        lblHotel.setText("Hotel");
-        pnlBackground.add(lblHotel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 380, -1));
-
         lblFrase.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblFrase.setForeground(new java.awt.Color(255, 255, 255));
         lblFrase.setText("Um novo conceito de hotel está surgindo!");
-        pnlBackground.add(lblFrase, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 360, -1));
+        pnlBackground.add(lblFrase, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 160, 360, -1));
 
         btnFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/error.png"))); // NOI18N
         btnFechar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -183,7 +181,7 @@ public class frmLogin extends javax.swing.JFrame {
             }
         });
 
-        lblLogarse.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        lblLogarse.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         lblLogarse.setForeground(new java.awt.Color(255, 255, 255));
         lblLogarse.setText("Logar-se");
 
@@ -210,9 +208,9 @@ public class frmLogin extends javax.swing.JFrame {
         pnlLoginLayout.setVerticalGroup(
             pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlLoginLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(15, Short.MAX_VALUE)
                 .addComponent(lblLogarse)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(lblLogin)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tfdLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -225,7 +223,8 @@ public class frmLogin extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        pnlBackground.add(pnlLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 102, -1, 340));
+        pnlBackground.add(pnlLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 200, -1, 280));
+        pnlBackground.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 500, 200));
 
         lblBackground.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/LoginBackGround4.jpeg"))); // NOI18N
         pnlBackground.add(lblBackground, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -289,10 +288,9 @@ public class frmLogin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFechar;
     private javax.swing.JButton btnLogar;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblBackground;
     private javax.swing.JLabel lblFrase;
-    private javax.swing.JLabel lblHotel;
-    private javax.swing.JLabel lblIntegrador;
     private javax.swing.JLabel lblLogarse;
     private javax.swing.JLabel lblLogin;
     private javax.swing.JLabel lblSenha;
