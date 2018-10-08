@@ -4,12 +4,10 @@ import hotel.controller.FinanceiroController;
 import hotel.controller.LocacaoController;
 import hotel.model.*;
 import hotel.repository.FormaPagamentoRepository;
-import hotel.support.ConexaoRelatorio;
 import hotel.support.Formatacao;
+import hotel.support.Report;
 import hotel.support.Unit;
 import hotel.support.Validacao;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -26,12 +24,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.DefaultFormatter;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JasperViewer;
 
 public class frmSelecaoPagamento extends javax.swing.JDialog {
 
@@ -104,23 +97,17 @@ public class frmSelecaoPagamento extends javax.swing.JDialog {
         }
     }
 
-    private void gerarRelatorioLocacao(int codigoLocacao) {
+    private void createReportLocacao(Locacao locacao) {
         try {
-            JasperReport relatorio = JasperCompileManager.compileReport(getClass().getResourceAsStream("/hotel/report/relatorio_locacao_usuario.jrxml"));
+            Map map = new HashMap();
+            map.put("caminhoImagem", getClass().getResource("/hotel/images/logo_1.png").getPath());
+            map.put("subTitulo", "Relatório de Locação e Consumíveis");
+            map.put("SUBREPORT_DIR", getClass().getResource("/hotel/report/relatorio_locacao_usuario_consumiveis.jasper").getPath());
+            map.put("cod_locacao", locacao.getCodLocacao());
 
-            Map parametros = new HashMap();
-            parametros.put("caminhoImagem", getClass().getResource("/hotel/images/logo_1.png").getPath());
-            parametros.put("subTitulo", "Relatório de locação e consumíveis");
-            parametros.put("SUBREPORT_DIR", getClass().getResource("/hotel/report/relatorio_locacao_usuario_consumiveis.jasper").getPath());
-            parametros.put("cod_locacao", codigoLocacao);
-
-            JasperPrint impressao = JasperFillManager.fillReport(relatorio, parametros, ConexaoRelatorio.getInstance().getConnection());
-            System.out.println(getClass().getResource("/hotel/images/logo_1.png").getPath().replace("/C:", "").replace("/hotel/images/logo_1.png", "/hotel/files/"));
-            JasperExportManager.exportReportToPdfFile(impressao, getClass().getResource("/hotel/images/logo_1.png").getPath().replace("/C:", "").replace("/hotel/images/logo_1.png", "/hotel/files/") + "L" + codigoLocacao + ".pdf");
-            //File pdf = File.createTempFile("output.", ".pdf");
-            //JasperExportManager.exportReportToPdfStream(impressao, new FileOutputStream(pdf));
-
-            JasperViewer.viewReport(impressao, false);
+            Report report = new Report();
+            JasperPrint impressao = report.openReport(map, "relatorio_locacao_usuario");
+            report.exportPDFDir(impressao, Parametro.DIR_FINANCEIRO, "L" + locacao.getCodLocacao().toString());
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Erro ao gerar relatório: " + e);
         }
@@ -311,7 +298,7 @@ public class frmSelecaoPagamento extends javax.swing.JDialog {
             Timestamp dtaSaida = Timestamp.valueOf(Formatacao.ajustaDataAMDHMS(Unit.getDataHoraAtual()));
             locacao.setDtaSaida(dtaSaida);
             locacaoController.changeSituation(locacao.getCodLocacao(), "F");
-            gerarRelatorioLocacao(locacao.getCodLocacao());
+            createReportLocacao(locacao);
             Result = true;
             this.dispose();
         }

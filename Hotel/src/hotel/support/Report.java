@@ -1,21 +1,32 @@
 package hotel.support;
 
-import java.util.*;
-import javax.swing.*;
+import hotel.controller.LoggerController;
+import java.awt.Desktop;
+import java.io.File;
+import java.util.Map;
+import net.sf.jasperreports.engine.JRExporter;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class Report {
 
-    public void abrirRelatorio(Map pMap, String pArquivo) {
+    public JasperPrint openReport(Map pMap, String pFile) {
         try {
-            //JasperReport lRelatorio = JasperCompileManager.compileReport(getClass().getResourceAsStream("/hotel/relatorio/" + pArquivo + ".jrxml"));
+            JasperReport lRelatorio = JasperCompileManager.compileReport(getClass().getResourceAsStream("/hotel/report/" + pFile + ".jrxml"));
 
-            //ImageIcon lImage = new ImageIcon(getClass().getResource("/videostore/imagem/LogoAgua.png"));
-            //pMap.put("logo", lImage.getImage());
-            //JasperPrint lImpressao = JasperFillManager.fillReport(lRelatorio, pMap, ConexaoBD.getInstance().getConnection());
-            //JasperViewer.viewReport(lImpressao, false);
+            JasperPrint lImpressao = JasperFillManager.fillReport(lRelatorio, pMap, ConnectionReport.getInstance().getConnection());
+            JasperViewer.viewReport(lImpressao, false);
+
+            return lImpressao;
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Erro ao gerar relatório: " + e);
+            LoggerController.log(this.getClass(), e);
         }
+        return null;
     }
 
     public void exportarPDF(Map pMap, String pArquivo) {
@@ -29,7 +40,26 @@ public class Report {
             //lExportar.exportReport();
             //JOptionPane.showMessageDialog(null, "Arquivo Exportado!");
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Erro ao exportar relatório: " + e);
+            LoggerController.log(this.getClass(), e);
+        }
+    }
+
+    public void exportPDFDir(JasperPrint pJasperPrint, String pDirectory, String pFileName) {
+        try {
+            JRExporter lExportar = new JRPdfExporter();
+            lExportar.setParameter(JRExporterParameter.JASPER_PRINT, pJasperPrint);
+            lExportar.setParameter(JRExporterParameter.OUTPUT_STREAM, pDirectory + pFileName + ".pdf");
+            lExportar.exportReport();
+        } catch (Exception e) {
+            LoggerController.log(this.getClass(), e);
+        }
+    }
+
+    public void openFile(String pDirectory, String pFileName) {
+        try {
+            Desktop.getDesktop().open(new File(pDirectory + pFileName));
+        } catch (Exception e) {
+            LoggerController.log(this.getClass(), e);
         }
     }
 }

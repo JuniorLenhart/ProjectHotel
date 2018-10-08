@@ -4,6 +4,7 @@ import hotel.controller.FinanceiroController;
 import hotel.controller.PermissaoController;
 import hotel.model.Financeiro;
 import hotel.model.Parametro;
+import hotel.support.Report;
 import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
@@ -30,7 +31,8 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
     FinanceiroController financeiroController;
 
     boolean isRegistrar = false;
-    
+    boolean isNota = false;
+
     public frmFinanceiro() {
         initComponents();
         financeiro = new Financeiro();
@@ -94,11 +96,12 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
         int daysInMonth = yearMonthObject.lengthOfMonth();
         tfdDia.setModel(new SpinnerNumberModel(1, 1, daysInMonth, 1));
     }
-    
+
     private void loadPermission() {
         isRegistrar = PermissaoController.hasPermission("frmFinanceiro", "btnRegistrarPagamento");
+        isNota = PermissaoController.hasPermission("frmFinanceiro", "btnNota");
     }
-    
+
     private void setAba(int pIndex) {
         tbpLocacao.setSelectedIndex(pIndex);
 
@@ -112,16 +115,18 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
     private void habilitar() {
         if (tbpLocacao.getSelectedIndex() == 0) {
             btnRegistrarPagamento.setEnabled(false);
+            btnNota.setEnabled(false);
         } else {
             String lSituacao = "";
             if (tblLista.getSelectedRow() != -1) {
                 lSituacao = String.valueOf(tblLista.getValueAt(tblLista.getSelectedRow(), 5));
             }
-            
-            btnRegistrarPagamento.setEnabled(isRegistrar && lSituacao.equals("null"));
+
+            btnRegistrarPagamento.setEnabled(isRegistrar && !lSituacao.equals("null"));
+            btnNota.setEnabled(isRegistrar && tblLista.getSelectedRow() != -1);
         }
     }
-    
+
     private long calculaDiasEntreDatas(String dataVencimento, String dataPagamento) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate dataVenci = LocalDate.parse(dataVencimento, dtf);
@@ -136,6 +141,7 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
         pnlHeader = new javax.swing.JPanel();
         btnRegistrarPagamento = new javax.swing.JButton();
         btnFechar = new javax.swing.JButton();
+        btnNota = new javax.swing.JButton();
         tbpLocacao = new javax.swing.JTabbedPane();
         pnlResumo = new javax.swing.JPanel();
         pnlAcompanhante = new javax.swing.JPanel();
@@ -182,6 +188,18 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
             }
         });
 
+        btnNota.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnNota.setForeground(new java.awt.Color(12, 91, 160));
+        btnNota.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/atm-machine.png"))); // NOI18N
+        btnNota.setText("Nota");
+        btnNota.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnNota.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnNota.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNotaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlHeaderLayout = new javax.swing.GroupLayout(pnlHeader);
         pnlHeader.setLayout(pnlHeaderLayout);
         pnlHeaderLayout.setHorizontalGroup(
@@ -189,6 +207,8 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
             .addGroup(pnlHeaderLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnRegistrarPagamento)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnNota, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnFechar)
                 .addContainerGap())
@@ -197,6 +217,7 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
             pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(btnRegistrarPagamento)
             .addComponent(btnFechar)
+            .addComponent(btnNota)
         );
 
         tbpLocacao.setBackground(new java.awt.Color(255, 255, 255));
@@ -481,7 +502,7 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
     private void btnRegistrarPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarPagamentoActionPerformed
         financeiro = financeiroController.getReadId(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString()));
         Calendar now = Calendar.getInstance();
-        if(now.getTime().after(financeiro.getDtaVencimento())) {
+        if (now.getTime().after(financeiro.getDtaVencimento())) {
             long days = calculaDiasEntreDatas(financeiro.getDtaVencimento().toString(), now.getTime().toString());
             double valorComJuros = (Parametro.PER_JUROS * days) * financeiro.getVlrFinanceiro().doubleValue();
             financeiro.setVlrPago(BigDecimal.valueOf(valorComJuros));
@@ -537,9 +558,14 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
         setMaxDays();
     }//GEN-LAST:event_tfdAnoPropertyChange
 
+    private void btnNotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNotaActionPerformed
+        financeiro = financeiroController.getReadId(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString()));
+        new Report().openFile(Parametro.DIR_FINANCEIRO, "L" + financeiro.getLocacao().getCodLocacao());
+    }//GEN-LAST:event_btnNotaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFechar;
+    private javax.swing.JButton btnNota;
     private javax.swing.JButton btnPesquisa;
     private javax.swing.JButton btnRegistrarPagamento;
     private javax.swing.JLabel jLabel1;

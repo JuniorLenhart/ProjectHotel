@@ -24,12 +24,15 @@ public class Parametro {
 
     @Column(name = "des_senha_default")
     private String desSenhaDefault;
-    
+
     @Column(name = "ind_auditoria")
     private boolean indAuditoria;
-    
+
     @Column(name = "per_juros")
     private Integer perJuros;
+
+    @Column(name = "dir_financeiro")
+    private String dirFinanceiro;
 
     public static Integer NUM_DIAS_CHECKIN = 0;
     public static Integer NUM_DIAS_PGTO_RESERVA = 0;
@@ -37,7 +40,8 @@ public class Parametro {
     public static Usuario USUARIO = null;
     public static boolean AUDITORIA_ATIVA = true;
     public static Integer PER_JUROS = 0;
-    
+    public static String DIR_FINANCEIRO = "";
+
     public Parametro() {
     }
 
@@ -47,12 +51,13 @@ public class Parametro {
         NUM_DIAS_PGTO_RESERVA = parametro.numDiasPgtoReserva;
         AUDITORIA_ATIVA = parametro.indAuditoria;
         PER_JUROS = parametro.perJuros;
+        DIR_FINANCEIRO = parametro.dirFinanceiro;
     }
 
-    public static void setUser(Usuario usuario){
+    public static void setUser(Usuario usuario) {
         USUARIO = usuario;
     }
-    
+
     public boolean isAuditoriaAtiva() {
         return indAuditoria;
     }
