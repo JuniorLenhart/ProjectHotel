@@ -72,6 +72,7 @@ public class frmConsumivel extends javax.swing.JInternalFrame {
 
     private void limparCampos() {
         consumivel = new Consumivel();
+        tfdDescricao.setText("");
         LimpaCampos.LimparCampos(pnlCadastro);
         LimpaCampos.LimparCampos(pnlCadastro);
     }

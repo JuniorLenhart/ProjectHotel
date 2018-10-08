@@ -19,10 +19,10 @@ public class LocacaoConsumivel {
     @Column(name = "cod_locacao_consumivel")
     private Integer codLocacaoConsumivel;
 
-    @Column(name = "qtd_consumivel")
+    @Column(name = "qtd_consumivel", updatable = false)
     private int qtdConsumivel;
 
-    @Column(name = "vlr_consumivel")
+    @Column(name = "vlr_consumivel", updatable = false)
     private BigDecimal vlrConsumivel;
 
     @JoinColumn(name = "cod_consumivel", referencedColumnName = "cod_consumivel")

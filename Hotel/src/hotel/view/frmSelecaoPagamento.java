@@ -4,18 +4,20 @@ import hotel.controller.FinanceiroController;
 import hotel.controller.LocacaoController;
 import hotel.model.*;
 import hotel.repository.FormaPagamentoRepository;
+import hotel.support.ConexaoRelatorio;
 import hotel.support.Formatacao;
 import hotel.support.Unit;
 import hotel.support.Validacao;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
@@ -24,6 +26,12 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.DefaultFormatter;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class frmSelecaoPagamento extends javax.swing.JDialog {
 
@@ -93,6 +101,28 @@ public class frmSelecaoPagamento extends javax.swing.JDialog {
         } else {
             double valorParcela = valorTotal / Integer.parseInt(tfdParcela.getValue().toString());
             tfdValorParcela.setValue(BigDecimal.valueOf(valorParcela));
+        }
+    }
+
+    private void gerarRelatorioLocacao(int codigoLocacao) {
+        try {
+            JasperReport relatorio = JasperCompileManager.compileReport(getClass().getResourceAsStream("/hotel/report/relatorio_locacao_usuario.jrxml"));
+
+            Map parametros = new HashMap();
+            parametros.put("caminhoImagem", "C:/Users/George/Desktop/Costurati/src/imagens/logo_atualizado.png");
+            parametros.put("subTitulo", "Relatório de locação e consumíveis");
+            parametros.put("SUBREPORT_DIR", getClass().getResource("/hotel/report/relatorio_locacao_usuario_consumiveis.jasper").getPath());
+            parametros.put("cod_locacao", codigoLocacao);
+
+            JasperPrint impressao = JasperFillManager.fillReport(relatorio, parametros, ConexaoRelatorio.getInstance().getConnection());
+
+            //JasperExportManager.exportReportToPdfFile(impressao, getClass().getResource("/hotel/files/").getPath() + "L" + codigoLocacao + ".pdf");
+            //File pdf = File.createTempFile("output.", ".pdf");
+            //JasperExportManager.exportReportToPdfStream(impressao, new FileOutputStream(pdf));
+
+            JasperViewer.viewReport(impressao, false);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao gerar relatório: " + e);
         }
     }
 
@@ -276,11 +306,12 @@ public class frmSelecaoPagamento extends javax.swing.JDialog {
                 }
             }
             locacao.setVlrLocacao(BigDecimal.valueOf(valorTotal));
-            locacaoController.save(locacao);
             JOptionPane.showMessageDialog(null, "Pagamento registrado com sucesso!");
             Timestamp dtaSaida = Timestamp.valueOf(Formatacao.ajustaDataAMDHMS(Unit.getDataHoraAtual()));
             locacao.setDtaSaida(dtaSaida);
             locacaoController.changeSituation(locacao.getCodLocacao(), "F");
+            locacaoController.save(locacao);
+            gerarRelatorioLocacao(locacao.getCodLocacao());
             Result = true;
             this.dispose();
         }
