@@ -1,6 +1,5 @@
 package hotel.view;
 
-import hotel.config.HibernateUtil;
 import hotel.controller.ParametroController;
 import hotel.controller.UsuarioController;
 import hotel.model.Parametro;
@@ -30,7 +29,6 @@ public class frmLogin extends javax.swing.JFrame {
         parametroController = new ParametroController();
 
         setLocationRelativeTo(null);
-        lblFrase.setVisible(false);
 
         pnlLogin.setBackground(new Color(0, 0, 0, 200));
         try {
@@ -99,7 +97,6 @@ public class frmLogin extends javax.swing.JFrame {
     private void initComponents() {
 
         pnlBackground = new javax.swing.JLayeredPane();
-        lblFrase = new javax.swing.JLabel();
         btnFechar = new javax.swing.JButton();
         pnlLogin = new javax.swing.JPanel();
         lblLogin = new javax.swing.JLabel();
@@ -116,11 +113,6 @@ public class frmLogin extends javax.swing.JFrame {
         setResizable(false);
 
         pnlBackground.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        lblFrase.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        lblFrase.setForeground(new java.awt.Color(255, 255, 255));
-        lblFrase.setText("Um novo conceito de hotel está surgindo!");
-        pnlBackground.add(lblFrase, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 160, 360, -1));
 
         btnFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/error.png"))); // NOI18N
         btnFechar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -290,7 +282,6 @@ public class frmLogin extends javax.swing.JFrame {
     private javax.swing.JButton btnLogar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblBackground;
-    private javax.swing.JLabel lblFrase;
     private javax.swing.JLabel lblLogarse;
     private javax.swing.JLabel lblLogin;
     private javax.swing.JLabel lblSenha;

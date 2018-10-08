@@ -139,9 +139,6 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
         tbpLocacao = new javax.swing.JTabbedPane();
         pnlResumo = new javax.swing.JPanel();
         pnlAcompanhante = new javax.swing.JPanel();
-        scpAcompanhante = new javax.swing.JScrollPane();
-        tbListaAcompanhante = new javax.swing.JTable();
-        btnSelecaoPessoa = new javax.swing.JButton();
         pnlFields = new javax.swing.JPanel();
         pnlListagem = new javax.swing.JPanel();
         pnlDetalhe = new javax.swing.JPanel();
@@ -215,57 +212,15 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
         pnlAcompanhante.setBackground(new java.awt.Color(255, 255, 255));
         pnlAcompanhante.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Acompanhantes", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 15))); // NOI18N
 
-        scpAcompanhante.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 15))); // NOI18N
-
-        tbListaAcompanhante.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Código", "Nome", "CPF", "E-mail"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        scpAcompanhante.setViewportView(tbListaAcompanhante);
-
-        btnSelecaoPessoa.setBackground(new java.awt.Color(12, 91, 160));
-        btnSelecaoPessoa.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnSelecaoPessoa.setForeground(new java.awt.Color(255, 255, 255));
-        btnSelecaoPessoa.setText("Selecionar acompanhantes");
-        btnSelecaoPessoa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSelecaoPessoaActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout pnlAcompanhanteLayout = new javax.swing.GroupLayout(pnlAcompanhante);
         pnlAcompanhante.setLayout(pnlAcompanhanteLayout);
         pnlAcompanhanteLayout.setHorizontalGroup(
             pnlAcompanhanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlAcompanhanteLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlAcompanhanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scpAcompanhante, javax.swing.GroupLayout.DEFAULT_SIZE, 967, Short.MAX_VALUE)
-                    .addGroup(pnlAcompanhanteLayout.createSequentialGroup()
-                        .addComponent(btnSelecaoPessoa)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+            .addGap(0, 987, Short.MAX_VALUE)
         );
         pnlAcompanhanteLayout.setVerticalGroup(
             pnlAcompanhanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlAcompanhanteLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnSelecaoPessoa)
-                .addGap(18, 18, 18)
-                .addComponent(scpAcompanhante, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGap(0, 233, Short.MAX_VALUE)
         );
 
         pnlFields.setBackground(new java.awt.Color(255, 255, 255));
@@ -541,10 +496,6 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
         this.dispose();
     }//GEN-LAST:event_btnFecharActionPerformed
 
-    private void btnSelecaoPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecaoPessoaActionPerformed
-
-    }//GEN-LAST:event_btnSelecaoPessoaActionPerformed
-
     private void tfdPesquisaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfdPesquisaKeyTyped
         char vChar = evt.getKeyChar();
         if (!(Character.isDigit(vChar) || (vChar == KeyEvent.VK_BACK_SPACE) || (vChar == KeyEvent.VK_DELETE))) {
@@ -591,7 +542,6 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnFechar;
     private javax.swing.JButton btnPesquisa;
     private javax.swing.JButton btnRegistrarPagamento;
-    private javax.swing.JButton btnSelecaoPessoa;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -606,9 +556,7 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
     private javax.swing.JPanel pnlResumo;
     private javax.swing.JRadioButton rbCodigo;
     private javax.swing.JRadioButton rbNome;
-    private javax.swing.JScrollPane scpAcompanhante;
     private javax.swing.JScrollPane scpLista;
-    private javax.swing.JTable tbListaAcompanhante;
     private javax.swing.JTable tblLista;
     private javax.swing.JTabbedPane tbpLocacao;
     private com.toedter.calendar.JYearChooser tfdAno;

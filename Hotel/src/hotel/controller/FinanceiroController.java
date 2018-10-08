@@ -5,6 +5,7 @@ import hotel.model.LocacaoHospede;
 import hotel.model.Pessoa;
 import hotel.repository.FinanceiroRepository;
 import hotel.repository.LocacaoHospedeRepository;
+import hotel.support.Formatacao;
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -72,8 +73,8 @@ public class FinanceiroController extends BaseController<Financeiro> {
                         lTabela[lLinha][1] = pessoaTitular.getNomPessoa();
                         lTabela[lLinha][2] = f.getLocacao().getQuarto().getNumQuarto();
                         lTabela[lLinha][3] = f.getParcela();
-                        lTabela[lLinha][4] = f.getDtaVencimento();
-                        lTabela[lLinha][5] = f.getDtaPgto();
+                        lTabela[lLinha][4] = Formatacao.ajustaDataDMA(f.getDtaVencimento().toString());
+                        lTabela[lLinha][5] = Formatacao.ajustaDataDMAHS(f.getDtaPgto().toString());
                         lTabela[lLinha][6] = f.getVlrPago();
                         lTabela[lLinha][7] = f.getFormaPgto().getDesFormaPgto();
                         lLinha++;
@@ -96,8 +97,8 @@ public class FinanceiroController extends BaseController<Financeiro> {
                         lTabela[lLinha][1] = pessoaTitular.getNomPessoa();
                         lTabela[lLinha][2] = f.getLocacao().getQuarto().getNumQuarto();
                         lTabela[lLinha][3] = f.getParcela();
-                        lTabela[lLinha][4] = f.getDtaVencimento();
-                        lTabela[lLinha][5] = f.getDtaPgto();
+                        lTabela[lLinha][4] = Formatacao.ajustaDataDMA(f.getDtaVencimento().toString());
+                        lTabela[lLinha][5] = Formatacao.ajustaDataDMAHS(f.getDtaPgto().toString());
                         lTabela[lLinha][6] = f.getVlrPago();
                         lTabela[lLinha][7] = f.getFormaPgto().getDesFormaPgto();
                         lLinha++;
@@ -119,8 +120,8 @@ public class FinanceiroController extends BaseController<Financeiro> {
                         lTabela[lLinha][1] = pessoaTitular.getNomPessoa();
                         lTabela[lLinha][2] = f.getLocacao().getQuarto().getNumQuarto();
                         lTabela[lLinha][3] = f.getParcela();
-                        lTabela[lLinha][4] = f.getDtaVencimento();
-                        lTabela[lLinha][5] = f.getDtaPgto();
+                        lTabela[lLinha][4] = Formatacao.ajustaDataDMA(f.getDtaVencimento().toString());
+                        lTabela[lLinha][5] = Formatacao.ajustaDataDMAHS(f.getDtaPgto().toString());
                         lTabela[lLinha][6] = f.getVlrPago();
                         lTabela[lLinha][7] = f.getFormaPgto().getDesFormaPgto();
                         lLinha++;
@@ -162,23 +163,31 @@ public class FinanceiroController extends BaseController<Financeiro> {
                         lColumn.setCellRenderer(lRight);
                         break;
                     case 1:
-                        lColumn.setPreferredWidth(120);
+                        lColumn.setPreferredWidth(250);
                         lColumn.setCellRenderer(lLeft);
                         break;
                     case 2:
-                        lColumn.setPreferredWidth(230);
-                        lColumn.setCellRenderer(lLeft);
+                        lColumn.setPreferredWidth(50);
+                        lColumn.setCellRenderer(lCenter);
                         break;
                     case 3:
-                        lColumn.setPreferredWidth(45);
+                        lColumn.setPreferredWidth(40);
                         lColumn.setCellRenderer(lCenter);
                         break;
                     case 4:
-                        lColumn.setPreferredWidth(90);
+                        lColumn.setPreferredWidth(100);
                         lColumn.setCellRenderer(lCenter);
                         break;
                     case 5:
-                        lColumn.setPreferredWidth(60);
+                        lColumn.setPreferredWidth(100);
+                        lColumn.setCellRenderer(lCenter);
+                        break;
+                    case 6:
+                        lColumn.setPreferredWidth(80);
+                        lColumn.setCellRenderer(lCenter);
+                        break;
+                    case 7:
+                        lColumn.setPreferredWidth(100);
                         lColumn.setCellRenderer(lCenter);
                         break;
                 }
