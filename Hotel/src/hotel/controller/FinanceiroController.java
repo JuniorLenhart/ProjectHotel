@@ -6,7 +6,10 @@ import hotel.model.Pessoa;
 import hotel.repository.FinanceiroRepository;
 import hotel.repository.LocacaoHospedeRepository;
 import hotel.support.Formatacao;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -73,8 +76,18 @@ public class FinanceiroController extends BaseController<Financeiro> {
                         lTabela[lLinha][1] = pessoaTitular.getNomPessoa();
                         lTabela[lLinha][2] = f.getLocacao().getQuarto().getNumQuarto();
                         lTabela[lLinha][3] = f.getParcela();
-                        lTabela[lLinha][4] = Formatacao.ajustaDataDMA(f.getDtaVencimento().toString());
-                        lTabela[lLinha][5] = Formatacao.ajustaDataDMAHS(f.getDtaPgto().toString());
+                        if(f.getDtaVencimento().toString().length() > 23) {
+                            SimpleDateFormat formatoBugado = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
+                            SimpleDateFormat formatoVencimento = new SimpleDateFormat("dd/MM/yyyy");
+                            SimpleDateFormat formatoPagamento = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                            Date dataVencimento = formatoBugado.parse(f.getDtaVencimento().toString());
+                            Date dataPagamento = formatoBugado.parse(f.getDtaPgto().toString());
+                            lTabela[lLinha][4] = formatoVencimento.format(dataVencimento);
+                            lTabela[lLinha][5] = formatoPagamento.format(dataPagamento);
+                        } else {
+                            lTabela[lLinha][4] = Formatacao.ajustaDataDMA(f.getDtaVencimento().toString());
+                            lTabela[lLinha][5] = Formatacao.ajustaDataDMAHS(f.getDtaPgto().toString());
+                        }
                         lTabela[lLinha][6] = f.getVlrPago();
                         lTabela[lLinha][7] = f.getFormaPgto().getDesFormaPgto();
                         lLinha++;
