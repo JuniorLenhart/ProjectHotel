@@ -12,6 +12,7 @@ public class Server extends Thread {
 
     public static void main(String args[]) {
         try {
+            clients = new Vector();
             ServerSocket server = new ServerSocket(PORT);
 
             while (true) {
@@ -35,12 +36,12 @@ public class Server extends Thread {
         try {
             BufferedReader entrada = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             PrintStream saida = new PrintStream(connection.getOutputStream());
-            
+
             String commando = entrada.readLine();
             if (commando == null) {
                 return;
             }
-            
+
             clients.add(saida);
 
             String linha = entrada.readLine();
