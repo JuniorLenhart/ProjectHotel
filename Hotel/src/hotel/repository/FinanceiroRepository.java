@@ -8,7 +8,7 @@ import org.hibernate.Query;
 public class FinanceiroRepository {
 
     public static List<Financeiro> readAll() {
-        Query query = HibernateUtil.getSession().createQuery("FROM Financeiro");
+        Query query = HibernateUtil.getSession().createQuery("FROM Financeiro ORDER BY codFinanceiro");
         return query.list();
     }
 

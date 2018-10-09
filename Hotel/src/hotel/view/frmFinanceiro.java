@@ -4,15 +4,19 @@ import hotel.controller.FinanceiroController;
 import hotel.controller.PermissaoController;
 import hotel.model.Financeiro;
 import hotel.model.Parametro;
+import hotel.support.Formatacao;
 import hotel.support.Report;
+import hotel.support.Unit;
 import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.SpinnerNumberModel;
@@ -38,7 +42,7 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
         financeiro = new Financeiro();
         financeiroController = new FinanceiroController();
 
-        buildChartDayMonthlyGross();
+        //buildChartDayMonthlyGross();
 
         financeiroController.popularTabela(tblLista, 0, "");
         tblLista.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -117,12 +121,12 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
             btnRegistrarPagamento.setEnabled(false);
             btnNota.setEnabled(false);
         } else {
-            String lSituacao = "";
+            String lSituacao = "1";
             if (tblLista.getSelectedRow() != -1) {
                 lSituacao = String.valueOf(tblLista.getValueAt(tblLista.getSelectedRow(), 5));
             }
 
-            btnRegistrarPagamento.setEnabled(isRegistrar && lSituacao.equals("null"));
+            btnRegistrarPagamento.setEnabled(isRegistrar && lSituacao.equals(""));
             btnNota.setEnabled(isRegistrar && tblLista.getSelectedRow() != -1);
         }
     }
@@ -509,7 +513,9 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
         } else {
             financeiro.setVlrPago(financeiro.getVlrFinanceiro());
         }
-        financeiro.setDtaPgto(now.getTime());
+        Timestamp dtaPagamento = Timestamp.valueOf(Formatacao.ajustaDataAMDHMS(Unit.getDataHoraAtual()));
+        financeiro.setDtaPgto(dtaPagamento);
+        financeiroController.save(financeiro);
         financeiroController.popularTabela(tblLista, 0, "");
     }//GEN-LAST:event_btnRegistrarPagamentoActionPerformed
 

@@ -10,12 +10,14 @@ import hotel.support.Unit;
 import hotel.support.Validacao;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javafx.util.converter.LocalDateTimeStringConverter;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
@@ -267,9 +269,10 @@ public class frmSelecaoPagamento extends javax.swing.JDialog {
         if (Validacao.validarCampos(pnlMain) == 0 && tfdValorParcela.getValue().doubleValue() != 0) {
             for (int i = 1; i <= Integer.parseInt(tfdParcela.getValue().toString()); i++) {
                 if (i == 1) {
-                    Calendar now = Calendar.getInstance();
-                    financeiro.setDtaVencimento(now.getTime());
-                    financeiro.setDtaPgto(now.getTime());
+                    LocalDateTime dateTime = LocalDateTime.now();
+                    Timestamp dtaVencimento = Timestamp.valueOf(dateTime);
+                    financeiro.setDtaVencimento(dtaVencimento);
+                    financeiro.setDtaPgto(dtaVencimento);
                     financeiro.setFormaPgto(formaPagamento);
                     financeiro.setLocacao(locacao);
                     financeiro.setParcela(i);
@@ -279,10 +282,11 @@ public class frmSelecaoPagamento extends javax.swing.JDialog {
                     financeiroController.save(financeiro);
                     financeiro = new Financeiro();
                 } else {
-                    Calendar now = Calendar.getInstance();
-                    now.set(now.get(Calendar.YEAR), (now.get(Calendar.MONTH) + i - 1), 10);
-                    Date d1 = Date.from(now.toInstant());
-                    financeiro.setDtaVencimento(d1);
+                    LocalDateTime dateTime = LocalDateTime.now();
+                    Timestamp dtaPagamento = Timestamp.valueOf(dateTime);
+                    dtaPagamento.setDate(10);
+                    dtaPagamento.setMonth(dtaPagamento.getMonth() + (i - 1));
+                    financeiro.setDtaVencimento(dtaPagamento);
                     financeiro.setFormaPgto(formaPagamento);
                     financeiro.setLocacao(locacao);
                     financeiro.setParcela(i);
