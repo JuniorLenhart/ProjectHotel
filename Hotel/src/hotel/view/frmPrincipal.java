@@ -1,7 +1,9 @@
 package hotel.view;
 
 import hotel.controller.PermissaoController;
+import hotel.model.Parametro;
 import hotel.model.Usuario;
+import hotel.socketclient.Client;
 import hotel.support.Unit;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -18,6 +20,9 @@ public class frmPrincipal extends javax.swing.JFrame {
         lblUsuarioLogado.setText(lblUsuarioLogado.getText() + usuario.getPessoa().getNomPessoa());
 
         new PermissaoController().loadPermission(usuario);
+
+        Parametro.CLIENT = new Client(usuario, "127.0.0.1", 5000);
+        Parametro.CLIENT.send(usuario.getCodUsuario().toString());
     }
 
     public void abrirTela(JInternalFrame pInternalFrame) {
@@ -76,6 +81,11 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Hotel Integrador");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         dkpSistema.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -330,6 +340,11 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void mnuFinanceiroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mnuFinanceiroMouseClicked
         abrirTela(new frmFinanceiro());
     }//GEN-LAST:event_mnuFinanceiroMouseClicked
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        Parametro.CLIENT.send(null);
+        Parametro.CLIENT.stop();
+    }//GEN-LAST:event_formWindowClosed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

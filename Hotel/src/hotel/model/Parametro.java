@@ -1,5 +1,6 @@
 package hotel.model;
 
+import hotel.socketclient.Client;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -41,6 +42,7 @@ public class Parametro {
     public static boolean AUDITORIA_ATIVA = true;
     public static Integer PER_JUROS = 0;
     public static String DIR_FINANCEIRO = "";
+    public static Client CLIENT = null;
 
     public Parametro() {
     }
