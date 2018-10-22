@@ -9,6 +9,7 @@ import hotel.model.Pessoa;
 import hotel.model.Quarto;
 import hotel.model.Reserva;
 import hotel.support.DocumentoLimitado;
+import hotel.support.Email;
 import hotel.support.Formatacao;
 import hotel.support.Unit;
 import hotel.support.Validacao;
@@ -16,6 +17,8 @@ import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Arrays;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -25,11 +28,12 @@ public class frmReserva extends javax.swing.JInternalFrame {
     Reserva reserva;
     ReservaController reservaController;
     PessoaController pessoaController;
-    
+
     boolean isSalvar = false;
     boolean isConfirmar = false;
     boolean isCancelar = false;
     boolean isAtualizar = false;
+    boolean isEnviar = false;
 
     public frmReserva() {
         initComponents();
@@ -49,17 +53,18 @@ public class frmReserva extends javax.swing.JInternalFrame {
                 habilitar();
             }
         });
-        
+
         loadPermission();
         setAba(0);
         habilitarQuarto();
     }
-    
+
     private void loadPermission() {
         isSalvar = PermissaoController.hasPermission("frmReserva", "btnSalvar");
         isConfirmar = PermissaoController.hasPermission("frmReserva", "btnConfirmar");
         isCancelar = PermissaoController.hasPermission("frmReserva", "btnCancelar");
         isAtualizar = PermissaoController.hasPermission("frmReserva", "btnAtualizar");
+        isEnviar = PermissaoController.hasPermission("frmReserva", "btnEnviar");
     }
 
     public void setVisibleCodigo(boolean isVisible) {
@@ -91,6 +96,7 @@ public class frmReserva extends javax.swing.JInternalFrame {
             btnSalvar.setEnabled(isSalvar);
             btnConfirmar.setEnabled(false);
             btnCancelar.setEnabled(false);
+            btnEnviar.setEnabled(false);
         } else {
             String lSituacao = "";
             if (tblLista.getSelectedRow() != -1) {
@@ -100,6 +106,7 @@ public class frmReserva extends javax.swing.JInternalFrame {
             btnSalvar.setEnabled(false);
             btnConfirmar.setEnabled(isConfirmar && lSituacao.equals("Efetuada"));
             btnCancelar.setEnabled(isCancelar && lSituacao.equals("Efetuada"));
+            btnEnviar.setEnabled(isEnviar && lSituacao.equals("Confirmada"));
         }
     }
 
@@ -153,6 +160,7 @@ public class frmReserva extends javax.swing.JInternalFrame {
         btnFechar = new javax.swing.JButton();
         btnConfirmar = new javax.swing.JButton();
         btnAtualizar = new javax.swing.JButton();
+        btnEnviar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -361,7 +369,7 @@ public class frmReserva extends javax.swing.JInternalFrame {
                     .addComponent(btnPesquisaPessoa))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblNomePessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(183, Short.MAX_VALUE))
+                .addContainerGap(187, Short.MAX_VALUE))
         );
 
         tbpReserva.addTab("Adicionar", pnlCadastro);
@@ -509,7 +517,7 @@ public class frmReserva extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(pnlDetalhe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scpLista, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
+                .addComponent(scpLista, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -575,6 +583,18 @@ public class frmReserva extends javax.swing.JInternalFrame {
             }
         });
 
+        btnEnviar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnEnviar.setForeground(new java.awt.Color(12, 91, 160));
+        btnEnviar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/paper-plane.png"))); // NOI18N
+        btnEnviar.setText("Enviar");
+        btnEnviar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnEnviar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnEnviar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnviarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlHeaderLayout = new javax.swing.GroupLayout(pnlHeader);
         pnlHeader.setLayout(pnlHeaderLayout);
         pnlHeaderLayout.setHorizontalGroup(
@@ -588,6 +608,8 @@ public class frmReserva extends javax.swing.JInternalFrame {
                 .addComponent(btnCancelar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAtualizar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEnviar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnFechar)
                 .addContainerGap())
@@ -599,6 +621,7 @@ public class frmReserva extends javax.swing.JInternalFrame {
             .addComponent(btnFechar)
             .addComponent(btnConfirmar)
             .addComponent(btnAtualizar)
+            .addComponent(btnEnviar)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -767,8 +790,20 @@ public class frmReserva extends javax.swing.JInternalFrame {
     private void btnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualizarActionPerformed
         reservaController.refreshReserve();
         JOptionPane.showMessageDialog(this, "Atualizada com sucesso!");
-        btnPesquisaActionPerformed(null);        
+        btnPesquisaActionPerformed(null);
     }//GEN-LAST:event_btnAtualizarActionPerformed
+
+    private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
+        JFileChooser file = new JFileChooser();
+        if (file.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            reserva = reservaController.getReadId(Integer.parseInt(tblLista.getModel().getValueAt(tblLista.getSelectedRow(), 0).toString()));
+
+            String msg = "Segue em anexo o comprovante de pagamento da reserva realizada em " + Formatacao.ajustaDataDMA(reserva.getDtaEntrada().toString());
+            Email.sendEmail("hotelintegrad@gmail.com", Arrays.asList(reserva.getPessoa().getDesEmail()), "Comprovante de Pagamento", msg, Arrays.asList(file.getSelectedFile().getAbsolutePath()));
+
+            JOptionPane.showMessageDialog(this, "Comprovante de Pagamento enviado com sucesso!");
+        }
+    }//GEN-LAST:event_btnEnviarActionPerformed
 
     private void setInfoPessoa(Pessoa pessoa) {
         if (pessoa != null && pessoa.getCodPessoa() != null) {
@@ -806,6 +841,7 @@ public class frmReserva extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnAtualizar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnConfirmar;
+    private javax.swing.JButton btnEnviar;
     private javax.swing.JButton btnFechar;
     private javax.swing.JButton btnPesquisa;
     private javax.swing.JButton btnPesquisaPessoa;

@@ -22,7 +22,6 @@ public class frmPrincipal extends javax.swing.JFrame {
         new PermissaoController().loadPermission(usuario);
 
         Parametro.CLIENT = new Client(usuario, "127.0.0.1", 5000);
-        Parametro.CLIENT.send(usuario.getCodUsuario().toString());
     }
 
     public void abrirTela(JInternalFrame pInternalFrame) {
