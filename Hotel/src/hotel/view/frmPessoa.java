@@ -5,8 +5,10 @@ import hotel.controller.PessoaController;
 import hotel.model.Locacao;
 import hotel.model.Pessoa;
 import hotel.support.DocumentoLimitado;
+import hotel.support.Endereco;
 import hotel.support.Formatacao;
 import hotel.support.LimpaCampos;
+import hotel.support.Localizacao;
 import hotel.support.Validacao;
 import java.awt.event.KeyEvent;
 import java.sql.Date;
@@ -40,6 +42,18 @@ public class frmPessoa extends javax.swing.JInternalFrame {
         }
     }
 
+    private void setInfoEndereco() {
+        String cep = tfdCEP.getText().replace("-", "");
+        if (Validacao.validarCep(cep)) {
+            Endereco endereco = Localizacao.getEnderecoPorCep(cep);
+            tfdCidade.setText(endereco.getLocalidade());
+            tfdUF.setText(endereco.getUf());
+        } else {
+            tfdCidade.setText("");
+            tfdUF.setText("");
+        }
+    }
+
     private void iniciaConstrutor() {
         initComponents();
         pessoa = new Pessoa();
@@ -48,8 +62,11 @@ public class frmPessoa extends javax.swing.JInternalFrame {
 
         pessoaController.popularTabela(tblLista, 0, "", -1);
 
+        tfdCidade.setEditable(false);
+        tfdUF.setEditable(false);
+
         tfdNome.setDocument(new DocumentoLimitado(200));
-        tfdRua.setDocument(new DocumentoLimitado(150));
+        tfdRua.setDocument(new DocumentoLimitado(100));
         tfdNumero.setDocument(new DocumentoLimitado(4));
         tfdComplemento.setDocument(new DocumentoLimitado(44));
         tfdEmail.setDocument(new DocumentoLimitado(100));
@@ -120,10 +137,13 @@ public class frmPessoa extends javax.swing.JInternalFrame {
         tfdEmail.setText(pessoa.getDesEmail());
         tfdTelefone.setText(pessoa.getNumTelefone());
         String[] enderecoSplitado = pessoa.getDesEndereco().split(",");
-        tfdRua.setText(enderecoSplitado[0]);
-        tfdNumero.setText(enderecoSplitado[1]);
-        if (enderecoSplitado.length == 3) {
-            tfdComplemento.setText(enderecoSplitado[2]);
+        tfdCEP.setValue(enderecoSplitado[0]);
+        tfdUF.setText(enderecoSplitado[1]);
+        tfdCidade.setText(enderecoSplitado[2]);
+        tfdRua.setText(enderecoSplitado[3]);
+        tfdNumero.setText(enderecoSplitado[4]);
+        if (enderecoSplitado.length == 6) {
+            tfdComplemento.setText(enderecoSplitado[5]);
         }
         setVisibleCodigo(true);
     }
@@ -156,6 +176,12 @@ public class frmPessoa extends javax.swing.JInternalFrame {
         tfdNumero = new javax.swing.JTextField();
         lblComplemento = new javax.swing.JLabel();
         tfdComplemento = new javax.swing.JTextField();
+        lblCEP = new javax.swing.JLabel();
+        tfdCEP = new javax.swing.JFormattedTextField();
+        tfdUF = new javax.swing.JTextField();
+        lblUF = new javax.swing.JLabel();
+        lblCidade = new javax.swing.JLabel();
+        tfdCidade = new javax.swing.JTextField();
         tfdEmail = new javax.swing.JTextField();
         lblTelefone = new javax.swing.JLabel();
         tfdTelefone = new javax.swing.JFormattedTextField();
@@ -345,9 +371,57 @@ public class frmPessoa extends javax.swing.JInternalFrame {
 
         tfdComplemento.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         tfdComplemento.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
+        tfdComplemento.setName("tfdComplemento"); // NOI18N
         tfdComplemento.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 tfdRuaKeyTyped(evt);
+            }
+        });
+
+        lblCEP.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
+        lblCEP.setForeground(new java.awt.Color(102, 102, 102));
+        lblCEP.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblCEP.setText("<html>CEP<font color='red'><b>*</b></font>:</html>");
+
+        tfdCEP.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
+        try {
+            tfdCEP.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#####-###")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        tfdCEP.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        tfdCEP.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tfdCEPKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfdCEPKeyTyped(evt);
+            }
+        });
+
+        tfdUF.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        tfdUF.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
+        tfdUF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfdUFKeyTyped(evt);
+            }
+        });
+
+        lblUF.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
+        lblUF.setForeground(new java.awt.Color(102, 102, 102));
+        lblUF.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblUF.setText("<html>UF<font color='red'><b>*</b></font>:</html>");
+
+        lblCidade.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
+        lblCidade.setForeground(new java.awt.Color(102, 102, 102));
+        lblCidade.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblCidade.setText("<html>Cidade<font color='red'><b>*</b></font>:</html>");
+
+        tfdCidade.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        tfdCidade.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(12, 91, 160)));
+        tfdCidade.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfdCidadeKeyTyped(evt);
             }
         });
 
@@ -357,23 +431,42 @@ public class frmPessoa extends javax.swing.JInternalFrame {
             pnlEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlEnderecoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblNumero)
-                    .addComponent(lblRua)
-                    .addComponent(lblComplemento, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE))
                 .addGroup(pnlEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblCEP)
+                    .addComponent(lblNumero, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblRua, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblComplemento, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlEnderecoLayout.createSequentialGroup()
-                        .addGap(18, 18, Short.MAX_VALUE)
-                        .addComponent(tfdRua, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlEnderecoLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(pnlEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfdNumero)
-                            .addComponent(tfdComplemento)))))
+                            .addComponent(lblUF, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblCidade, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(18, 18, 18)
+                .addGroup(pnlEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(tfdNumero, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tfdCEP, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
+                    .addComponent(tfdRua, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tfdComplemento)
+                    .addComponent(tfdUF)
+                    .addComponent(tfdCidade))
+                .addGap(60, 60, 60))
         );
         pnlEnderecoLayout.setVerticalGroup(
             pnlEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlEnderecoLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlEnderecoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblCEP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfdCEP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblUF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfdUF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tfdCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblRua, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tfdRua, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -385,7 +478,7 @@ public class frmPessoa extends javax.swing.JInternalFrame {
                 .addGroup(pnlEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblComplemento)
                     .addComponent(tfdComplemento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         tfdEmail.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
@@ -424,7 +517,7 @@ public class frmPessoa extends javax.swing.JInternalFrame {
             .addGroup(pnlCadastroLayout.createSequentialGroup()
                 .addGap(179, 179, 179)
                 .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(pnlEndereco, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, 431, Short.MAX_VALUE)
                     .addGroup(pnlCadastroLayout.createSequentialGroup()
                         .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(lblCodigo)
@@ -477,8 +570,8 @@ public class frmPessoa extends javax.swing.JInternalFrame {
                     .addComponent(lblCelular, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tfdCelular, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pnlEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(72, Short.MAX_VALUE))
+                .addComponent(pnlEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(57, Short.MAX_VALUE))
         );
 
         tbpConsumivel.addTab("Adicionar", pnlCadastro);
@@ -611,7 +704,7 @@ public class frmPessoa extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(pnlDetalhe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scpLista, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
+                .addComponent(scpLista, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -642,7 +735,7 @@ public class frmPessoa extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        if (Validacao.validarCampos(pnlCadastro) == 0) {
+        if (Validacao.validarCampos(pnlCadastro) == 0 && Validacao.validarCampos(pnlEndereco) == 0) {
             if (Validacao.validarCPF(Formatacao.removerFormatacao(tfdCPF.getText()))) {
                 if (Validacao.validarDataFormatada(tfdDataNasc.getText())) {
                     if (Validacao.validarEmail(tfdEmail.getText())) {
@@ -650,7 +743,8 @@ public class frmPessoa extends javax.swing.JInternalFrame {
 
                         pessoa.setNomPessoa(tfdNome.getText());
                         pessoa.setDesEmail(tfdEmail.getText());
-                        pessoa.setDesEndereco(tfdRua.getText() + "," + tfdNumero.getText() + "," + tfdComplemento.getText());
+                        pessoa.setDesEndereco(tfdCEP.getValue().toString() + "," + tfdUF.getText() + "," + tfdCidade.getText() + "," + tfdRua.getText()
+                                + "," + tfdNumero.getText() + "," + tfdComplemento.getText());
                         Date dataNasc = Date.valueOf(Formatacao.ajustaDataAMD(tfdDataNasc.getText()));
                         pessoa.setDtaNasc(dataNasc);
                         pessoa.setNumCelular(Formatacao.removerFormatacao(tfdCelular.getText().replace(" ", "")));
@@ -759,6 +853,22 @@ public class frmPessoa extends javax.swing.JInternalFrame {
         tfdPesquisa.setText("");
     }//GEN-LAST:event_rbCodigoActionPerformed
 
+    private void tfdUFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfdUFKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfdUFKeyTyped
+
+    private void tfdCidadeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfdCidadeKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfdCidadeKeyTyped
+
+    private void tfdCEPKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfdCEPKeyReleased
+        setInfoEndereco();
+    }//GEN-LAST:event_tfdCEPKeyReleased
+
+    private void tfdCEPKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfdCEPKeyTyped
+        setInfoEndereco();
+    }//GEN-LAST:event_tfdCEPKeyTyped
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup btgGrupoRadio;
@@ -767,8 +877,10 @@ public class frmPessoa extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnFechar;
     private javax.swing.JButton btnPesquisa;
     private javax.swing.JButton btnSalvar;
+    private javax.swing.JLabel lblCEP;
     private javax.swing.JLabel lblCPF;
     private javax.swing.JLabel lblCelular;
+    private javax.swing.JLabel lblCidade;
     private javax.swing.JLabel lblCodigo;
     private javax.swing.JLabel lblComplemento;
     private javax.swing.JLabel lblDataNasc;
@@ -778,6 +890,7 @@ public class frmPessoa extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lblPesquisa;
     private javax.swing.JLabel lblRua;
     private javax.swing.JLabel lblTelefone;
+    private javax.swing.JLabel lblUF;
     private javax.swing.JPanel pnlCadastro;
     private javax.swing.JPanel pnlDetalhe;
     private javax.swing.JPanel pnlEndereco;
@@ -789,8 +902,10 @@ public class frmPessoa extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane scpLista;
     private javax.swing.JTable tblLista;
     private javax.swing.JTabbedPane tbpConsumivel;
+    private javax.swing.JFormattedTextField tfdCEP;
     private javax.swing.JFormattedTextField tfdCPF;
     private javax.swing.JFormattedTextField tfdCelular;
+    private javax.swing.JTextField tfdCidade;
     private javax.swing.JTextField tfdCodigo;
     private javax.swing.JTextField tfdComplemento;
     private javax.swing.JFormattedTextField tfdDataNasc;
@@ -800,5 +915,6 @@ public class frmPessoa extends javax.swing.JInternalFrame {
     private javax.swing.JTextField tfdPesquisa;
     private javax.swing.JTextField tfdRua;
     private javax.swing.JFormattedTextField tfdTelefone;
+    private javax.swing.JTextField tfdUF;
     // End of variables declaration//GEN-END:variables
 }

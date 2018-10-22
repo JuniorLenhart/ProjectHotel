@@ -86,6 +86,10 @@ public class Validacao {
         return (pCampo.getText().trim().length() < 14);
     }
 
+    public static boolean validarCep(String cep) {
+        return cep.matches("\\d{8}");
+    }
+
     public static int validarCampos(Container pContainer) {
         Component lComponent[] = pContainer.getComponents();
         for (int i = 0; i < lComponent.length; i++) {
@@ -98,7 +102,9 @@ public class Validacao {
                 } else if (lComponent[i] instanceof JTextField) {
                     JTextField lField = (JTextField) lComponent[i];
                     if (lField.getText().equals("")) {
-                        return 1;
+                        if(!lField.getName().equals("tfdComplemento")) {
+                            return 1;
+                        }
                     }
                 } else if (lComponent[i] instanceof JNumberFormatField) {
                     JNumberFormatField lField = (JNumberFormatField) lComponent[i];
