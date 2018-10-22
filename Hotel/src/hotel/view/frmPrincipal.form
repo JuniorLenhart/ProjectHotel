@@ -74,16 +74,9 @@
             </Property>
             <Property name="label" type="java.lang.String" value="Loca&#xe7;&#xe3;o"/>
           </Properties>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="mniCadastroLocacao">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Manter cadastro"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mniCadastroLocacaoActionPerformed"/>
-              </Events>
-            </MenuItem>
-          </SubComponents>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="mnuLocacaoMouseClicked"/>
+          </Events>
         </Menu>
         <Menu class="javax.swing.JMenu" name="mnuReserva">
           <Properties>

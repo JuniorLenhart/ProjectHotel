@@ -11,33 +11,10 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonValue;
 import java.util.*;
-import javax.swing.JOptionPane;
 
-/**
- * Classe para recuperar informações do WS do viacep.com.br
- */
 public class Localizacao {
 
-    private static final Set<String> CAMPOS = new HashSet<String>(Arrays.asList(
-            "cep",
-            "logradouro",
-            "complemento",
-            "bairro",
-            "localidade",
-            "uf",
-            "unidade",
-            "ibge",
-            "gia"
-    ));
-
-    /**
-     * Recupera objeto Endereco pelo CEP
-     *
-     * @param cep String no formato 00000000
-     * @return instancia de br.com.viacep.Endereco
-     */
     public static Endereco getEnderecoPorCep(String cep) {
-
         JsonObject jsonObject = getCepResponse(cep);
         Endereco endereco = null;
         JsonValue erro = jsonObject.get("erro");
@@ -57,14 +34,7 @@ public class Localizacao {
         return endereco;
     }
 
-    /**
-     * Recupera Map<String,String> pelo CEP
-     *
-     * @param cep String no formato 00000000
-     * @return instancia de Map<String,String>
-     */
     public static Map<String, String> getMapPorCep(String cep) {
-
         JsonObject jsonObject = getCepResponse(cep);
         JsonValue erro = jsonObject.get("erro");
         Map<String, String> mapa = null;
@@ -79,7 +49,6 @@ public class Localizacao {
     }
 
     private static JsonObject getCepResponse(String cep) {
-        
         JsonObject responseJO = null;
         try {
             if (!Validacao.validarCep(cep)) {
@@ -94,7 +63,7 @@ public class Localizacao {
                 responseJO = Json.createReader(entity.getContent()).readObject();
             }
         } catch (IOException | RuntimeException e) {
-            throw new RuntimeException(e);
+            LoggerController.log(Localizacao.class, e);
         }
         return responseJO;
     }

@@ -137,7 +137,7 @@ public class frmPessoa extends javax.swing.JInternalFrame {
         tfdEmail.setText(pessoa.getDesEmail());
         tfdTelefone.setText(pessoa.getNumTelefone());
         String[] enderecoSplitado = pessoa.getDesEndereco().split(",");
-        tfdCEP.setValue(enderecoSplitado[0]);
+        tfdCEP.setText(enderecoSplitado[0]);
         tfdUF.setText(enderecoSplitado[1]);
         tfdCidade.setText(enderecoSplitado[2]);
         tfdRua.setText(enderecoSplitado[3]);
@@ -743,7 +743,7 @@ public class frmPessoa extends javax.swing.JInternalFrame {
 
                         pessoa.setNomPessoa(tfdNome.getText());
                         pessoa.setDesEmail(tfdEmail.getText());
-                        pessoa.setDesEndereco(tfdCEP.getValue().toString() + "," + tfdUF.getText() + "," + tfdCidade.getText() + "," + tfdRua.getText()
+                        pessoa.setDesEndereco(tfdCEP.getText().replace("-", "") + "," + tfdUF.getText() + "," + tfdCidade.getText() + "," + tfdRua.getText()
                                 + "," + tfdNumero.getText() + "," + tfdComplemento.getText());
                         Date dataNasc = Date.valueOf(Formatacao.ajustaDataAMD(tfdDataNasc.getText()));
                         pessoa.setDtaNasc(dataNasc);

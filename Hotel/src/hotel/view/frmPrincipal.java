@@ -63,7 +63,6 @@ public class frmPrincipal extends javax.swing.JFrame {
         mniConsumivel = new javax.swing.JMenuItem();
         mniFormaPgto = new javax.swing.JMenuItem();
         mnuLocacao = new javax.swing.JMenu();
-        mniCadastroLocacao = new javax.swing.JMenuItem();
         mnuReserva = new javax.swing.JMenu();
         mnuFinanceiro = new javax.swing.JMenu();
         mnuRelatorio = new javax.swing.JMenu();
@@ -164,15 +163,11 @@ public class frmPrincipal extends javax.swing.JFrame {
         mnuLocacao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/locacao.png"))); // NOI18N
         mnuLocacao.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         mnuLocacao.setLabel("Locação");
-
-        mniCadastroLocacao.setText("Manter cadastro");
-        mniCadastroLocacao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mniCadastroLocacaoActionPerformed(evt);
+        mnuLocacao.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                mnuLocacaoMouseClicked(evt);
             }
         });
-        mnuLocacao.add(mniCadastroLocacao);
-
         mnbPrincipal.add(mnuLocacao);
 
         mnuReserva.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/reserva.png"))); // NOI18N
@@ -316,10 +311,6 @@ public class frmPrincipal extends javax.swing.JFrame {
         abrirTela(new frmAuditoria());
     }//GEN-LAST:event_mniAuditoriaActionPerformed
 
-    private void mniCadastroLocacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniCadastroLocacaoActionPerformed
-        abrirTela(new frmLocacao());
-    }//GEN-LAST:event_mniCadastroLocacaoActionPerformed
-
     private void mnuReservaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mnuReservaMouseClicked
         abrirTela(new frmReserva());
     }//GEN-LAST:event_mnuReservaMouseClicked
@@ -345,6 +336,10 @@ public class frmPrincipal extends javax.swing.JFrame {
         Parametro.CLIENT.stop();
     }//GEN-LAST:event_formWindowClosed
 
+    private void mnuLocacaoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mnuLocacaoMouseClicked
+        abrirTela(new frmLocacao());
+    }//GEN-LAST:event_mnuLocacaoMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane dkpSistema;
@@ -353,7 +348,6 @@ public class frmPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem mniAplicacao;
     private javax.swing.JMenuItem mniAuditoria;
     private javax.swing.JMenuItem mniBotao;
-    private javax.swing.JMenuItem mniCadastroLocacao;
     private javax.swing.JMenuItem mniConsumivel;
     private javax.swing.JMenuItem mniFormaPgto;
     private javax.swing.JMenuItem mniLocacao;
