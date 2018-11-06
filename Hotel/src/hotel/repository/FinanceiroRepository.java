@@ -13,7 +13,7 @@ public class FinanceiroRepository {
     }
 
     public static List<Financeiro> readAllMonthYear(int month, int year) {
-        Query query = HibernateUtil.getSession().createQuery("FROM Financeiro WHERE MONTH(dtaPgto) = " + month + " AND YEAR(dtaPgto) = " + year);
+        Query query = HibernateUtil.getSession().createQuery("FROM Financeiro WHERE MONTH(dtaPgto) = " + (month + 1) + " AND YEAR(dtaPgto) = " + year);
         return query.list();
     }
     

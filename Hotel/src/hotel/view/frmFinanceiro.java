@@ -11,12 +11,12 @@ import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.SpinnerNumberModel;
@@ -25,7 +25,10 @@ import javax.swing.event.ListSelectionListener;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberTickUnit;
+import org.jfree.chart.axis.SymbolAxis;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -33,6 +36,10 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
 
     Financeiro financeiro;
     FinanceiroController financeiroController;
+    String[] monthName = {"Janeiro", "Fevereiro",
+        "Março", "Abril", "Maio", "Junho", "Julho",
+        "Agosto", "Setembro", "Outubro", "Novembro",
+        "Dezembro"};
 
     boolean isRegistrar = false;
     boolean isNota = false;
@@ -42,7 +49,9 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
         financeiro = new Financeiro();
         financeiroController = new FinanceiroController();
 
-        //buildChartDayMonthlyGross();
+        buildChartDayMonthlyGross(0);
+        buildChartDayMonthlyGross(1);
+        buildChartLast11MonthsGross();
 
         financeiroController.popularTabela(tblLista, 0, "");
         tblLista.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -56,10 +65,17 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
         setAba(0);
     }
 
-    private void buildChartDayMonthlyGross() {
+    private void buildChartDayMonthlyGross(int month) {
         XYSeries series = new XYSeries("Faturamento");
         Calendar cal = Calendar.getInstance();
         Map<Integer, Double> map = new HashMap();
+        if (month != 0) {
+            for (int i = 0; i <= 11; i++) {
+                cal.add(Calendar.MONTH, -1);
+            }
+        }
+        clearChartDayMonthlyGross(cal, map);
+
         for (Financeiro financeiro : financeiroController.getReadAllByMonthYear(cal.get(Calendar.MONTH), cal.get(Calendar.YEAR))) {
             Calendar cal2 = Calendar.getInstance();
             cal2.setTime(financeiro.getDtaPgto());
@@ -71,13 +87,14 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
             }
         }
         for (Map.Entry<Integer, Double> entry : map.entrySet()) {
+            //System.out.println(entry.getKey() + " " + entry.getValue());
             Integer key = entry.getKey();
             Double value = entry.getValue();
             series.add(key.intValue(), value.doubleValue());
         }
         XYSeriesCollection data = new XYSeriesCollection(series);
         JFreeChart chart = ChartFactory.createXYLineChart(
-                "Faturamento por dia",
+                "Faturamento " + monthName[cal.get(Calendar.MONTH)] + "/" + cal.get(Calendar.YEAR) + " por dia",
                 "Dia",
                 "Reais",
                 data,
@@ -90,9 +107,89 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new java.awt.Dimension(450, 320));
         chartPanel.setVisible(true);
-        pnlFields.setLayout(new java.awt.BorderLayout());
-        pnlFields.add(chartPanel, BorderLayout.CENTER);
-        pnlFields.validate();
+        if (month != 0) {
+            pnlBalancoMesVelho.setLayout(new java.awt.BorderLayout());
+            pnlBalancoMesVelho.add(chartPanel, BorderLayout.CENTER);
+            pnlBalancoMesVelho.validate();
+        } else {
+            pnlBalancoMesAtual.setLayout(new java.awt.BorderLayout());
+            pnlBalancoMesAtual.add(chartPanel, BorderLayout.CENTER);
+            pnlBalancoMesAtual.validate();
+        }
+
+    }
+
+    private void buildChartLast11MonthsGross() {
+        XYSeries series = new XYSeries("Faturamento 11 meses");
+        Calendar cal = Calendar.getInstance();
+        Map<Integer, Double> map = new HashMap();
+
+        String[] grade = clearChartLast11MonthsGross(cal, map);
+
+        cal = Calendar.getInstance();
+        for (int i = 1; i <= 11; i++) {
+            cal.add(Calendar.MONTH, -1);
+            for (Financeiro financeiro : financeiroController.getReadAllByMonthYear(cal.get(Calendar.MONTH), cal.get(Calendar.YEAR))) {
+                if (map.containsKey(i - 1)) {
+                    map.put(i - 1, map.get(i - 1) + financeiro.getVlrPago().doubleValue());
+                }
+                System.out.println(i - 1 + " - " + financeiro.getVlrPago().doubleValue());
+            }
+        }
+        int count = 0;
+        for (Map.Entry<Integer, Double> entry : map.entrySet()) {
+
+            System.out.println(entry.getKey() + " " + entry.getValue());
+            Integer key = entry.getKey();
+            Double value = entry.getValue();
+            series.add(key.intValue(), value.doubleValue());
+            count++;
+        }
+        XYSeriesCollection data = new XYSeriesCollection(series);
+        JFreeChart chart = ChartFactory.createXYLineChart(
+                "Faturamento 11 últimos meses",
+                "Mês/Ano",
+                "Reais",
+                data,
+                PlotOrientation.VERTICAL,
+                true,
+                true,
+                false
+        );
+
+        XYPlot plot = (XYPlot) chart.getPlot();
+        SymbolAxis rangeAxis = new SymbolAxis("", grade);
+        rangeAxis.setAutoRange(false);
+        rangeAxis.setTickUnit(new NumberTickUnit(1));
+        rangeAxis.setRange(0, 11);
+        plot.setDomainAxis(rangeAxis);
+
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new java.awt.Dimension(950, 230));
+        chartPanel.setVisible(true);
+        chartPanel.zoomInRange(1, 2);
+        chartPanel.restoreAutoBounds();
+        pnlBalancoAnual.setLayout(new java.awt.BorderLayout());
+        pnlBalancoAnual.add(chartPanel, BorderLayout.CENTER);
+        pnlBalancoAnual.validate();
+    }
+
+    private void clearChartDayMonthlyGross(Calendar cal, Map map) {
+        YearMonth yearMonthObject = YearMonth.of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH));
+        int daysInMonth = yearMonthObject.lengthOfMonth();
+        for (int i = 1; i <= daysInMonth; i++) {
+            map.put(i, Double.parseDouble("0"));
+        }
+    }
+
+    private String[] clearChartLast11MonthsGross(Calendar cal, Map map) {
+        String[] grade = new String[11];
+        for (int i = 1; i <= 11; i++) {
+            cal.add(Calendar.MONTH, -1);
+            map.put(i - 1, Double.parseDouble("0"));
+            grade[i - 1] = new SimpleDateFormat("MMM").format(cal.getTime()) + "/" + cal.get(Calendar.YEAR);
+        }
+        return grade;
     }
 
     private void setMaxDays() {
@@ -148,8 +245,9 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
         btnNota = new javax.swing.JButton();
         tbpLocacao = new javax.swing.JTabbedPane();
         pnlResumo = new javax.swing.JPanel();
-        pnlAcompanhante = new javax.swing.JPanel();
-        pnlFields = new javax.swing.JPanel();
+        pnlBalancoAnual = new javax.swing.JPanel();
+        pnlBalancoMesAtual = new javax.swing.JPanel();
+        pnlBalancoMesVelho = new javax.swing.JPanel();
         pnlListagem = new javax.swing.JPanel();
         pnlDetalhe = new javax.swing.JPanel();
         tfdPesquisa = new javax.swing.JTextField();
@@ -234,32 +332,46 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
 
         pnlResumo.setBackground(new java.awt.Color(255, 255, 255));
 
-        pnlAcompanhante.setBackground(new java.awt.Color(255, 255, 255));
-        pnlAcompanhante.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Acompanhantes", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 15))); // NOI18N
+        pnlBalancoAnual.setBackground(new java.awt.Color(255, 255, 255));
+        pnlBalancoAnual.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Balanço 12 últimos meses", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 15))); // NOI18N
 
-        javax.swing.GroupLayout pnlAcompanhanteLayout = new javax.swing.GroupLayout(pnlAcompanhante);
-        pnlAcompanhante.setLayout(pnlAcompanhanteLayout);
-        pnlAcompanhanteLayout.setHorizontalGroup(
-            pnlAcompanhanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 987, Short.MAX_VALUE)
+        javax.swing.GroupLayout pnlBalancoAnualLayout = new javax.swing.GroupLayout(pnlBalancoAnual);
+        pnlBalancoAnual.setLayout(pnlBalancoAnualLayout);
+        pnlBalancoAnualLayout.setHorizontalGroup(
+            pnlBalancoAnualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1028, Short.MAX_VALUE)
         );
-        pnlAcompanhanteLayout.setVerticalGroup(
-            pnlAcompanhanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 233, Short.MAX_VALUE)
+        pnlBalancoAnualLayout.setVerticalGroup(
+            pnlBalancoAnualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 274, Short.MAX_VALUE)
         );
 
-        pnlFields.setBackground(new java.awt.Color(255, 255, 255));
-        pnlFields.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Balanço Mensal", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 15))); // NOI18N
+        pnlBalancoMesAtual.setBackground(new java.awt.Color(255, 255, 255));
+        pnlBalancoMesAtual.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Balanço Mensal", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 15))); // NOI18N
 
-        javax.swing.GroupLayout pnlFieldsLayout = new javax.swing.GroupLayout(pnlFields);
-        pnlFields.setLayout(pnlFieldsLayout);
-        pnlFieldsLayout.setHorizontalGroup(
-            pnlFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout pnlBalancoMesAtualLayout = new javax.swing.GroupLayout(pnlBalancoMesAtual);
+        pnlBalancoMesAtual.setLayout(pnlBalancoMesAtualLayout);
+        pnlBalancoMesAtualLayout.setHorizontalGroup(
+            pnlBalancoMesAtualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 485, Short.MAX_VALUE)
         );
-        pnlFieldsLayout.setVerticalGroup(
-            pnlFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        pnlBalancoMesAtualLayout.setVerticalGroup(
+            pnlBalancoMesAtualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 312, Short.MAX_VALUE)
+        );
+
+        pnlBalancoMesVelho.setBackground(new java.awt.Color(255, 255, 255));
+        pnlBalancoMesVelho.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Balanço", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 15))); // NOI18N
+
+        javax.swing.GroupLayout pnlBalancoMesVelhoLayout = new javax.swing.GroupLayout(pnlBalancoMesVelho);
+        pnlBalancoMesVelho.setLayout(pnlBalancoMesVelhoLayout);
+        pnlBalancoMesVelhoLayout.setHorizontalGroup(
+            pnlBalancoMesVelhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        pnlBalancoMesVelhoLayout.setVerticalGroup(
+            pnlBalancoMesVelhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout pnlResumoLayout = new javax.swing.GroupLayout(pnlResumo);
@@ -269,18 +381,23 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
             .addGroup(pnlResumoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlResumoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnlAcompanhante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlBalancoAnual, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(pnlResumoLayout.createSequentialGroup()
-                        .addComponent(pnlFields, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addComponent(pnlBalancoMesAtual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(pnlBalancoMesVelho, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         pnlResumoLayout.setVerticalGroup(
             pnlResumoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlResumoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnlFields, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnlResumoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnlBalancoMesAtual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pnlBalancoMesVelho, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlAcompanhante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(pnlBalancoAnual, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         tbpLocacao.addTab("Resumo", pnlResumo);
@@ -464,7 +581,7 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
                     .addComponent(pnlDetalhe, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(pnlListagemLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(scpLista, javax.swing.GroupLayout.DEFAULT_SIZE, 989, Short.MAX_VALUE)))
+                        .addComponent(scpLista, javax.swing.GroupLayout.DEFAULT_SIZE, 1030, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnlListagemLayout.setVerticalGroup(
@@ -578,9 +695,10 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel lblPesquisa;
-    private javax.swing.JPanel pnlAcompanhante;
+    private javax.swing.JPanel pnlBalancoAnual;
+    private javax.swing.JPanel pnlBalancoMesAtual;
+    private javax.swing.JPanel pnlBalancoMesVelho;
     private javax.swing.JPanel pnlDetalhe;
-    private javax.swing.JPanel pnlFields;
     private javax.swing.JPanel pnlHeader;
     private javax.swing.JPanel pnlListagem;
     private javax.swing.JPanel pnlOpcao;
