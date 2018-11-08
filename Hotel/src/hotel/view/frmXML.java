@@ -1,8 +1,10 @@
 package hotel.view;
 
 import hotel.controller.*;
-import hotel.model.xml.PessoaXML;
+import hotel.model.*;
+import hotel.model.xml.*;
 import hotel.support.XML;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.swing.DefaultComboBoxModel;
@@ -194,7 +196,15 @@ public class frmXML extends javax.swing.JInternalFrame {
                         new XML().createXML(pessoaXML, tfdArquivo.getText());
                         break;
                 }
+            } else if (rbImportar.isSelected()) {
+                switch (cmbTabela.getSelectedItem().toString()) {
+                    case "Pessoa":
+                        PessoaXML pessoaXML = (PessoaXML) new XML().readXML(new PessoaXML(), tfdArquivo.getText());
+                        new PessoaController().saveAll(pessoaXML.getPessoa());
+                        break;
+                }
             }
+
             if (rbExportar.isSelected()) {
                 JOptionPane.showMessageDialog(null, "Exportação com sucesso!");
             } else {

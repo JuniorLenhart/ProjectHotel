@@ -32,6 +32,7 @@ public class AuditoriaController extends BaseController<Auditoria> {
 
             transaction.commit();
         } catch (Exception ex) {
+            HibernateUtil.closeSession();
             LoggerController.log(this.getClass(), ex);
         }
     }

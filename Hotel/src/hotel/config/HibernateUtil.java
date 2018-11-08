@@ -24,14 +24,14 @@ public class HibernateUtil {
     }
 
     public static Session getSession() {
-        if (session == null) {
+        if (session == null || !session.isConnected()) {
             session = getSessionFactory().openSession();
         }
         return session;
     }
 
     public static void closeSession() {
-        if (session != null) {
+        if (session != null && session.isConnected()) {
             session.close();
         }
     }

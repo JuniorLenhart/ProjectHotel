@@ -12,11 +12,12 @@ public abstract class BaseController<T> implements IBaseController<T> {
         try {
             Transaction transaction = HibernateUtil.getBeginTransaction();
             new UsuarioController().setUserSession(Parametro.USUARIO);
-            
+
             HibernateUtil.getSession().saveOrUpdate(pT);
 
             transaction.commit();
         } catch (Exception ex) {
+            HibernateUtil.closeSession();
             LoggerController.log(this.getClass(), ex);
         }
         return null;
@@ -44,6 +45,7 @@ public abstract class BaseController<T> implements IBaseController<T> {
 
             transaction.commit();
         } catch (Exception ex) {
+            HibernateUtil.closeSession();
             LoggerController.log(this.getClass(), ex);
         }
         return null;

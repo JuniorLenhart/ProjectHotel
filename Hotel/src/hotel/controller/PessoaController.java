@@ -3,6 +3,7 @@ package hotel.controller;
 import hotel.model.Pessoa;
 import hotel.repository.PessoaRepository;
 import hotel.support.Formatacao;
+import java.sql.Timestamp;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -123,7 +124,7 @@ public class PessoaController extends BaseController<Pessoa> {
                             lTabela[lLinha][1] = p.getNomPessoa();
                             lTabela[lLinha][2] = Formatacao.formatarCPF(p.getNumCpf());
                             if (p.getDtaNasc() != null) {
-                                lTabela[lLinha][3] = Formatacao.ajustaDataDMA(p.getDtaNasc().toString());
+                                lTabela[lLinha][3] = Formatacao.ajustaDataDMA(Timestamp.valueOf(p.getDtaNasc().toString()).toString());
                             }
                             lTabela[lLinha][4] = p.getDesEmail();
                             lTabela[lLinha][5] = p.getNumCelular();

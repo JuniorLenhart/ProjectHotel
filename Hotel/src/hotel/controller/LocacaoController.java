@@ -28,6 +28,7 @@ public class LocacaoController extends BaseController<Locacao> {
             locacao.setCodLocacao(getLastCod());
             transaction.commit();
         } catch (Exception ex) {
+            HibernateUtil.closeSession();
             LoggerController.log(this.getClass(), ex);
         }
         return null;

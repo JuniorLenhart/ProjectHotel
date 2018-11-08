@@ -4,7 +4,6 @@ import hotel.model.LocacaoConsumivel;
 import hotel.model.LocacaoHospede;
 import hotel.repository.LocacaoConsumivelRepository;
 import hotel.repository.LocacaoHospedeRepository;
-import java.math.BigDecimal;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
