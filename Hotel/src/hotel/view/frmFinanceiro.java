@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -40,6 +41,7 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
         "Março", "Abril", "Maio", "Junho", "Julho",
         "Agosto", "Setembro", "Outubro", "Novembro",
         "Dezembro"};
+    Calendar now;
 
     boolean isRegistrar = false;
     boolean isNota = false;
@@ -48,9 +50,10 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
         initComponents();
         financeiro = new Financeiro();
         financeiroController = new FinanceiroController();
+        now = Calendar.getInstance();
 
-        buildChartDayMonthlyGross(0);
-        buildChartDayMonthlyGross(1);
+        buildChartDayMonthlyGross(now, 0);
+        buildChartDayMonthlyGross(now, 1);
         buildChartLast11MonthsGross();
 
         financeiroController.popularTabela(tblLista, 0, "");
@@ -63,55 +66,86 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
         setMaxDays();
         loadPermission();
         setAba(0);
+        habilitaSetas(now);
     }
 
-    private void buildChartDayMonthlyGross(int month) {
+    private void buildChartDayMonthlyGross(Calendar pCal, int month) {
         XYSeries series = new XYSeries("Faturamento");
-        Calendar cal = Calendar.getInstance();
         Map<Integer, Double> map = new HashMap();
+        Calendar calendarLastYear = (Calendar) pCal.clone();
         if (month != 0) {
             for (int i = 0; i <= 11; i++) {
-                cal.add(Calendar.MONTH, -1);
+                calendarLastYear.add(Calendar.MONTH, -1);
             }
-        }
-        clearChartDayMonthlyGross(cal, map);
-
-        for (Financeiro financeiro : financeiroController.getReadAllByMonthYear(cal.get(Calendar.MONTH), cal.get(Calendar.YEAR))) {
-            Calendar cal2 = Calendar.getInstance();
-            cal2.setTime(financeiro.getDtaPgto());
-            int day = cal2.get(Calendar.DAY_OF_MONTH);
-            if (map.containsKey(day)) {
-                map.put(day, map.get(day) + financeiro.getVlrPago().doubleValue());
-            } else {
-                map.put(day, financeiro.getVlrPago().doubleValue());
+            clearChartDayMonthlyGross(calendarLastYear, map);
+            for (Financeiro financeiro : financeiroController.getReadAllByMonthYear(calendarLastYear.get(Calendar.MONTH), calendarLastYear.get(Calendar.YEAR))) {
+                Calendar cal2 = Calendar.getInstance();
+                cal2.setTime(financeiro.getDtaPgto());
+                int day = cal2.get(Calendar.DAY_OF_MONTH);
+                if (map.containsKey(day)) {
+                    map.put(day, map.get(day) + financeiro.getVlrPago().doubleValue());
+                } else {
+                    map.put(day, financeiro.getVlrPago().doubleValue());
+                }
             }
-        }
-        for (Map.Entry<Integer, Double> entry : map.entrySet()) {
-            //System.out.println(entry.getKey() + " " + entry.getValue());
-            Integer key = entry.getKey();
-            Double value = entry.getValue();
-            series.add(key.intValue(), value.doubleValue());
-        }
-        XYSeriesCollection data = new XYSeriesCollection(series);
-        JFreeChart chart = ChartFactory.createXYLineChart(
-                "Faturamento " + monthName[cal.get(Calendar.MONTH)] + "/" + cal.get(Calendar.YEAR) + " por dia",
-                "Dia",
-                "Reais",
-                data,
-                PlotOrientation.VERTICAL,
-                true,
-                true,
-                false
-        );
+            for (Map.Entry<Integer, Double> entry : map.entrySet()) {
+                //System.out.println(entry.getKey() + " " + entry.getValue());
+                Integer key = entry.getKey();
+                Double value = entry.getValue();
+                series.add(key.intValue(), value.doubleValue());
+            }
+            XYSeriesCollection data = new XYSeriesCollection(series);
+            JFreeChart chart = ChartFactory.createXYLineChart(
+                    "Faturamento " + monthName[calendarLastYear.get(Calendar.MONTH)] + "/" + calendarLastYear.get(Calendar.YEAR) + " por dia",
+                    "Dia",
+                    "Reais",
+                    data,
+                    PlotOrientation.VERTICAL,
+                    true,
+                    true,
+                    false
+            );
 
-        ChartPanel chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new java.awt.Dimension(450, 320));
-        chartPanel.setVisible(true);
-        if (month != 0) {
+            ChartPanel chartPanel = new ChartPanel(chart);
+            chartPanel.setPreferredSize(new java.awt.Dimension(450, 320));
+            chartPanel.setVisible(true);
             pnlBalancoMesVelho.setLayout(new java.awt.BorderLayout());
             pnlBalancoMesVelho.add(chartPanel, BorderLayout.CENTER);
             pnlBalancoMesVelho.validate();
         } else {
+            setJLabelDate(pCal);
+            clearChartDayMonthlyGross(pCal, map);
+            for (Financeiro financeiro : financeiroController.getReadAllByMonthYear(pCal.get(Calendar.MONTH), pCal.get(Calendar.YEAR))) {
+                Calendar cal2 = Calendar.getInstance();
+                cal2.setTime(financeiro.getDtaPgto());
+                int day = cal2.get(Calendar.DAY_OF_MONTH);
+                if (map.containsKey(day)) {
+                    map.put(day, map.get(day) + financeiro.getVlrPago().doubleValue());
+                } else {
+                    map.put(day, financeiro.getVlrPago().doubleValue());
+                }
+            }
+            for (Map.Entry<Integer, Double> entry : map.entrySet()) {
+                //System.out.println(entry.getKey() + " " + entry.getValue());
+                Integer key = entry.getKey();
+                Double value = entry.getValue();
+                series.add(key.intValue(), value.doubleValue());
+            }
+            XYSeriesCollection data = new XYSeriesCollection(series);
+            JFreeChart chart = ChartFactory.createXYLineChart(
+                    "Faturamento " + monthName[pCal.get(Calendar.MONTH)] + "/" + pCal.get(Calendar.YEAR) + " por dia",
+                    "Dia",
+                    "Reais",
+                    data,
+                    PlotOrientation.VERTICAL,
+                    true,
+                    true,
+                    false
+            );
+
+            ChartPanel chartPanel = new ChartPanel(chart);
+            chartPanel.setPreferredSize(new java.awt.Dimension(450, 320));
+            chartPanel.setVisible(true);
             pnlBalancoMesAtual.setLayout(new java.awt.BorderLayout());
             pnlBalancoMesAtual.add(chartPanel, BorderLayout.CENTER);
             pnlBalancoMesAtual.validate();
@@ -175,7 +209,7 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
     }
 
     private void clearChartDayMonthlyGross(Calendar cal, Map map) {
-        YearMonth yearMonthObject = YearMonth.of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH));
+        YearMonth yearMonthObject = YearMonth.of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1);
         int daysInMonth = yearMonthObject.lengthOfMonth();
         for (int i = 1; i <= daysInMonth; i++) {
             map.put(i, Double.parseDouble("0"));
@@ -190,6 +224,29 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
             grade[i - 1] = new SimpleDateFormat("MMM").format(cal.getTime()) + "/" + cal.get(Calendar.YEAR);
         }
         return grade;
+    }
+
+    private void setMonth(Calendar pCal, int pOption) {
+        if (pOption == 0) { // Seta para diminuir mes
+            pCal.add(Calendar.MONTH, -1);
+        } else {
+            pCal.add(Calendar.MONTH, 1);
+            if ((pCal.compareTo(Calendar.getInstance())) > 0) {
+                pCal.add(Calendar.MONTH, -1);
+            }
+        }
+        setJLabelDate(pCal);
+        habilitaSetas(pCal);
+        buildChartDayMonthlyGross(pCal, 0);
+        buildChartDayMonthlyGross(pCal, 1);
+    }
+    
+    private void habilitaSetas(Calendar pCal) {
+        btnMesAnterior.setEnabled(true);
+        btnMesProximo.setEnabled(true);
+        if(pCal.get(Calendar.MONTH) == Calendar.getInstance().get(Calendar.MONTH) && pCal.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR)) {
+            btnMesProximo.setEnabled(false);
+        }
     }
 
     private void setMaxDays() {
@@ -211,6 +268,10 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
 
     private void limparCampos() {
         financeiro = new Financeiro();
+    }
+
+    private void setJLabelDate(Calendar cal) {
+        lblMes.setText(monthName[cal.get(Calendar.MONTH)] + "/" + cal.get(Calendar.YEAR));
     }
 
     private void habilitar() {
@@ -248,6 +309,10 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
         pnlBalancoAnual = new javax.swing.JPanel();
         pnlBalancoMesAtual = new javax.swing.JPanel();
         pnlBalancoMesVelho = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        btnMesProximo = new javax.swing.JButton();
+        btnMesAnterior = new javax.swing.JButton();
+        lblMes = new javax.swing.JLabel();
         pnlListagem = new javax.swing.JPanel();
         pnlDetalhe = new javax.swing.JPanel();
         tfdPesquisa = new javax.swing.JTextField();
@@ -343,7 +408,7 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
         );
         pnlBalancoAnualLayout.setVerticalGroup(
             pnlBalancoAnualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
+            .addGap(0, 311, Short.MAX_VALUE)
         );
 
         pnlBalancoMesAtual.setBackground(new java.awt.Color(255, 255, 255));
@@ -371,7 +436,47 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
         );
         pnlBalancoMesVelhoLayout.setVerticalGroup(
             pnlBalancoMesVelhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 312, Short.MAX_VALUE)
+        );
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
+        btnMesProximo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/next_page_bigger.png"))); // NOI18N
+        btnMesProximo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMesProximoActionPerformed(evt);
+            }
+        });
+
+        btnMesAnterior.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/images/previous_page_bigger.png"))); // NOI18N
+        btnMesAnterior.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMesAnteriorActionPerformed(evt);
+            }
+        });
+
+        lblMes.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        lblMes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblMes.setText("jLabel4");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnMesAnterior, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblMes, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnMesProximo, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(255, 255, 255))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(btnMesAnterior, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(lblMes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnMesProximo, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout pnlResumoLayout = new javax.swing.GroupLayout(pnlResumo);
@@ -383,18 +488,23 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
                 .addGroup(pnlResumoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnlBalancoAnual, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(pnlResumoLayout.createSequentialGroup()
-                        .addComponent(pnlBalancoMesAtual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(pnlBalancoMesVelho, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(pnlResumoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(pnlResumoLayout.createSequentialGroup()
+                                .addComponent(pnlBalancoMesAtual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(pnlBalancoMesVelho, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addContainerGap())))
         );
         pnlResumoLayout.setVerticalGroup(
             pnlResumoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlResumoLayout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(pnlResumoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnlBalancoMesAtual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pnlBalancoMesVelho, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(pnlBalancoMesVelho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlBalancoAnual, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -590,8 +700,8 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(pnlDetalhe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scpLista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(scpLista, javax.swing.GroupLayout.DEFAULT_SIZE, 593, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         tbpLocacao.addTab("Listagem", pnlListagem);
@@ -686,14 +796,26 @@ public class frmFinanceiro extends javax.swing.JInternalFrame {
         new Report().openFile(Parametro.DIR_FINANCEIRO, "L" + financeiro.getLocacao().getCodLocacao() + ".pdf");
     }//GEN-LAST:event_btnNotaActionPerformed
 
+    private void btnMesProximoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMesProximoActionPerformed
+        setMonth(now, 1);
+    }//GEN-LAST:event_btnMesProximoActionPerformed
+
+    private void btnMesAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMesAnteriorActionPerformed
+        setMonth(now, 0);
+    }//GEN-LAST:event_btnMesAnteriorActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFechar;
+    private javax.swing.JButton btnMesAnterior;
+    private javax.swing.JButton btnMesProximo;
     private javax.swing.JButton btnNota;
     private javax.swing.JButton btnPesquisa;
     private javax.swing.JButton btnRegistrarPagamento;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblMes;
     private javax.swing.JLabel lblPesquisa;
     private javax.swing.JPanel pnlBalancoAnual;
     private javax.swing.JPanel pnlBalancoMesAtual;
