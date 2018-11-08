@@ -75,6 +75,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         mnuAjuda = new javax.swing.JMenu();
         mniAplicacao = new javax.swing.JMenuItem();
         mniBotao = new javax.swing.JMenuItem();
+        mniXML = new javax.swing.JMenuItem();
         mniSair = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -252,6 +253,14 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
         mnuAjuda.add(mniBotao);
 
+        mniXML.setText("Importar/Exportar de Tabelas (XML)");
+        mniXML.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniXMLActionPerformed(evt);
+            }
+        });
+        mnuAjuda.add(mniXML);
+
         mniSair.setText("Sair");
         mniSair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -340,6 +349,10 @@ public class frmPrincipal extends javax.swing.JFrame {
         abrirTela(new frmLocacao());
     }//GEN-LAST:event_mnuLocacaoMouseClicked
 
+    private void mniXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniXMLActionPerformed
+        abrirTela(new frmXML());
+    }//GEN-LAST:event_mniXMLActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane dkpSistema;
@@ -358,6 +371,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem mniSair;
     private javax.swing.JMenuItem mniTipoCama;
     private javax.swing.JMenuItem mniUsuario;
+    private javax.swing.JMenuItem mniXML;
     private javax.swing.JMenu mnuAjuda;
     private javax.swing.JMenu mnuCadastro;
     private javax.swing.JMenu mnuFinanceiro;

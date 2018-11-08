@@ -9,9 +9,14 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "pessoa")
+@XmlRootElement(name = "pessoa")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Pessoa {
 
     @Id

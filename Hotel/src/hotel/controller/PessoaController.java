@@ -24,6 +24,15 @@ public class PessoaController extends BaseController<Pessoa> {
         return null;
     }
 
+    public List<Pessoa> getReadAll() {
+        try {
+            return PessoaRepository.readAll();
+        } catch (Exception ex) {
+            LoggerController.log(this.getClass(), ex);
+        }
+        return null;
+    }
+
     public Pessoa getReadId(int pCodigo) {
         try {
             return PessoaRepository.readId(pCodigo);
