@@ -76,6 +76,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         mniAplicacao = new javax.swing.JMenuItem();
         mniBotao = new javax.swing.JMenuItem();
         mniXML = new javax.swing.JMenuItem();
+        mniBackupRestore = new javax.swing.JMenuItem();
         mniSair = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -261,6 +262,14 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
         mnuAjuda.add(mniXML);
 
+        mniBackupRestore.setText("Importar/Exportar Banco/Aplicação");
+        mniBackupRestore.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniBackupRestoreActionPerformed(evt);
+            }
+        });
+        mnuAjuda.add(mniBackupRestore);
+
         mniSair.setText("Sair");
         mniSair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -353,6 +362,10 @@ public class frmPrincipal extends javax.swing.JFrame {
         abrirTela(new frmXML());
     }//GEN-LAST:event_mniXMLActionPerformed
 
+    private void mniBackupRestoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniBackupRestoreActionPerformed
+        abrirTela(new frmBackup(false));
+    }//GEN-LAST:event_mniBackupRestoreActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane dkpSistema;
@@ -360,6 +373,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuBar mnbPrincipal;
     private javax.swing.JMenuItem mniAplicacao;
     private javax.swing.JMenuItem mniAuditoria;
+    private javax.swing.JMenuItem mniBackupRestore;
     private javax.swing.JMenuItem mniBotao;
     private javax.swing.JMenuItem mniConsumivel;
     private javax.swing.JMenuItem mniFormaPgto;

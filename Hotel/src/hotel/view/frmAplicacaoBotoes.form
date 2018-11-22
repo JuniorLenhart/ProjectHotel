@@ -205,12 +205,10 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="lblAvisoBotoes" pref="290" max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="tfdCodigo" alignment="0" max="32767" attributes="0"/>
-                              <Component id="tfdNome" alignment="0" max="32767" attributes="0"/>
-                              <Component id="cmbTela" alignment="1" pref="290" max="32767" attributes="0"/>
-                              <Component id="cmbBotao" alignment="1" pref="290" max="32767" attributes="0"/>
-                          </Group>
+                          <Component id="tfdCodigo" alignment="0" max="32767" attributes="0"/>
+                          <Component id="tfdNome" alignment="0" max="32767" attributes="0"/>
+                          <Component id="cmbTela" alignment="1" pref="290" max="32767" attributes="0"/>
+                          <Component id="cmbBotao" alignment="1" pref="290" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace pref="149" max="32767" attributes="0"/>
                   </Group>

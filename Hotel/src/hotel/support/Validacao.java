@@ -102,7 +102,11 @@ public class Validacao {
                 } else if (lComponent[i] instanceof JTextField) {
                     JTextField lField = (JTextField) lComponent[i];
                     if (lField.getText().equals("")) {
-                        if(!lField.getName().equals("tfdComplemento")) {
+                        if (lField.getName() != null) {
+                            if (!lField.getName().equals("tfdComplemento")) {
+                                return 1;
+                            }
+                        } else {
                             return 1;
                         }
                     }

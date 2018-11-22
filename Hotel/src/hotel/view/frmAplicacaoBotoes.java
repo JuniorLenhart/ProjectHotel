@@ -25,7 +25,7 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
     AplicacaoBotaoController botaoController;
     AplicacaoController aplicacaoController;
     Aplicacao aplicacao;
-    
+
     boolean isSalvar = false;
     boolean isEditar = false;
     boolean isExcluir = false;
@@ -50,11 +50,11 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
                 habilitar();
             }
         });
-        
+
         loadPermission();
         setAba(0);
     }
-    
+
     private void loadPermission() {
         isSalvar = PermissaoController.hasPermission("frmAplicacaoBotoes", "btnSalvar");
         isEditar = PermissaoController.hasPermission("frmAplicacaoBotoes", "btnEditar");
@@ -176,6 +176,12 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
             case "frmLocacaoConsumivel":
                 frame = new frmLocacaoConsumivel();
                 break;
+            case "frmBackup":
+                frame = new frmBackup(true);
+                break;
+            case "frmXML":
+                frame = new frmXML();
+                break;
             default:
                 break;
         }
@@ -203,7 +209,7 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
             }
         }
         comboBox.setModel(new DefaultComboBoxModel(listBotoes.toArray()));
-        if(listBotoes.isEmpty()) {
+        if (listBotoes.isEmpty()) {
             lblAvisoBotoes.setVisible(true);
             tfdNome.setEditable(false);
         } else {
