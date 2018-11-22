@@ -42,17 +42,28 @@ public class frmBackup extends javax.swing.JInternalFrame {
 
     }
 
-    private String setComand() {
+    private String[] setComand() {
         if (isImportar) {
-            return "cd c:\\Program files\\postgresql\\10\\bin && psql \"postgresql://postgres:postgres@127.0.0.1:5432/hotel\" < " + tfdArquivo.getText();
+            String[] cmds = {
+                "chdir C:\\Program files\\postgresql\\10\\bin",
+                "set PGPASSWORD=postgres",
+                "psql -U postgres -c \"DROP DATABASE IF EXISTS hotel\"",
+                "psql -U postgres -c \"CREATE DATABASE hotel\"",
+                "psql -U postgres -d hotel -f " + tfdArquivo.getText(),};
+            return cmds;
         } else {
-            return "cd c:\\Program files\\postgresql\\10\\bin && pg_dump --dbname=postgresql://postgres:postgres@127.0.0.1:5432/hotel > " + tfdArquivo.getText() + "\\" + Unit.getDataHoraAtualConcat() + ".sql";
+            String[] cmds = {
+                "chdir C:\\Program files\\postgresql\\10\\bin",
+                "set PGPASSWORD=postgres",
+                "pg_dump -U postgres -d hotel -f " + tfdArquivo.getText() + "\\" + Unit.getDataHoraAtualConcat() + ".sql"
+            };
+            return cmds;
         }
     }
 
     private void doFileBackups() {
         try {
-            File srcDir = new File("C:\\Users\\George\\Documents\\NetBeansProjects\\ProjectHotel\\Hotel");
+            File srcDir = new File("C:\\Users\\george.mueller\\Documents\\NetBeansProjects\\ProjectHotel\\Hotel");
             File destDir = new File(tfdArquivo.getText());
             FileUtils.copyDirectory(srcDir, destDir);
         } catch (IOException ex) {
@@ -62,8 +73,7 @@ public class frmBackup extends javax.swing.JInternalFrame {
 
     private void doDatabaseBackupRestore() {
         try {
-            ProcessBuilder builder = new ProcessBuilder(
-                    "cmd.exe", "/c", setComand());
+            ProcessBuilder builder = new ProcessBuilder("cmd", "/c", String.join("& ", setComand()));
             builder.redirectErrorStream(true);
             Process p = builder.start();
             BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
