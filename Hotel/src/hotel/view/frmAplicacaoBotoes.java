@@ -182,6 +182,9 @@ public class frmAplicacaoBotoes extends javax.swing.JInternalFrame {
             case "frmXML":
                 frame = new frmXML();
                 break;
+            case "frmBackupEscolha":
+                frame = new frmBackupEscolha();
+                break;
             default:
                 break;
         }

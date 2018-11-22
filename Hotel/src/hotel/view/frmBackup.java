@@ -44,7 +44,7 @@ public class frmBackup extends javax.swing.JInternalFrame {
 
     private String setComand() {
         if (isImportar) {
-            return "cd c:\\Program files\\postgresql\\10\\bin && psql \"postgresql://postgres:postgres@127.0.0.1:5432/hotel2\" < " + tfdArquivo.getText();
+            return "cd c:\\Program files\\postgresql\\10\\bin && psql \"postgresql://postgres:postgres@127.0.0.1:5432/hotel\" < " + tfdArquivo.getText();
         } else {
             return "cd c:\\Program files\\postgresql\\10\\bin && pg_dump --dbname=postgresql://postgres:postgres@127.0.0.1:5432/hotel > " + tfdArquivo.getText() + "\\" + Unit.getDataHoraAtualConcat() + ".sql";
         }

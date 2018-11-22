@@ -363,7 +363,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_mniXMLActionPerformed
 
     private void mniBackupRestoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniBackupRestoreActionPerformed
-        abrirTela(new frmBackup(false));
+        abrirTela(new frmBackupEscolha());
     }//GEN-LAST:event_mniBackupRestoreActionPerformed
 
 
