@@ -1,13 +1,24 @@
 package hotel.view;
 
+import hotel.controller.LoggerController;
 import hotel.support.Unit;
 import hotel.support.Validacao;
 import java.io.BufferedReader;
+import java.io.Closeable;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.URI;
+import java.nio.file.Files;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import org.apache.commons.io.FileUtils;
@@ -35,7 +46,6 @@ public class frmBackup extends javax.swing.JInternalFrame {
     private void backupAndRestoreDatabaseFiles() {
         if (rbnSistema.isSelected()) {
             doFileBackups();
-            doDatabaseBackupRestore();
         } else {
             doDatabaseBackupRestore();
         }
@@ -55,7 +65,7 @@ public class frmBackup extends javax.swing.JInternalFrame {
             String[] cmds = {
                 "chdir C:\\Program files\\postgresql\\10\\bin",
                 "set PGPASSWORD=postgres",
-                "pg_dump -U postgres -d hotel -f " + tfdArquivo.getText() + "\\" + Unit.getDataHoraAtualConcat() + ".sql"
+                "pg_dump -U postgres -d hotel -f " + tfdArquivo.getText() + "\\banco.sql"
             };
             return cmds;
         }
@@ -63,11 +73,59 @@ public class frmBackup extends javax.swing.JInternalFrame {
 
     private void doFileBackups() {
         try {
-            File srcDir = new File("C:\\Users\\george.mueller\\Documents\\NetBeansProjects\\ProjectHotel\\Hotel");
-            File destDir = new File(tfdArquivo.getText());
-            FileUtils.copyDirectory(srcDir, destDir);
+            File db = new File("db.properties");
+            File logs = new File("logs.log");
+            File destDir = new File(tfdArquivo.getText() + "\\");
+            FileUtils.copyFileToDirectory(db, destDir);
+            FileUtils.copyFileToDirectory(logs, destDir);
+
+            doDatabaseBackupRestore();
+
+            File banco = new File(tfdArquivo.getText() + "\\banco.sql");
+            logs = new File(tfdArquivo.getText() + "\\logs.log");
+            db = new File(tfdArquivo.getText() + "\\db.properties");
+            File[] files = {db, logs, banco};
+            removeFilesAfterZip(files);
         } catch (IOException ex) {
-            Logger.getLogger(frmBackup.class.getName()).log(Level.SEVERE, null, ex);
+            LoggerController.log(this.getClass(), ex);
+        }
+    }
+
+    private void zipAll(File directory, File zipfile) {
+        Closeable res = null;
+        try {
+            URI base = directory.toURI();
+            Deque<File> queue = new LinkedList<File>();
+            queue.push(directory);
+            OutputStream out;
+            out = new FileOutputStream(zipfile);
+            res = out;
+            ZipOutputStream zout = new ZipOutputStream(out);
+            res = zout;
+            while (!queue.isEmpty()) {
+                directory = queue.pop();
+                for (File kid : directory.listFiles()) {
+                    String name = base.relativize(kid.toURI()).getPath();
+                    if (kid.isFile()) {
+                        if (!kid.getName().equals(zipfile.getName()) && (kid.getName().equals("banco.sql") || kid.getName().equals("logs.log") || kid.getName().equals("db.properties"))) {
+                            zout.putNextEntry(new ZipEntry(name));
+                            Files.copy(kid.toPath(), zout);
+                            zout.closeEntry();
+                        }
+                    }
+                }
+            }
+
+        } catch (FileNotFoundException ex) {
+            LoggerController.log(this.getClass(), ex);
+        } catch (IOException ex) {
+            LoggerController.log(this.getClass(), ex);
+        } finally {
+            try {
+                res.close();
+            } catch (IOException ex) {
+                LoggerController.log(this.getClass(), ex);
+            }
         }
     }
 
@@ -84,6 +142,23 @@ public class frmBackup extends javax.swing.JInternalFrame {
                     break;
                 }
                 System.out.println(line);
+            }
+            if (!isImportar) {
+                File directory = new File(tfdArquivo.getText() + "\\");
+                File zipFile = new File(tfdArquivo.getText() + "\\BACKUP" + Unit.getDataHoraAtualConcat() + ".zip");
+                zipAll(directory, zipFile);
+            }
+        } catch (IOException ex) {
+            LoggerController.log(this.getClass(), ex);
+        }
+    }
+
+    private void removeFilesAfterZip(File[] file) {
+        try {
+            for (File file1 : file) {
+                if (!file1.getName().contains(".zip")) {
+                    FileUtils.forceDelete(file1);
+                }
             }
         } catch (IOException ex) {
             Logger.getLogger(frmBackup.class.getName()).log(Level.SEVERE, null, ex);
