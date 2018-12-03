@@ -12,6 +12,7 @@ import hotel.support.Localizacao;
 import hotel.support.Validacao;
 import java.awt.event.KeyEvent;
 import java.sql.Date;
+import java.sql.Timestamp;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -745,7 +746,7 @@ public class frmPessoa extends javax.swing.JInternalFrame {
                         pessoa.setDesEmail(tfdEmail.getText());
                         pessoa.setDesEndereco(tfdCEP.getText().replace("-", "") + "," + tfdUF.getText() + "," + tfdCidade.getText() + "," + tfdRua.getText()
                                 + "," + tfdNumero.getText() + "," + tfdComplemento.getText());
-                        Date dataNasc = Date.valueOf(Formatacao.ajustaDataAMD(tfdDataNasc.getText()));
+                        Timestamp dataNasc = Timestamp.valueOf(Formatacao.ajustaDataAMD(tfdDataNasc.getText()) + " 00:00:00");
                         pessoa.setDtaNasc(dataNasc);
                         pessoa.setNumCelular(Formatacao.removerFormatacao(tfdCelular.getText().replace(" ", "")));
                         pessoa.setNumCpf(Formatacao.removerFormatacao(tfdCPF.getText()));

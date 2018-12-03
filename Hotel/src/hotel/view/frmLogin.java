@@ -1,10 +1,12 @@
 package hotel.view;
 
+import hotel.controller.LoggerController;
 import hotel.controller.ParametroController;
 import hotel.controller.UsuarioController;
 import hotel.model.Parametro;
 import hotel.model.Usuario;
 import hotel.support.Criptografia;
+import hotel.support.FileEncrypterDecrypter;
 import hotel.support.Validacao;
 import java.awt.Color;
 import java.awt.Image;
@@ -12,6 +14,12 @@ import java.awt.Insets;
 import java.awt.event.KeyEvent;
 import java.awt.geom.RoundRectangle2D;
 import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -63,7 +71,7 @@ public class frmLogin extends javax.swing.JFrame {
         ImageIcon imageIcon = new ImageIcon(img);
         return imageIcon;
     }
-    
+
     public ImageIcon readingAndCreatingResizeImage2() throws IOException {
         Image img = new ImageIcon(getClass().getResource("/hotel/images/logo_1.png")).getImage()
                 .getScaledInstance(jLabel1.getWidth(), jLabel1.getHeight(), Image.SCALE_SMOOTH);
@@ -72,17 +80,43 @@ public class frmLogin extends javax.swing.JFrame {
     }
 
     public void logar() {
+//        try {
+//            FileEncrypterDecrypter.encrypt("George", "2", "05/12/2018");
+//        } catch (InvalidKeyException ex) {
+//            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (IOException ex) {
+//            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         if (Validacao.validarCampos(pnlLogin) == 0) {
             String senha = new Criptografia().criptografar(tfdSenha.getText());
             String login = tfdLogin.getText();
             if (usuarioController.validaLogin(login, senha) != null) {
-                this.dispose();
-                Usuario usuario = usuarioController.getUserWithLogin(login);
-                Parametro.setUser(usuario);
-                if (senha.equals(Parametro.DES_SENHA_DEFAULT)) {
-                    new frmCadastrarNovaSenha(usuario).setVisible(true);
-                } else {
-                    new frmPrincipal(usuario).setVisible(true);
+                try {
+                    String dados[] = FileEncrypterDecrypter.decrypt();
+                    Date expiration_date = new SimpleDateFormat("dd/MM/yyyy").parse(dados[2]);
+                    Date now = new Date();
+                    now.setHours(0);
+                    now.setMinutes(0);
+                    now.setSeconds(0);
+                    System.out.println(now.getTime());
+                    long diffence = ChronoUnit.DAYS.between(now.toInstant(), expiration_date.toInstant()) + 1;
+                    if (expiration_date.before(now) || expiration_date.compareTo(now) == 0) {
+                        JOptionPane.showMessageDialog(this, "Licença vencida!");
+                    } else {
+                        if (diffence <= 5) {
+                            JOptionPane.showMessageDialog(this, "Sua licença está quase vencendo. Faltam " + diffence + " dias para vencer!");
+                        }
+                        this.dispose();
+                        Usuario usuario = usuarioController.getUserWithLogin(login);
+                        Parametro.setUser(usuario);
+                        if (senha.equals(Parametro.DES_SENHA_DEFAULT)) {
+                            new frmCadastrarNovaSenha(usuario).setVisible(true);
+                        } else {
+                            new frmPrincipal(usuario).setVisible(true);
+                        }
+                    }
+                } catch (InvalidAlgorithmParameterException | InvalidKeyException | IOException | ParseException ex) {
+                    LoggerController.log(this.getClass(), ex);
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "Login e/ou senha incorreto(s)!");

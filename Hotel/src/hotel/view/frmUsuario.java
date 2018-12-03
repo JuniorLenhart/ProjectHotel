@@ -1,12 +1,19 @@
 package hotel.view;
 
+import hotel.controller.LoggerController;
 import hotel.controller.PermissaoController;
 import hotel.controller.PessoaController;
 import hotel.controller.UsuarioController;
 import hotel.model.Pessoa;
 import hotel.model.Usuario;
+import hotel.support.FileEncrypterDecrypter;
 import hotel.support.LimpaCampos;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -20,6 +27,8 @@ public class frmUsuario extends javax.swing.JInternalFrame {
     boolean isUsuario = false;
     boolean isResetar = false;
     boolean isExcluir = false;
+    
+    int usuariosCadastrados = 0;
 
     public frmUsuario() {
         initComponents();
@@ -49,7 +58,15 @@ public class frmUsuario extends javax.swing.JInternalFrame {
     }
     
     private void loadPermission() {
-        isUsuario = PermissaoController.hasPermission("frmUsuario", "btnUsuario");
+        String dados[] = null;
+        try {
+            dados = FileEncrypterDecrypter.decrypt();
+        } catch (InvalidAlgorithmParameterException | InvalidKeyException | IOException ex) {
+            LoggerController.log(this.getClass(), ex);
+        }
+        int license = Integer.parseInt(dados[1]);
+        usuariosCadastrados = usuarioController.getReadAllAtivos().size();
+        isUsuario = PermissaoController.hasPermission("frmUsuario", "btnUsuario") && (license > usuariosCadastrados);
         isResetar = PermissaoController.hasPermission("frmUsuario", "btnResetar");
         isExcluir = PermissaoController.hasPermission("frmUsuario", "btnExcluir");
     }
@@ -426,6 +443,8 @@ public class frmUsuario extends javax.swing.JInternalFrame {
 
                 usuarioController.popularTabela(tblLista, 0, "");
                 pessoaController.popularTabela(tblPessoa, 3, "A", -1);
+                
+                loadPermission();
 
                 limparCampos();
                 setAba(1);
@@ -449,6 +468,7 @@ public class frmUsuario extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Excluído com sucesso!");
             usuarioController.popularTabela(tblLista, 0, "");
             pessoaController.popularTabela(tblPessoa, 3, "", -1);
+            loadPermission();
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
