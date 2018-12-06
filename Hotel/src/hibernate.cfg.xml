@@ -24,5 +24,7 @@
     <mapping class="hotel.model.Usuario"/>
     <mapping class="hotel.model.Parametro"/>
     <mapping class="hotel.model.AplicacaoBotao"/>
+    <mapping class="hotel.model.Novidade"/>
+    <mapping class="hotel.model.Visto"/>
   </session-factory>
 </hibernate-configuration>

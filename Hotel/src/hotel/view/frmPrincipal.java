@@ -77,6 +77,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         mniBotao = new javax.swing.JMenuItem();
         mniXML = new javax.swing.JMenuItem();
         mniBackupRestore = new javax.swing.JMenuItem();
+        mniNovidade = new javax.swing.JMenuItem();
         mniSair = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -84,6 +85,9 @@ public class frmPrincipal extends javax.swing.JFrame {
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
             }
         });
 
@@ -270,6 +274,14 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
         mnuAjuda.add(mniBackupRestore);
 
+        mniNovidade.setText("Notas de Atualizações");
+        mniNovidade.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniNovidadeActionPerformed(evt);
+            }
+        });
+        mnuAjuda.add(mniNovidade);
+
         mniSair.setText("Sair");
         mniSair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -366,6 +378,13 @@ public class frmPrincipal extends javax.swing.JFrame {
         abrirTela(new frmBackupEscolha());
     }//GEN-LAST:event_mniBackupRestoreActionPerformed
 
+    private void mniNovidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniNovidadeActionPerformed
+        abrirTela(new frmNovidade());
+    }//GEN-LAST:event_mniNovidadeActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        new frmNovidadeDetalhe(this, true, null, true);
+    }//GEN-LAST:event_formWindowOpened
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane dkpSistema;
@@ -378,6 +397,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem mniConsumivel;
     private javax.swing.JMenuItem mniFormaPgto;
     private javax.swing.JMenuItem mniLocacao;
+    private javax.swing.JMenuItem mniNovidade;
     private javax.swing.JMenuItem mniPermissao;
     private javax.swing.JMenuItem mniPessoa;
     private javax.swing.JMenuItem mniQuarto;

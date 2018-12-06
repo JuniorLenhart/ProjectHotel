@@ -17,6 +17,8 @@
         <class>hotel.model.Usuario</class>
         <class>hotel.model.LocacaoHospede</class>
         <class>hotel.model.FormaPagamento</class>
+        <class>hotel.model.Novidade</class>
+        <class>hotel.model.Visto</class>
         <properties>
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/hotel"/>
             <property name="javax.persistence.jdbc.user" value="postgres"/>
