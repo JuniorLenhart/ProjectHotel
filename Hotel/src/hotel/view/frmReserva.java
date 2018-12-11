@@ -671,32 +671,36 @@ public class frmReserva extends javax.swing.JInternalFrame {
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         if (Validacao.validarCampos(pnlCadastro) == 0) {
-            boolean isNew = (reserva.getCodReserva() == null);
-
             Timestamp dtaReserva = Timestamp.valueOf(Formatacao.ajustaDataAMDHMS(Unit.getDataHoraAtual()));
-            reserva.setDtaReserva(dtaReserva);
             Date dtaEntrada = Date.valueOf(Formatacao.ajustaDataAMD(tfdDataEntrada.getText()));
-            reserva.setDtaEntrada(dtaEntrada);
             Date dtaSaida = Date.valueOf(Formatacao.ajustaDataAMD(tfdDataSaida.getText()));
-            reserva.setDtaSaida(dtaSaida);
-            reserva.setQtdLugar(Integer.parseInt(tfdLugar.getValue().toString()));
-            reserva.setVlrReserva(tfdValor.getValue());
-            reserva.setVlrPago(BigDecimal.ZERO);
-            reserva.setUsuario(Parametro.USUARIO);
-            reserva.setIndSituacao("E");
-            reservaController.save(reserva);
+            if(!dtaEntrada.after(dtaSaida)) {
+                boolean isNew = (reserva.getCodReserva() == null);
+            
+                reserva.setDtaReserva(dtaReserva);
+                reserva.setDtaEntrada(dtaEntrada);
+                reserva.setDtaSaida(dtaSaida);
+                reserva.setQtdLugar(Integer.parseInt(tfdLugar.getValue().toString()));
+                reserva.setVlrReserva(tfdValor.getValue());
+                reserva.setVlrPago(BigDecimal.ZERO);
+                reserva.setUsuario(Parametro.USUARIO);
+                reserva.setIndSituacao("E");
+                reservaController.save(reserva);
 
-            if (!isNew) {
-                JOptionPane.showMessageDialog(this, "Atualizada com sucesso!");
-                setVisibleCodigo(false);
+                if (!isNew) {
+                    JOptionPane.showMessageDialog(this, "Atualizada com sucesso!");
+                    setVisibleCodigo(false);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Cadastrada com sucesso!");
+                }
+
+                reservaController.popularTabela(tblLista, 0, "");
+
+                limparCampos();
+                setAba(1);
             } else {
-                JOptionPane.showMessageDialog(this, "Cadastrada com sucesso!");
+                JOptionPane.showMessageDialog(this, "Data de entrada não pode ser maior que data de saída!");
             }
-
-            reservaController.popularTabela(tblLista, 0, "");
-
-            limparCampos();
-            setAba(1);
         } else {
             JOptionPane.showMessageDialog(this, "Campos obrigatórios não preenchidos!");
         }

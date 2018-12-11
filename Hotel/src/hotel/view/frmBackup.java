@@ -73,19 +73,10 @@ public class frmBackup extends javax.swing.JInternalFrame {
 
     private void doFileBackups() {
         try {
-            File db = new File("db.properties");
-            File logs = new File("logs.log");
             File destDir = new File(tfdArquivo.getText() + "\\");
-            FileUtils.copyFileToDirectory(db, destDir);
-            FileUtils.copyFileToDirectory(logs, destDir);
+            FileUtils.copyDirectory(new File("."), destDir);
 
             doDatabaseBackupRestore();
-
-            File banco = new File(tfdArquivo.getText() + "\\banco.sql");
-            logs = new File(tfdArquivo.getText() + "\\logs.log");
-            db = new File(tfdArquivo.getText() + "\\db.properties");
-            File[] files = {db, logs, banco};
-            removeFilesAfterZip(files);
         } catch (IOException ex) {
             LoggerController.log(this.getClass(), ex);
         }
@@ -107,9 +98,10 @@ public class frmBackup extends javax.swing.JInternalFrame {
                 for (File kid : directory.listFiles()) {
                     String name = base.relativize(kid.toURI()).getPath();
                     if (kid.isFile()) {
-                        if (!kid.getName().equals(zipfile.getName()) && (kid.getName().equals("banco.sql") || kid.getName().equals("logs.log") || kid.getName().equals("db.properties"))) {
+                        if (!kid.getName().equals(zipfile.getName())) {
                             zout.putNextEntry(new ZipEntry(name));
                             Files.copy(kid.toPath(), zout);
+                            Files.deleteIfExists(kid.toPath());
                             zout.closeEntry();
                         }
                     }

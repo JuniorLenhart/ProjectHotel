@@ -6,6 +6,7 @@ import hotel.repository.QuartoRepository;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.table.*;
+import javax.swing.text.TableView.TableRow;
 
 public class QuartoController extends BaseController<Quarto> {
 
@@ -52,7 +53,7 @@ public class QuartoController extends BaseController<Quarto> {
                         lTabela[lLinha][1] = q.getNumQuarto();
                         lTabela[lLinha][2] = q.getVlrQuarto();
                         for (TipoCama tc : q.getTipoCama()) {
-                            lTabela[lLinha][3] += tc.getDesTipoCama() + " - Lugares: " + tc.getQtdLugarTipoCama() + " / ";
+                            lTabela[lLinha][3] += tc.getDesTipoCama() + " - Lugares: " + tc.getQtdLugarTipoCama() + "\n";
                         }
                         lTabela[lLinha][4] = situacao;
                         lLinha++;
@@ -69,7 +70,7 @@ public class QuartoController extends BaseController<Quarto> {
                         lTabela[lLinha][1] = q.getNumQuarto();
                         lTabela[lLinha][2] = q.getVlrQuarto();
                         for (TipoCama tc : q.getTipoCama()) {
-                            lTabela[lLinha][3] += tc.getDesTipoCama() + " - Lugares: " + tc.getQtdLugarTipoCama() + " / ";
+                            lTabela[lLinha][3] += tc.getDesTipoCama() + " - Lugares: " + tc.getQtdLugarTipoCama() + "\n";
                         }
                         lTabela[lLinha][4] = situacao;
                         lLinha++;
@@ -88,7 +89,7 @@ public class QuartoController extends BaseController<Quarto> {
                         lTabela[lLinha][1] = quarto.getNumQuarto();
                         lTabela[lLinha][2] = quarto.getVlrQuarto();
                         for (TipoCama tc : quarto.getTipoCama()) {
-                            lTabela[lLinha][3] += tc.getDesTipoCama() + " - Lugares: " + tc.getQtdLugarTipoCama() + " / ";
+                            lTabela[lLinha][3] += tc.getDesTipoCama() + " - Lugares: " + tc.getQtdLugarTipoCama() + "\n";
                         }
                         lTabela[lLinha][4] = situacao;
                         lLinha++;
@@ -113,6 +114,7 @@ public class QuartoController extends BaseController<Quarto> {
             pTabela.setSelectionMode(0);
 
             TableColumn lColumn = null;
+            TableRow lRow = null;
 
             DefaultTableCellRenderer lLeft = new DefaultTableCellRenderer();
             DefaultTableCellRenderer lCenter = new DefaultTableCellRenderer();
@@ -147,6 +149,7 @@ public class QuartoController extends BaseController<Quarto> {
                         break;
                 }
             }
+            pTabela.setRowHeight(50);
         } catch (Exception ex) {
             LoggerController.log(this.getClass(), ex);
         }

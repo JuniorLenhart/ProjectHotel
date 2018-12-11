@@ -24,8 +24,13 @@ public class ReservaController extends BaseController<Reserva> {
             boolean isNew = pReserva.getCodReserva() == null;
 
             HibernateUtil.getSession().saveOrUpdate(pReserva);
-
-            if (isNew) spreadInfoToServer(pReserva);
+            
+            try {
+                if (isNew) spreadInfoToServer(pReserva);
+            } catch (Exception e) {
+                LoggerController.log(this.getClass(), e);
+            }
+            
 
             transaction.commit();
         } catch (Exception ex) {
