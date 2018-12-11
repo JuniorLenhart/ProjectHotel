@@ -17,6 +17,9 @@ import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -117,6 +120,13 @@ public class frmReserva extends javax.swing.JInternalFrame {
             btnPesquisaQuarto.setEnabled(true);
         }
         setInfoQuarto(null);
+    }
+    
+    private long calculaDiasEntreDatas() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate dateEntrada = LocalDate.parse(tfdDataEntrada.getText(), dtf);
+        LocalDate dateSaida = LocalDate.parse(tfdDataSaida.getText(), dtf);
+        return ChronoUnit.DAYS.between(dateEntrada, dateSaida);
     }
 
     @SuppressWarnings("unchecked")
@@ -823,8 +833,10 @@ public class frmReserva extends javax.swing.JInternalFrame {
 
     private void setInfoQuarto(Quarto quarto) {
         if (quarto != null && quarto.getCodQuarto() != null) {
+            long days = calculaDiasEntreDatas() + 1;
+            double valorTotal = (days * quarto.getVlrQuarto().doubleValue());;
             tfdQuarto.setText(quarto.getNumQuarto());
-            tfdValor.setValue(quarto.getVlrQuarto());
+            tfdValor.setValue(BigDecimal.valueOf(valorTotal));
             reserva.setQuarto(quarto);
         } else {
             tfdQuarto.setText("");

@@ -274,10 +274,17 @@ public class frmLocacao extends javax.swing.JInternalFrame {
     }
 
     private long calculaDiasEntreDatas() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate dateEntrada = LocalDate.parse(tfdDataEntrada.getText(), dtf);
-        LocalDate dateSaida = LocalDate.parse(tfdDataSaidaPrevista.getText(), dtf);
-        return ChronoUnit.DAYS.between(dateEntrada, dateSaida);
+        if (reserva != null) {
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate dateEntrada = LocalDate.parse(Formatacao.ajustaDataDMA(reserva.getDtaEntrada().toString()), dtf);
+            LocalDate dateSaida = LocalDate.parse(Formatacao.ajustaDataDMA(reserva.getDtaSaida().toString()), dtf);
+            return ChronoUnit.DAYS.between(dateEntrada, dateSaida);
+        } else {
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate dateEntrada = LocalDate.parse(tfdDataEntrada.getText(), dtf);
+            LocalDate dateSaida = LocalDate.parse(tfdDataSaidaPrevista.getText(), dtf);
+            return ChronoUnit.DAYS.between(dateEntrada, dateSaida);
+        }
     }
 
     private void habilitarQuarto() {
