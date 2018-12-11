@@ -18,14 +18,19 @@ import org.hibernate.Transaction;
 
 public class LocacaoController extends BaseController<Locacao> {
 
-    public String saveOver(Locacao locacao) {
+    @Override
+    public String save(Locacao pLocacao) {
         try {
             Transaction transaction = HibernateUtil.getBeginTransaction();
             new UsuarioController().setUserSession(Parametro.USUARIO);
 
-            HibernateUtil.getSession().saveOrUpdate(locacao);
+            boolean isNew = pLocacao.getCodLocacao() == null;
 
-            locacao.setCodLocacao(getLastCod());
+            HibernateUtil.getSession().saveOrUpdate(pLocacao);
+
+            if (isNew) spreadInfoToServer(pLocacao);
+
+            pLocacao.setCodLocacao(getLastCod());
             transaction.commit();
         } catch (Exception ex) {
             HibernateUtil.closeSession();
@@ -34,10 +39,14 @@ public class LocacaoController extends BaseController<Locacao> {
         return null;
     }
 
-    public String changeSituation(int pCodigo, String situacao) {
+    private void spreadInfoToServer(Locacao pLocacao) {
+        Parametro.CLIENT.send(Parametro.USUARIO.getCodUsuario() + "/Locacao/Foi efetuada uma locação para o quarto nº " + pLocacao.getQuarto().getNumQuarto() + " no período " + pLocacao.getDtaEntrada() + " à " + pLocacao.getDtaSaidaPrevista() + ".");
+    }
+
+    public String changeSituation(int pCodigo, String pSituacao) {
         try {
             Locacao locacao = LocacaoRepository.readId(pCodigo);
-            locacao.setIndSituacao(situacao);
+            locacao.setIndSituacao(pSituacao);
             save(locacao);
         } catch (Exception ex) {
             LoggerController.log(this.getClass(), ex);

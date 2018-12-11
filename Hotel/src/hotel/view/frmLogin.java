@@ -81,7 +81,7 @@ public class frmLogin extends javax.swing.JFrame {
 
     public void logar() {
 //        try {
-//            FileEncrypterDecrypter.encrypt("George", "2", "05/12/2018");
+//            FileEncrypterDecrypter.encrypt("George", "2", "31/12/2018");
 //        } catch (InvalidKeyException ex) {
 //            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
 //        } catch (IOException ex) {

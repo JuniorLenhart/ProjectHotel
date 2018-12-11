@@ -40,7 +40,7 @@ public class frmLocacao extends javax.swing.JInternalFrame {
     LocacaoHospedeController locacaoHospedeController;
     LocacaoController locacaoController;
     FinanceiroController financeiroController;
-    
+
     boolean isCancelar = false;
     boolean isCheckIn = false;
     boolean isCheckOut = false;
@@ -69,9 +69,8 @@ public class frmLocacao extends javax.swing.JInternalFrame {
                 habilitar();
             }
         });
-        
     }
-    
+
     private void loadPermission() {
         isCancelar = PermissaoController.hasPermission("frmLocacao", "btnCancelar");
         isCheckIn = PermissaoController.hasPermission("frmLocacao", "btnCheckIn");
@@ -99,7 +98,6 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         tfdDataSaidaPrevista.setText(dateTimeFormatter.format(now));
         tfdDataEntrada.setText(dateTimeFormatter.format(now.minusDays(1)));
         tfdDataEntrada.setLocked(true);
-        //tfdDataSaidaPrevista.setCurrent(minSelectableDate);
     }
 
     private void setVisibleCodigo(boolean isVisible) {
@@ -195,7 +193,6 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         tfdQuantidadeLugares.setValue(reserva.getQtdLugar());
         tfdValorPago.setValue(reserva.getVlrPago());
         tfdQuarto.setText(quarto.getNumQuarto());
-        //tfdDataEntrada.setText(Formatacao.ajustaDataDMAShort(reserva.getDtaEntrada().toString()));
         tfdDataSaidaPrevista.setText(Formatacao.ajustaDataDMAShort(reserva.getDtaSaida().toString()));
         setVisibleDatasPrevistas(true);
         setJSpinnerEditable(false);
@@ -241,7 +238,6 @@ public class frmLocacao extends javax.swing.JInternalFrame {
             tfdNomeTitular.setText("");
             pessoaTitular = null;
         }
-
     }
 
     private void setInfoQuarto(Quarto quarto) {
@@ -942,29 +938,27 @@ public class frmLocacao extends javax.swing.JInternalFrame {
                 boolean isNew = (locacao.getCodLocacao() == null);
 
                 locacao.setUsuario(Parametro.USUARIO);
-                Timestamp dtaEntrada = Timestamp.valueOf(Formatacao.ajustaDataAMDHMS(Unit.getDataHoraAtual()));
-                //Timestamp dtaSaidaPrevista = Timestamp.valueOf(Formatacao.ajustaDataAMDHMS(tfdDataSaidaPrevista.getCurrent().getTime().toString()));
-                locacao.setDtaEntrada(dtaEntrada);
+                locacao.setDtaEntrada(Timestamp.valueOf(Formatacao.ajustaDataAMDHMS(Unit.getDataHoraAtual())));
                 locacao.setQuarto(quarto);
                 locacao.setDtaSaidaPrevista(tfdDataSaidaPrevista.getCurrent().getTime());
                 locacao.setIndSituacao("A");
                 double bd = Double.parseDouble(lblValorRestante.getText().replace(",", ".").replace("R$ ", ""));
                 locacao.setVlrLocacao(BigDecimal.valueOf(bd));
-                locacaoController.saveOver(locacao);
-                System.out.println("Cod: " + locacao.getCodLocacao());
-                List<LocacaoHospede> locacaoHospedes = new ArrayList<LocacaoHospede>();
-                LocacaoHospede lh = new LocacaoHospede();
-                lh.setLocacao(locacao);
-                lh.setPessoa(pessoaTitular);
-                lh.setIndResponsavel("S");
-                locacaoHospedes.add(lh);
+                locacaoController.save(locacao);
+
+                List<LocacaoHospede> locacaoHospedes = new ArrayList<>();
+                LocacaoHospede locacaoHospede = new LocacaoHospede();
+                locacaoHospede.setLocacao(locacao);
+                locacaoHospede.setPessoa(pessoaTitular);
+                locacaoHospede.setIndResponsavel("S");
+                locacaoHospedes.add(locacaoHospede);
                 for (int i = 0; i < tbListaAcompanhante.getRowCount(); i++) {
-                    lh = new LocacaoHospede();
+                    locacaoHospede = new LocacaoHospede();
                     Pessoa p = PessoaRepository.readId(Integer.parseInt(tbListaAcompanhante.getModel().getValueAt(i, 0).toString()));
-                    lh.setLocacao(locacao);
-                    lh.setPessoa(p);
-                    lh.setIndResponsavel("N");
-                    locacaoHospedes.add(lh);
+                    locacaoHospede.setLocacao(locacao);
+                    locacaoHospede.setPessoa(p);
+                    locacaoHospede.setIndResponsavel("N");
+                    locacaoHospedes.add(locacaoHospede);
                 }
                 locacaoHospedeController.saveAll(locacaoHospedes);
 
@@ -1104,6 +1098,7 @@ public class frmLocacao extends javax.swing.JInternalFrame {
         DefaultTableModel modelAcompanhante = (DefaultTableModel) tblTable.getModel();
         modelAcompanhante.setRowCount(0);
     }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup btgCadastro;
     private javax.swing.ButtonGroup btgPesquisa;

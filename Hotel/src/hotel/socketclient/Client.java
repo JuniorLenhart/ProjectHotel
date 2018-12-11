@@ -9,12 +9,12 @@ public class Client {
     PrintStream saida = null;
     Thread thread;
 
-    public Client(Usuario usuario, String ipServer, int portServer) {
+    public Client(Usuario pUsuario, String pIPServer, int pPortServer) {
         try {
-            Socket connection = new Socket(ipServer, portServer);
+            Socket connection = new Socket(pIPServer, pPortServer);
             saida = new PrintStream(connection.getOutputStream());
 
-            send(usuario.getCodUsuario().toString());
+            send(pUsuario.getCodUsuario().toString());
 
             thread = new Thread(new Listener(connection));
             thread.start();
@@ -22,8 +22,8 @@ public class Client {
         }
     }
 
-    public void send(String info) {
-        saida.println(info);
+    public void send(String pInfo) {
+        saida.println(pInfo);
     }
 
     public void stop() {

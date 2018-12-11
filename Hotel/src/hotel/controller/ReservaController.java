@@ -1,6 +1,7 @@
 package hotel.controller;
 
 import hotel.config.HibernateUtil;
+import hotel.model.Parametro;
 import hotel.model.Reserva;
 import hotel.repository.ReservaRepository;
 import hotel.support.Formatacao;
@@ -13,6 +14,30 @@ import javax.swing.table.TableColumn;
 import org.hibernate.Transaction;
 
 public class ReservaController extends BaseController<Reserva> {
+
+    @Override
+    public String save(Reserva pReserva) {
+        try {
+            Transaction transaction = HibernateUtil.getBeginTransaction();
+            new UsuarioController().setUserSession(Parametro.USUARIO);
+
+            boolean isNew = pReserva.getCodReserva() == null;
+
+            HibernateUtil.getSession().saveOrUpdate(pReserva);
+
+            if (isNew) spreadInfoToServer(pReserva);
+
+            transaction.commit();
+        } catch (Exception ex) {
+            HibernateUtil.closeSession();
+            LoggerController.log(this.getClass(), ex);
+        }
+        return null;
+    }
+
+    private void spreadInfoToServer(Reserva pReserva) {
+        Parametro.CLIENT.send(Parametro.USUARIO.getCodUsuario() + "/Reserva/Foi efetuada uma reserva para o quarto nº " + pReserva.getQuarto().getNumQuarto() + " no período " + pReserva.getDtaEntrada() + " à " + pReserva.getDtaSaida() + ".");
+    }
 
     public String cancelReserve(int pCodigo) {
         try {
